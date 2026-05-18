@@ -5526,89 +5526,2919 @@
         }
       }
     },
-    "WS_HL_SQLV_OPEN_ORDER_CDSV": {
+    "SAP_SD_IL_2LIS_11_VASCL": {
       "kind": "entity",
-      "@EndUserText.label": "[워크샵] Open Order CDS View SQL View",
       "@ObjectModel.supportedCapabilities": [
         {
           "#": "DATA_STRUCTURE"
         }
       ],
       "elements": {
-        "SalesDocument": {
+        "ROCANCEL": {
+          "@EndUserText.label": "취소 데이터 레코드 지시자",
+          "type": "cds.String",
+          "length": 1
+        },
+        "VBELN": {
           "@EndUserText.label": "영업전표번호",
           "type": "cds.String",
           "length": 10
         },
-        "CreationDate": {
+        "ABSTA": {
+          "@EndUserText.label": "거부상태",
+          "type": "cds.String",
+          "length": 1
+        },
+        "POSNR": {
+          "@EndUserText.label": "항목번호",
+          "type": "cds.String",
+          "length": 6
+        },
+        "UVALL": {
+          "@EndUserText.label": "항목",
+          "type": "cds.String",
+          "length": 1
+        },
+        "UVFAK": {
+          "@EndUserText.label": "청구전표-항목",
+          "type": "cds.String",
+          "length": 1
+        },
+        "UVPRS": {
+          "@EndUserText.label": "가격결정-항목",
+          "type": "cds.String",
+          "length": 1
+        },
+        "UVVLK": {
+          "@EndUserText.label": "납품전표-항목",
+          "type": "cds.String",
+          "length": 1
+        },
+        "BMENG": {
+          "@EndUserText.label": "확정수량",
+          "precision": 13,
+          "scale": 3,
+          "type": "cds.Decimal"
+        },
+        "CMENG": {
+          "@EndUserText.label": "수정수량",
+          "precision": 13,
+          "scale": 3,
+          "type": "cds.Decimal"
+        },
+        "EDATU": {
+          "@EndUserText.label": "납품일",
+          "type": "cds.Date"
+        },
+        "ETENR": {
+          "@EndUserText.label": "납품일정행 번호",
+          "type": "cds.String",
+          "length": 4
+        },
+        "ETTYP": {
+          "@EndUserText.label": "일정행 범주",
+          "type": "cds.String",
+          "length": 2
+        },
+        "LDDAT": {
+          "@EndUserText.label": "적재일",
+          "type": "cds.Date"
+        },
+        "LIFSP": {
+          "@EndUserText.label": "납품블록",
+          "type": "cds.String",
+          "length": 2
+        },
+        "LMENG": {
+          "@EndUserText.label": "소요수량",
+          "precision": 13,
+          "scale": 3,
+          "type": "cds.Decimal"
+        },
+        "MBDAT": {
+          "@EndUserText.label": "자재 가용일",
+          "type": "cds.Date"
+        },
+        "MEINS": {
+          "@EndUserText.label": "기본단위",
+          "type": "cds.String",
+          "length": 3
+        },
+        "TDDAT": {
+          "@EndUserText.label": "운송계획일",
+          "type": "cds.Date"
+        },
+        "VRKME": {
+          "@EndUserText.label": "판매단위",
+          "type": "cds.String",
+          "length": 3
+        },
+        "WADAT": {
+          "@EndUserText.label": "출고일",
+          "type": "cds.Date"
+        },
+        "WLDATBE": {
+          "@EndUserText.label": "희망납품일/확인 일정행",
+          "type": "cds.Date"
+        },
+        "WMENG": {
+          "@EndUserText.label": "주문수량",
+          "precision": 13,
+          "scale": 3,
+          "type": "cds.Decimal"
+        },
+        "ANGDT": {
+          "@EndUserText.label": "견적 유효 시작일",
+          "type": "cds.Date"
+        },
+        "AUART": {
+          "@EndUserText.label": "판매전표유형",
+          "type": "cds.String",
+          "length": 4
+        },
+        "AUGRU": {
+          "@EndUserText.label": "오더 사유",
+          "type": "cds.String",
+          "length": 3
+        },
+        "BNDDT": {
+          "@EndUserText.label": "견적 유효 종료일",
+          "type": "cds.Date"
+        },
+        "BUKRS": {
+          "@EndUserText.label": "회사코드",
+          "type": "cds.String",
+          "length": 4
+        },
+        "FAKSK": {
+          "@EndUserText.label": "대금청구블록",
+          "type": "cds.String",
+          "length": 2
+        },
+        "HWAER": {
+          "@EndUserText.label": "현지통화",
+          "type": "cds.String",
+          "length": 5
+        },
+        "KUNNR": {
+          "@EndUserText.label": "주문자(Sold-to)",
+          "type": "cds.String",
+          "length": 10
+        },
+        "KURST": {
+          "@EndUserText.label": "환율유형",
+          "type": "cds.String",
+          "length": 4
+        },
+        "KVGR1": {
+          "@EndUserText.label": "고객그룹 1",
+          "type": "cds.String",
+          "length": 3
+        },
+        "KVGR2": {
+          "@EndUserText.label": "고객그룹 2",
+          "type": "cds.String",
+          "length": 3
+        },
+        "KVGR3": {
+          "@EndUserText.label": "고객그룹 3",
+          "type": "cds.String",
+          "length": 3
+        },
+        "KVGR4": {
+          "@EndUserText.label": "고객그룹 4",
+          "type": "cds.String",
+          "length": 3
+        },
+        "KVGR5": {
+          "@EndUserText.label": "고객그룹 5",
+          "type": "cds.String",
+          "length": 3
+        },
+        "LIFSK": {
+          "@EndUserText.label": "납품블록",
+          "type": "cds.String",
+          "length": 2
+        },
+        "STWAE": {
+          "@EndUserText.label": "통계통화",
+          "type": "cds.String",
+          "length": 5
+        },
+        "VBTYP": {
+          "@EndUserText.label": "영업전표범주",
+          "type": "cds.String",
+          "length": 4
+        },
+        "VKBUR": {
+          "@EndUserText.label": "판매사무소",
+          "type": "cds.String",
+          "length": 4
+        },
+        "VKGRP": {
+          "@EndUserText.label": "판매그룹",
+          "type": "cds.String",
+          "length": 3
+        },
+        "VKORG": {
+          "@EndUserText.label": "판매조직",
+          "type": "cds.String",
+          "length": 4
+        },
+        "VTWEG": {
+          "@EndUserText.label": "유통채널",
+          "type": "cds.String",
+          "length": 2
+        },
+        "ABGRU": {
+          "@EndUserText.label": "거부사유",
+          "type": "cds.String",
+          "length": 2
+        },
+        "AEDAT": {
+          "@EndUserText.label": "변경일",
+          "type": "cds.Date"
+        },
+        "AWAHR": {
+          "@EndUserText.label": "수주확률",
+          "type": "cds.String",
+          "length": 3
+        },
+        "CHARG": {
+          "@EndUserText.label": "배치",
+          "type": "cds.String",
+          "length": 10
+        },
+        "CMKUA": {
+          "@EndUserText.label": "여신 환율",
+          "precision": 9,
+          "scale": 5,
+          "type": "cds.Decimal"
+        },
+        "EAN11": {
+          "@EndUserText.label": "EAN/UPC",
+          "type": "cds.String",
+          "length": 18
+        },
+        "ERDAT": {
+          "@EndUserText.label": "생성일",
+          "type": "cds.Date"
+        },
+        "ERNAM": {
+          "@EndUserText.label": "생성자",
+          "type": "cds.String",
+          "length": 12
+        },
+        "ERZET": {
+          "@EndUserText.label": "시간",
+          "type": "cds.Time"
+        },
+        "FAKSP": {
+          "@EndUserText.label": "대금청구블록",
+          "type": "cds.String",
+          "length": 2
+        },
+        "GEWEI": {
+          "@EndUserText.label": "중량단위",
+          "type": "cds.String",
+          "length": 3
+        },
+        "KMEIN": {
+          "@EndUserText.label": "단위",
+          "type": "cds.String",
+          "length": 3
+        },
+        "KPEIN": {
+          "@EndUserText.label": "가격단위",
+          "precision": 5,
+          "scale": 0,
+          "type": "cds.Decimal"
+        },
+        "LGORT": {
+          "@EndUserText.label": "저장위치",
+          "type": "cds.String",
+          "length": 4
+        },
+        "MATKL": {
+          "@EndUserText.label": "자재그룹",
+          "type": "cds.String",
+          "length": 9
+        },
+        "MATNR": {
+          "@EndUserText.label": "자재번호",
+          "type": "cds.String",
+          "length": 40
+        },
+        "MATWA": {
+          "@EndUserText.label": "입력 자재",
+          "type": "cds.String",
+          "length": 40
+        },
+        "MVGR1": {
+          "@EndUserText.label": "자재그룹 1",
+          "type": "cds.String",
+          "length": 3
+        },
+        "MVGR2": {
+          "@EndUserText.label": "자재그룹 2",
+          "type": "cds.String",
+          "length": 3
+        },
+        "MVGR3": {
+          "@EndUserText.label": "자재그룹 3",
+          "type": "cds.String",
+          "length": 3
+        },
+        "MVGR4": {
+          "@EndUserText.label": "자재그룹 4",
+          "type": "cds.String",
+          "length": 3
+        },
+        "MVGR5": {
+          "@EndUserText.label": "자재그룹 5",
+          "type": "cds.String",
+          "length": 3
+        },
+        "NETPR": {
+          "@EndUserText.label": "단가(순)",
+          "type": "cds.DecimalFloat"
+        },
+        "PABLA": {
+          "@EndUserText.label": "납품처 하역장소",
+          "type": "cds.String",
+          "length": 25
+        },
+        "PKUNRE": {
+          "@EndUserText.label": "청구처(Bill-to)",
+          "type": "cds.String",
+          "length": 10
+        },
+        "PKUNRG": {
+          "@EndUserText.label": "지급인",
+          "type": "cds.String",
+          "length": 10
+        },
+        "PKUNWE": {
+          "@EndUserText.label": "납품처(Ship-to)",
+          "type": "cds.String",
+          "length": 10
+        },
+        "PRODH": {
+          "@EndUserText.label": "제품 계층",
+          "type": "cds.String",
+          "length": 18
+        },
+        "PSPDNR": {
+          "@EndUserText.label": "운송업체",
+          "type": "cds.String",
+          "length": 10
+        },
+        "PSTYV": {
+          "@EndUserText.label": "항목범주",
+          "type": "cds.String",
+          "length": 4
+        },
+        "PVRTNR": {
+          "@EndUserText.label": "판매사원",
+          "type": "cds.String",
+          "length": 8
+        },
+        "ROUTE": {
+          "@EndUserText.label": "운송경로",
+          "type": "cds.String",
+          "length": 6
+        },
+        "SPART": {
+          "@EndUserText.label": "제품군",
+          "type": "cds.String",
+          "length": 2
+        },
+        "STADAT": {
+          "@EndUserText.label": "통계일자",
+          "type": "cds.Date"
+        },
+        "STCUR": {
+          "@EndUserText.label": "통계 환율",
+          "precision": 9,
+          "scale": 5,
+          "type": "cds.Decimal"
+        },
+        "SUGRD": {
+          "@EndUserText.label": "대체사유",
+          "type": "cds.String",
+          "length": 4
+        },
+        "UMVKN": {
+          "@EndUserText.label": "분모",
+          "precision": 5,
+          "scale": 0,
+          "type": "cds.Decimal"
+        },
+        "UMVKZ": {
+          "@EndUserText.label": "분자",
+          "precision": 5,
+          "scale": 0,
+          "type": "cds.Decimal"
+        },
+        "UMZIN": {
+          "@EndUserText.label": "환산계수",
+          "precision": 5,
+          "scale": 0,
+          "type": "cds.Decimal"
+        },
+        "UMZIZ": {
+          "@EndUserText.label": "환산계수",
+          "precision": 5,
+          "scale": 0,
+          "type": "cds.Decimal"
+        },
+        "VDATU": {
+          "@EndUserText.label": "통계 갱신일",
+          "type": "cds.Date"
+        },
+        "VGTYP": {
+          "@EndUserText.label": "선행전표범주",
+          "type": "cds.String",
+          "length": 4
+        },
+        "VOLEH": {
+          "@EndUserText.label": "용적단위",
+          "type": "cds.String",
+          "length": 3
+        },
+        "VSTEL": {
+          "@EndUserText.label": "출하지점",
+          "type": "cds.String",
+          "length": 4
+        },
+        "WAERK": {
+          "@EndUserText.label": "전표통화",
+          "type": "cds.String",
+          "length": 5
+        },
+        "WERKS": {
+          "@EndUserText.label": "플랜트",
+          "type": "cds.String",
+          "length": 4
+        },
+        "ZIEME": {
+          "@EndUserText.label": "목표수량 단위",
+          "type": "cds.String",
+          "length": 3
+        },
+        "BZIRK": {
+          "@EndUserText.label": "판매지역",
+          "type": "cds.String",
+          "length": 6
+        },
+        "FBUDA": {
+          "@EndUserText.label": "서비스 완료일",
+          "type": "cds.Date"
+        },
+        "FKDAT": {
+          "@EndUserText.label": "청구일",
+          "type": "cds.Date"
+        },
+        "INCO1": {
+          "@EndUserText.label": "인코텀즈",
+          "type": "cds.String",
+          "length": 3
+        },
+        "INCO2": {
+          "@EndUserText.label": "인코텀즈 (2)",
+          "type": "cds.String",
+          "length": 28
+        },
+        "KDGRP": {
+          "@EndUserText.label": "고객그룹",
+          "type": "cds.String",
+          "length": 2
+        },
+        "KTGRD": {
+          "@EndUserText.label": "고객 계정배정그룹",
+          "type": "cds.String",
+          "length": 2
+        },
+        "KURSK": {
+          "@EndUserText.label": "환율",
+          "precision": 9,
+          "scale": 5,
+          "type": "cds.Decimal"
+        },
+        "KURSK_DAT": {
+          "@EndUserText.label": "환산일",
+          "type": "cds.Date"
+        },
+        "PRSDT": {
+          "@EndUserText.label": "가격결정일",
+          "type": "cds.Date"
+        },
+        "WAERK_VBAK": {
+          "@EndUserText.label": "전표통화",
+          "type": "cds.String",
+          "length": 5
+        },
+        "SPARA": {
+          "@EndUserText.label": "제품군",
+          "type": "cds.String",
+          "length": 2
+        },
+        "VGTYP_AK": {
+          "@EndUserText.label": "참조전표의 영업전표범주",
+          "type": "cds.String",
+          "length": 4
+        },
+        "PS_POSID": {
+          "@EndUserText.label": "WBS 요소",
+          "type": "cds.String",
+          "length": 24
+        },
+        "PERIV": {
+          "@EndUserText.label": "회계연도 변형",
+          "type": "cds.String",
+          "length": 2
+        },
+        "MCEX_APCAMPAIGN": {
+          "@EndUserText.label": "캠페인 오더 항목",
+          "type": "cds.String",
+          "length": 36
+        },
+        "APOPLANNED": {
+          "@EndUserText.label": "APO 계획",
+          "type": "cds.String",
+          "length": 1
+        },
+        "FACELOC": {
+          "@EndUserText.label": "고객대면 로케이션",
+          "type": "cds.String",
+          "length": 20
+        },
+        "FLOCTYPE": {
+          "@EndUserText.label": "고객대면 로케이션 유형",
+          "type": "cds.String",
+          "length": 4
+        },
+        "EXECLOC": {
+          "@EndUserText.label": "실행 로케이션",
+          "type": "cds.String",
+          "length": 20
+        },
+        "ELOCTYPE": {
+          "@EndUserText.label": "실행 로케이션 유형",
+          "type": "cds.String",
+          "length": 4
+        },
+        "LOGSYS": {
+          "@EndUserText.label": "논리 시스템",
+          "type": "cds.String",
+          "length": 10
+        },
+        "VWPOS": {
+          "@EndUserText.label": "항목 용도",
+          "type": "cds.String",
+          "length": 4
+        },
+        "STOCKLOC": {
+          "@EndUserText.label": "로케이션",
+          "type": "cds.String",
+          "length": 20
+        },
+        "SLOCTYPE": {
+          "@EndUserText.label": "로케이션 유형",
+          "type": "cds.String",
+          "length": 4
+        },
+        "ODQ_ENTITYCNTR": {
+          "@EndUserText.label": "데이터 단위 수",
+          "precision": 19,
+          "scale": 0,
+          "type": "cds.Decimal"
+        },
+        "__load_package_id": {
+          "@EndUserText.label": "__load_package_id",
+          "type": "cds.Binary",
+          "length": 256
+        }
+      },
+      "@EndUserText.label": "판매오더 납품일정행 (2LIS_11_VASCL)",
+      "@ObjectModel.modelingPattern": {
+        "#": "DATA_STRUCTURE"
+      },
+      "_meta": {
+        "dependencies": {
+          "folderAssignment": "Folder_XJUMZYOC"
+        }
+      }
+    },
+    "SAP_SD_IL_2LIS_12_VCITM": {
+      "kind": "entity",
+      "@EndUserText.label": "납품전표 항목 (2LIS_12_VCITM)",
+      "@ObjectModel.modelingPattern": {
+        "#": "DATA_STRUCTURE"
+      },
+      "@ObjectModel.supportedCapabilities": [
+        {
+          "#": "DATA_STRUCTURE"
+        }
+      ],
+      "elements": {
+        "ROCANCEL": {
+          "@EndUserText.label": "취소 데이터 레코드 지시자",
+          "type": "cds.String",
+          "key": false,
+          "length": 1
+        },
+        "VBELN": {
+          "@EndUserText.label": "영업전표번호",
+          "type": "cds.String",
+          "key": false,
+          "length": 10
+        },
+        "KOQUA": {
+          "@EndUserText.label": "피킹확인",
+          "type": "cds.String",
+          "key": false,
+          "length": 1
+        },
+        "KOSTA": {
+          "@EndUserText.label": "피킹상태",
+          "type": "cds.String",
+          "key": false,
+          "length": 1
+        },
+        "POSNR": {
+          "@EndUserText.label": "항목번호",
+          "type": "cds.String",
+          "key": false,
+          "length": 6
+        },
+        "WBSTA": {
+          "@EndUserText.label": "재고이동 상태",
+          "type": "cds.String",
+          "key": false,
+          "length": 1
+        },
+        "ABLAD": {
+          "@EndUserText.label": "하역장소",
+          "type": "cds.String",
+          "key": false,
+          "length": 25
+        },
+        "BUKRS": {
+          "@EndUserText.label": "회사코드",
+          "type": "cds.String",
+          "key": false,
+          "length": 4
+        },
+        "BZIRK": {
+          "@EndUserText.label": "판매지역",
+          "type": "cds.String",
+          "key": false,
+          "length": 6
+        },
+        "FAKSK": {
+          "@EndUserText.label": "대금청구블록",
+          "type": "cds.String",
+          "key": false,
+          "length": 2
+        },
+        "INCO1": {
+          "@EndUserText.label": "인코텀즈",
+          "type": "cds.String",
+          "key": false,
+          "length": 3
+        },
+        "INCO2": {
+          "@EndUserText.label": "인코텀즈 (2)",
+          "type": "cds.String",
+          "key": false,
+          "length": 28
+        },
+        "KDGRP": {
+          "@EndUserText.label": "고객그룹",
+          "type": "cds.String",
+          "key": false,
+          "length": 2
+        },
+        "KUNAG": {
+          "@EndUserText.label": "주문자(Sold-to)",
+          "type": "cds.String",
+          "key": false,
+          "length": 10
+        },
+        "KUNNR": {
+          "@EndUserText.label": "납품처(Ship-to)",
+          "type": "cds.String",
+          "key": false,
+          "length": 10
+        },
+        "LFART": {
+          "@EndUserText.label": "납품유형",
+          "type": "cds.String",
+          "key": false,
+          "length": 4
+        },
+        "LFDAT": {
+          "@EndUserText.label": "납품일",
+          "type": "cds.Date",
+          "key": false
+        },
+        "LIFNR": {
+          "@EndUserText.label": "공급업체",
+          "type": "cds.String",
+          "key": false,
+          "length": 10
+        },
+        "LIFSK": {
+          "@EndUserText.label": "납품블록",
+          "type": "cds.String",
+          "key": false,
+          "length": 2
+        },
+        "LSTEL": {
+          "@EndUserText.label": "적재장소",
+          "type": "cds.String",
+          "key": false,
+          "length": 2
+        },
+        "ROUTE": {
+          "@EndUserText.label": "운송경로",
+          "type": "cds.String",
+          "key": false,
+          "length": 6
+        },
+        "VBTYP": {
+          "@EndUserText.label": "영업전표범주",
+          "type": "cds.String",
+          "key": false,
+          "length": 4
+        },
+        "VKORG": {
+          "@EndUserText.label": "판매조직",
+          "type": "cds.String",
+          "key": false,
+          "length": 4
+        },
+        "VSTEL": {
+          "@EndUserText.label": "출하지점",
+          "type": "cds.String",
+          "key": false,
+          "length": 4
+        },
+        "WADAT": {
+          "@EndUserText.label": "계획 출고일",
+          "type": "cds.Date",
+          "key": false
+        },
+        "WADAT_IST": {
+          "@EndUserText.label": "실제 출고일",
+          "type": "cds.Date",
+          "key": false
+        },
+        "AEDAT": {
+          "@EndUserText.label": "변경일",
+          "type": "cds.Date",
+          "key": false
+        },
+        "AKTNR": {
+          "@EndUserText.label": "리테일 프로모션",
+          "type": "cds.String",
+          "key": false,
+          "length": 10
+        },
+        "BRGEW": {
+          "@EndUserText.label": "총중량",
+          "type": "cds.Decimal",
+          "key": false,
+          "precision": 15,
+          "scale": 3
+        },
+        "BWAPPLNM": {
+          "@EndUserText.label": "어플리케이션 컴포넌트",
+          "type": "cds.String",
+          "key": false,
+          "length": 30
+        },
+        "BWVORG": {
+          "@EndUserText.label": "이전 프로세스",
+          "type": "cds.String",
+          "key": false,
+          "length": 3
+        },
+        "CHARG": {
+          "@EndUserText.label": "배치",
+          "type": "cds.String",
+          "key": false,
+          "length": 10
+        },
+        "EAN11": {
+          "@EndUserText.label": "EAN/UPC",
+          "type": "cds.String",
+          "key": false,
+          "length": 18
+        },
+        "ERDAT": {
+          "@EndUserText.label": "생성일",
+          "type": "cds.Date",
+          "key": false
+        },
+        "ERNAM": {
+          "@EndUserText.label": "생성자",
+          "type": "cds.String",
+          "key": false,
+          "length": 12
+        },
+        "ERZET": {
+          "@EndUserText.label": "시간",
+          "type": "cds.Time",
+          "key": false
+        },
+        "FAKSP": {
+          "@EndUserText.label": "대금청구블록",
+          "type": "cds.String",
+          "key": false,
+          "length": 2
+        },
+        "GEWEI": {
+          "@EndUserText.label": "중량단위",
+          "type": "cds.String",
+          "key": false,
+          "length": 3
+        },
+        "GSBER": {
+          "@EndUserText.label": "사업영역",
+          "type": "cds.String",
+          "key": false,
+          "length": 4
+        },
+        "KOMKZ": {
+          "@EndUserText.label": "피킹지시자",
+          "type": "cds.String",
+          "key": false,
+          "length": 1
+        },
+        "KVGR1": {
+          "@EndUserText.label": "고객그룹 1",
+          "type": "cds.String",
+          "key": false,
+          "length": 3
+        },
+        "KVGR2": {
+          "@EndUserText.label": "고객그룹 2",
+          "type": "cds.String",
+          "key": false,
+          "length": 3
+        },
+        "KVGR3": {
+          "@EndUserText.label": "고객그룹 3",
+          "type": "cds.String",
+          "key": false,
+          "length": 3
+        },
+        "KVGR4": {
+          "@EndUserText.label": "고객그룹 4",
+          "type": "cds.String",
+          "key": false,
+          "length": 3
+        },
+        "KVGR5": {
+          "@EndUserText.label": "고객그룹 5",
+          "type": "cds.String",
+          "key": false,
+          "length": 3
+        },
+        "KZVBR": {
+          "@EndUserText.label": "소비",
+          "type": "cds.String",
+          "key": false,
+          "length": 1
+        },
+        "LFIMG": {
+          "@EndUserText.label": "납품수량",
+          "type": "cds.Decimal",
+          "key": false,
+          "precision": 13,
+          "scale": 3
+        },
+        "LGMNG": {
+          "@EndUserText.label": "실납품수량",
+          "type": "cds.Decimal",
+          "key": false,
+          "precision": 13,
+          "scale": 3
+        },
+        "LGNUM": {
+          "@EndUserText.label": "창고번호",
+          "type": "cds.String",
+          "key": false,
+          "length": 3
+        },
+        "LGORT": {
+          "@EndUserText.label": "저장위치",
+          "type": "cds.String",
+          "key": false,
+          "length": 4
+        },
+        "LGPLA": {
+          "@EndUserText.label": "저장빈",
+          "type": "cds.String",
+          "key": false,
+          "length": 10
+        },
+        "LGTYP": {
+          "@EndUserText.label": "저장유형",
+          "type": "cds.String",
+          "key": false,
+          "length": 3
+        },
+        "MATKL": {
+          "@EndUserText.label": "자재그룹",
+          "type": "cds.String",
+          "key": false,
+          "length": 9
+        },
+        "MATNR": {
+          "@EndUserText.label": "자재번호",
+          "type": "cds.String",
+          "key": false,
+          "length": 40
+        },
+        "MATWA": {
+          "@EndUserText.label": "입력 자재",
+          "type": "cds.String",
+          "key": false,
+          "length": 40
+        },
+        "MEINS": {
+          "@EndUserText.label": "기본단위",
+          "type": "cds.String",
+          "key": false,
+          "length": 3
+        },
+        "MVGR1": {
+          "@EndUserText.label": "자재그룹 1",
+          "type": "cds.String",
+          "key": false,
+          "length": 3
+        },
+        "MVGR2": {
+          "@EndUserText.label": "자재그룹 2",
+          "type": "cds.String",
+          "key": false,
+          "length": 3
+        },
+        "MVGR3": {
+          "@EndUserText.label": "자재그룹 3",
+          "type": "cds.String",
+          "key": false,
+          "length": 3
+        },
+        "MVGR4": {
+          "@EndUserText.label": "자재그룹 4",
+          "type": "cds.String",
+          "key": false,
+          "length": 3
+        },
+        "MVGR5": {
+          "@EndUserText.label": "자재그룹 5",
+          "type": "cds.String",
+          "key": false,
+          "length": 3
+        },
+        "NTGEW": {
+          "@EndUserText.label": "순중량",
+          "type": "cds.Decimal",
+          "key": false,
+          "precision": 15,
+          "scale": 3
+        },
+        "PKUNRE": {
+          "@EndUserText.label": "청구처(Bill-to)",
+          "type": "cds.String",
+          "key": false,
+          "length": 10
+        },
+        "PKUNRG": {
+          "@EndUserText.label": "지급인",
+          "type": "cds.String",
+          "key": false,
+          "length": 10
+        },
+        "POSAR": {
+          "@EndUserText.label": "항목유형",
+          "type": "cds.String",
+          "key": false,
+          "length": 1
+        },
+        "PRODH": {
+          "@EndUserText.label": "제품 계층",
+          "type": "cds.String",
+          "key": false,
+          "length": 18
+        },
+        "PSPDNR": {
+          "@EndUserText.label": "운송업체",
+          "type": "cds.String",
+          "key": false,
+          "length": 10
+        },
+        "PSTYV": {
+          "@EndUserText.label": "항목범주",
+          "type": "cds.String",
+          "key": false,
+          "length": 4
+        },
+        "PVRTNR": {
+          "@EndUserText.label": "판매사원",
+          "type": "cds.String",
+          "key": false,
+          "length": 8
+        },
+        "STADAT": {
+          "@EndUserText.label": "통계일자",
+          "type": "cds.Date",
+          "key": false
+        },
+        "UMVKN": {
+          "@EndUserText.label": "분모",
+          "type": "cds.Decimal",
+          "key": false,
+          "precision": 5,
+          "scale": 0
+        },
+        "UMVKZ": {
+          "@EndUserText.label": "분자",
+          "type": "cds.Decimal",
+          "key": false,
+          "precision": 5,
+          "scale": 0
+        },
+        "VBEAF": {
+          "@EndUserText.label": "고정 처리시간",
+          "type": "cds.Decimal",
+          "key": false,
+          "precision": 5,
+          "scale": 2
+        },
+        "VBEAV": {
+          "@EndUserText.label": "변동 처리시간",
+          "type": "cds.Decimal",
+          "key": false,
+          "precision": 5,
+          "scale": 2
+        },
+        "VDATU": {
+          "@EndUserText.label": "통계 갱신일",
+          "type": "cds.Date",
+          "key": false
+        },
+        "VGBEL": {
+          "@EndUserText.label": "참조전표",
+          "type": "cds.String",
+          "key": false,
+          "length": 10
+        },
+        "VGPOS": {
+          "@EndUserText.label": "참조항목",
+          "type": "cds.String",
+          "key": false,
+          "length": 6
+        },
+        "VGTYP": {
+          "@EndUserText.label": "영업전표범주",
+          "type": "cds.String",
+          "key": false,
+          "length": 4
+        },
+        "VKBUR": {
+          "@EndUserText.label": "판매사무소",
+          "type": "cds.String",
+          "key": false,
+          "length": 4
+        },
+        "VKGRP": {
+          "@EndUserText.label": "판매그룹",
+          "type": "cds.String",
+          "key": false,
+          "length": 3
+        },
+        "VOLEH": {
+          "@EndUserText.label": "용적단위",
+          "type": "cds.String",
+          "key": false,
+          "length": 3
+        },
+        "VOLUM": {
+          "@EndUserText.label": "용적",
+          "type": "cds.Decimal",
+          "key": false,
+          "precision": 15,
+          "scale": 3
+        },
+        "VRKME": {
+          "@EndUserText.label": "판매단위",
+          "type": "cds.String",
+          "key": false,
+          "length": 3
+        },
+        "VTWEG": {
+          "@EndUserText.label": "유통채널",
+          "type": "cds.String",
+          "key": false,
+          "length": 2
+        },
+        "WERKS": {
+          "@EndUserText.label": "플랜트",
+          "type": "cds.String",
+          "key": false,
+          "length": 4
+        },
+        "ANZLIPOS": {
+          "@EndUserText.label": "납품 항목 수",
+          "type": "cds.Decimal",
+          "key": false,
+          "precision": 9,
+          "scale": 0
+        },
+        "SPARA": {
+          "@EndUserText.label": "제품군",
+          "type": "cds.String",
+          "key": false,
+          "length": 2
+        },
+        "PS_POSID": {
+          "@EndUserText.label": "WBS 요소",
+          "type": "cds.String",
+          "key": false,
+          "length": 24
+        },
+        "PERIV": {
+          "@EndUserText.label": "회계연도 변형",
+          "type": "cds.String",
+          "key": false,
+          "length": 2
+        },
+        "WA_DELAY_LF": {
+          "@EndUserText.label": "출고 지연일수",
+          "type": "cds.Decimal",
+          "key": false,
+          "precision": 9,
+          "scale": 0
+        },
+        "MCEX_APCAMPAIGN": {
+          "@EndUserText.label": "캠페인 오더 항목",
+          "type": "cds.String",
+          "key": false,
+          "length": 36
+        },
+        "ODQ_ENTITYCNTR": {
+          "@EndUserText.label": "데이터 단위 수",
+          "type": "cds.Decimal",
+          "key": false,
+          "precision": 19,
+          "scale": 0
+        },
+        "__load_package_id": {
+          "@EndUserText.label": "__load_package_id",
+          "type": "cds.Binary",
+          "key": false,
+          "length": 256
+        }
+      },
+      "_meta": {
+        "dependencies": {
+          "folderAssignment": "Folder_XJUMZYOC"
+        }
+      }
+    },
+    "SAP_SD_IL_2LIS_11_VAITM": {
+      "kind": "entity",
+      "@ObjectModel.supportedCapabilities": [
+        {
+          "#": "DATA_STRUCTURE"
+        }
+      ],
+      "elements": {
+        "ROCANCEL": {
+          "@EndUserText.label": "취소 데이터 레코드 지시자",
+          "type": "cds.String",
+          "length": 1
+        },
+        "VBELN": {
+          "@EndUserText.label": "영업전표번호",
+          "type": "cds.String",
+          "length": 10
+        },
+        "ABSTA": {
+          "@EndUserText.label": "거부상태",
+          "type": "cds.String",
+          "length": 1
+        },
+        "POSNR": {
+          "@EndUserText.label": "항목번호",
+          "type": "cds.String",
+          "length": 6
+        },
+        "UVALL": {
+          "@EndUserText.label": "항목",
+          "type": "cds.String",
+          "length": 1
+        },
+        "UVFAK": {
+          "@EndUserText.label": "청구전표-항목",
+          "type": "cds.String",
+          "length": 1
+        },
+        "UVPRS": {
+          "@EndUserText.label": "가격결정-항목",
+          "type": "cds.String",
+          "length": 1
+        },
+        "UVVLK": {
+          "@EndUserText.label": "납품전표-항목",
+          "type": "cds.String",
+          "length": 1
+        },
+        "ANGDT": {
+          "@EndUserText.label": "견적 유효 시작일",
+          "type": "cds.Date"
+        },
+        "AUART": {
+          "@EndUserText.label": "판매전표유형",
+          "type": "cds.String",
+          "length": 4
+        },
+        "AUGRU": {
+          "@EndUserText.label": "오더 사유",
+          "type": "cds.String",
+          "length": 3
+        },
+        "BNDDT": {
+          "@EndUserText.label": "견적 유효 종료일",
+          "type": "cds.Date"
+        },
+        "BUKRS": {
+          "@EndUserText.label": "회사코드",
+          "type": "cds.String",
+          "length": 4
+        },
+        "FAKSK": {
+          "@EndUserText.label": "대금청구블록",
+          "type": "cds.String",
+          "length": 2
+        },
+        "HWAER": {
+          "@EndUserText.label": "현지통화",
+          "type": "cds.String",
+          "length": 5
+        },
+        "KUNNR": {
+          "@EndUserText.label": "주문자(Sold-to)",
+          "type": "cds.String",
+          "length": 10
+        },
+        "KURST": {
+          "@EndUserText.label": "환율유형",
+          "type": "cds.String",
+          "length": 4
+        },
+        "KVGR1": {
+          "@EndUserText.label": "고객그룹 1",
+          "type": "cds.String",
+          "length": 3
+        },
+        "KVGR2": {
+          "@EndUserText.label": "고객그룹 2",
+          "type": "cds.String",
+          "length": 3
+        },
+        "KVGR3": {
+          "@EndUserText.label": "고객그룹 3",
+          "type": "cds.String",
+          "length": 3
+        },
+        "KVGR4": {
+          "@EndUserText.label": "고객그룹 4",
+          "type": "cds.String",
+          "length": 3
+        },
+        "KVGR5": {
+          "@EndUserText.label": "고객그룹 5",
+          "type": "cds.String",
+          "length": 3
+        },
+        "LIFSK": {
+          "@EndUserText.label": "납품블록",
+          "type": "cds.String",
+          "length": 2
+        },
+        "STWAE": {
+          "@EndUserText.label": "통계통화",
+          "type": "cds.String",
+          "length": 5
+        },
+        "VBTYP": {
+          "@EndUserText.label": "영업전표범주",
+          "type": "cds.String",
+          "length": 4
+        },
+        "VKBUR": {
+          "@EndUserText.label": "판매사무소",
+          "type": "cds.String",
+          "length": 4
+        },
+        "VKGRP": {
+          "@EndUserText.label": "판매그룹",
+          "type": "cds.String",
+          "length": 3
+        },
+        "VKORG": {
+          "@EndUserText.label": "판매조직",
+          "type": "cds.String",
+          "length": 4
+        },
+        "VTWEG": {
+          "@EndUserText.label": "유통채널",
+          "type": "cds.String",
+          "length": 2
+        },
+        "ABGRU": {
+          "@EndUserText.label": "거부사유",
+          "type": "cds.String",
+          "length": 2
+        },
+        "AEDAT": {
+          "@EndUserText.label": "변경일",
+          "type": "cds.Date"
+        },
+        "AWAHR": {
+          "@EndUserText.label": "수주확률",
+          "type": "cds.String",
+          "length": 3
+        },
+        "BRGEW": {
+          "@EndUserText.label": "총중량",
+          "precision": 15,
+          "scale": 3,
+          "type": "cds.Decimal"
+        },
+        "BWAPPLNM": {
+          "@EndUserText.label": "어플리케이션 컴포넌트",
+          "type": "cds.String",
+          "length": 30
+        },
+        "BWVORG": {
+          "@EndUserText.label": "이전 프로세스",
+          "type": "cds.String",
+          "length": 3
+        },
+        "CHARG": {
+          "@EndUserText.label": "배치",
+          "type": "cds.String",
+          "length": 10
+        },
+        "CMKUA": {
+          "@EndUserText.label": "여신 환율",
+          "precision": 9,
+          "scale": 5,
+          "type": "cds.Decimal"
+        },
+        "EAN11": {
+          "@EndUserText.label": "EAN/UPC",
+          "type": "cds.String",
+          "length": 18
+        },
+        "ERDAT": {
+          "@EndUserText.label": "생성일",
+          "type": "cds.Date"
+        },
+        "ERNAM": {
+          "@EndUserText.label": "생성자",
+          "type": "cds.String",
+          "length": 12
+        },
+        "ERZET": {
+          "@EndUserText.label": "시간",
+          "type": "cds.Time"
+        },
+        "FAKSP": {
+          "@EndUserText.label": "대금청구블록",
+          "type": "cds.String",
+          "length": 2
+        },
+        "GEWEI": {
+          "@EndUserText.label": "중량단위",
+          "type": "cds.String",
+          "length": 3
+        },
+        "KBMENG": {
+          "@EndUserText.label": "누적확정수량(판매단위)",
+          "precision": 15,
+          "scale": 3,
+          "type": "cds.Decimal"
+        },
+        "KLMENG": {
+          "@EndUserText.label": "누적확정수량(기본단위)",
+          "precision": 15,
+          "scale": 3,
+          "type": "cds.Decimal"
+        },
+        "KMEIN": {
+          "@EndUserText.label": "단위",
+          "type": "cds.String",
+          "length": 3
+        },
+        "KNUMA_AG": {
+          "@EndUserText.label": "판매딜",
+          "type": "cds.String",
+          "length": 10
+        },
+        "KPEIN": {
+          "@EndUserText.label": "가격단위",
+          "precision": 5,
+          "scale": 0,
+          "type": "cds.Decimal"
+        },
+        "KWMENG": {
+          "@EndUserText.label": "주문수량",
+          "precision": 15,
+          "scale": 3,
+          "type": "cds.Decimal"
+        },
+        "KZWI1": {
+          "@EndUserText.label": "소계 1",
+          "type": "cds.DecimalFloat"
+        },
+        "KZWI2": {
+          "@EndUserText.label": "소계 2",
+          "type": "cds.DecimalFloat"
+        },
+        "KZWI3": {
+          "@EndUserText.label": "소계 3",
+          "type": "cds.DecimalFloat"
+        },
+        "KZWI4": {
+          "@EndUserText.label": "소계 4",
+          "type": "cds.DecimalFloat"
+        },
+        "KZWI5": {
+          "@EndUserText.label": "소계 5",
+          "type": "cds.DecimalFloat"
+        },
+        "KZWI6": {
+          "@EndUserText.label": "소계 6",
+          "type": "cds.DecimalFloat"
+        },
+        "LFMNG": {
+          "@EndUserText.label": "최소납품수량",
+          "precision": 13,
+          "scale": 3,
+          "type": "cds.Decimal"
+        },
+        "LGORT": {
+          "@EndUserText.label": "저장위치",
+          "type": "cds.String",
+          "length": 4
+        },
+        "LSMENG": {
+          "@EndUserText.label": "납품 소요수량",
+          "precision": 15,
+          "scale": 3,
+          "type": "cds.Decimal"
+        },
+        "MATKL": {
+          "@EndUserText.label": "자재그룹",
+          "type": "cds.String",
+          "length": 9
+        },
+        "MATNR": {
+          "@EndUserText.label": "자재번호",
+          "type": "cds.String",
+          "length": 40
+        },
+        "MATWA": {
+          "@EndUserText.label": "입력 자재",
+          "type": "cds.String",
+          "length": 40
+        },
+        "MEINS": {
+          "@EndUserText.label": "기본단위",
+          "type": "cds.String",
+          "length": 3
+        },
+        "MVGR1": {
+          "@EndUserText.label": "자재그룹 1",
+          "type": "cds.String",
+          "length": 3
+        },
+        "MVGR2": {
+          "@EndUserText.label": "자재그룹 2",
+          "type": "cds.String",
+          "length": 3
+        },
+        "MVGR3": {
+          "@EndUserText.label": "자재그룹 3",
+          "type": "cds.String",
+          "length": 3
+        },
+        "MVGR4": {
+          "@EndUserText.label": "자재그룹 4",
+          "type": "cds.String",
+          "length": 3
+        },
+        "MVGR5": {
+          "@EndUserText.label": "자재그룹 5",
+          "type": "cds.String",
+          "length": 3
+        },
+        "MWSBP": {
+          "@EndUserText.label": "세액",
+          "type": "cds.DecimalFloat"
+        },
+        "NETPR": {
+          "@EndUserText.label": "단가(순)",
+          "type": "cds.DecimalFloat"
+        },
+        "NETWR": {
+          "@EndUserText.label": "순가치",
+          "type": "cds.DecimalFloat"
+        },
+        "NTGEW": {
+          "@EndUserText.label": "순중량",
+          "precision": 15,
+          "scale": 3,
+          "type": "cds.Decimal"
+        },
+        "PABLA": {
+          "@EndUserText.label": "납품처 하역장소",
+          "type": "cds.String",
+          "length": 25
+        },
+        "PKUNRE": {
+          "@EndUserText.label": "청구처(Bill-to)",
+          "type": "cds.String",
+          "length": 10
+        },
+        "PKUNRG": {
+          "@EndUserText.label": "지급인",
+          "type": "cds.String",
+          "length": 10
+        },
+        "PKUNWE": {
+          "@EndUserText.label": "납품처(Ship-to)",
+          "type": "cds.String",
+          "length": 10
+        },
+        "PRODH": {
+          "@EndUserText.label": "제품 계층",
+          "type": "cds.String",
+          "length": 18
+        },
+        "PSPDNR": {
+          "@EndUserText.label": "운송업체",
+          "type": "cds.String",
+          "length": 10
+        },
+        "PSTYV": {
+          "@EndUserText.label": "항목범주",
+          "type": "cds.String",
+          "length": 4
+        },
+        "PVRTNR": {
+          "@EndUserText.label": "판매사원",
+          "type": "cds.String",
+          "length": 8
+        },
+        "ROUTE": {
+          "@EndUserText.label": "운송경로",
+          "type": "cds.String",
+          "length": 6
+        },
+        "SOBKZ": {
+          "@EndUserText.label": "특수재고",
+          "type": "cds.String",
+          "length": 1
+        },
+        "SPART": {
+          "@EndUserText.label": "제품군",
+          "type": "cds.String",
+          "length": 2
+        },
+        "STADAT": {
+          "@EndUserText.label": "통계일자",
+          "type": "cds.Date"
+        },
+        "STCUR": {
+          "@EndUserText.label": "통계 환율",
+          "precision": 9,
+          "scale": 5,
+          "type": "cds.Decimal"
+        },
+        "SUGRD": {
+          "@EndUserText.label": "대체사유",
+          "type": "cds.String",
+          "length": 4
+        },
+        "UEBTK": {
+          "@EndUserText.label": "무제한 허용",
+          "type": "cds.String",
+          "length": 1
+        },
+        "UEBTO": {
+          "@EndUserText.label": "초과납품 허용치",
+          "precision": 3,
+          "scale": 1,
+          "type": "cds.Decimal"
+        },
+        "UMVKN": {
+          "@EndUserText.label": "분모",
+          "precision": 5,
+          "scale": 0,
+          "type": "cds.Decimal"
+        },
+        "UMVKZ": {
+          "@EndUserText.label": "분자",
+          "precision": 5,
+          "scale": 0,
+          "type": "cds.Decimal"
+        },
+        "UMZIN": {
+          "@EndUserText.label": "환산계수",
+          "precision": 5,
+          "scale": 0,
+          "type": "cds.Decimal"
+        },
+        "UMZIZ": {
+          "@EndUserText.label": "환산계수",
+          "precision": 5,
+          "scale": 0,
+          "type": "cds.Decimal"
+        },
+        "UNTTO": {
+          "@EndUserText.label": "미달납품 허용치",
+          "precision": 3,
+          "scale": 1,
+          "type": "cds.Decimal"
+        },
+        "VDATU": {
+          "@EndUserText.label": "통계 갱신일",
+          "type": "cds.Date"
+        },
+        "VGBEL": {
+          "@EndUserText.label": "참조전표",
+          "type": "cds.String",
+          "length": 10
+        },
+        "VGPOS": {
+          "@EndUserText.label": "참조항목",
+          "type": "cds.String",
+          "length": 6
+        },
+        "VGTYP": {
+          "@EndUserText.label": "선행전표범주",
+          "type": "cds.String",
+          "length": 4
+        },
+        "VOLEH": {
+          "@EndUserText.label": "용적단위",
+          "type": "cds.String",
+          "length": 3
+        },
+        "VOLUM": {
+          "@EndUserText.label": "용적",
+          "precision": 15,
+          "scale": 3,
+          "type": "cds.Decimal"
+        },
+        "VRKME": {
+          "@EndUserText.label": "판매단위",
+          "type": "cds.String",
+          "length": 3
+        },
+        "VSTEL": {
+          "@EndUserText.label": "출하지점",
+          "type": "cds.String",
+          "length": 4
+        },
+        "WAERK": {
+          "@EndUserText.label": "전표통화",
+          "type": "cds.String",
+          "length": 5
+        },
+        "WAVWR": {
+          "@EndUserText.label": "원가",
+          "type": "cds.DecimalFloat"
+        },
+        "WERKS": {
+          "@EndUserText.label": "플랜트",
+          "type": "cds.String",
+          "length": 4
+        },
+        "ZIEME": {
+          "@EndUserText.label": "목표수량 단위",
+          "type": "cds.String",
+          "length": 3
+        },
+        "ZMENG": {
+          "@EndUserText.label": "목표수량",
+          "precision": 13,
+          "scale": 3,
+          "type": "cds.Decimal"
+        },
+        "ZWERT": {
+          "@EndUserText.label": "OA 목표값",
+          "type": "cds.DecimalFloat"
+        },
+        "BZIRK": {
+          "@EndUserText.label": "판매지역",
+          "type": "cds.String",
+          "length": 6
+        },
+        "FBUDA": {
+          "@EndUserText.label": "서비스 완료일",
+          "type": "cds.Date"
+        },
+        "FKDAT": {
+          "@EndUserText.label": "청구일",
+          "type": "cds.Date"
+        },
+        "INCO1": {
+          "@EndUserText.label": "인코텀즈",
+          "type": "cds.String",
+          "length": 3
+        },
+        "INCO2": {
+          "@EndUserText.label": "인코텀즈 (2)",
+          "type": "cds.String",
+          "length": 28
+        },
+        "KDGRP": {
+          "@EndUserText.label": "고객그룹",
+          "type": "cds.String",
+          "length": 2
+        },
+        "KTGRD": {
+          "@EndUserText.label": "고객 계정배정그룹",
+          "type": "cds.String",
+          "length": 2
+        },
+        "KURSK": {
+          "@EndUserText.label": "환율",
+          "precision": 9,
+          "scale": 5,
+          "type": "cds.Decimal"
+        },
+        "KURSK_DAT": {
+          "@EndUserText.label": "환산일",
+          "type": "cds.Date"
+        },
+        "PRSDT": {
+          "@EndUserText.label": "가격결정일",
+          "type": "cds.Date"
+        },
+        "WAKTION": {
+          "@EndUserText.label": "리테일 프로모션",
+          "type": "cds.String",
+          "length": 10
+        },
+        "WMINR": {
+          "@EndUserText.label": "카탈로그",
+          "type": "cds.String",
+          "length": 10
+        },
+        "WAERK_VBAK": {
+          "@EndUserText.label": "전표통화",
+          "type": "cds.String",
+          "length": 5
+        },
+        "SPARA": {
+          "@EndUserText.label": "제품군",
+          "type": "cds.String",
+          "length": 2
+        },
+        "VGTYP_AK": {
+          "@EndUserText.label": "참조전표의 영업전표범주",
+          "type": "cds.String",
+          "length": 4
+        },
+        "PS_POSID": {
+          "@EndUserText.label": "WBS 요소",
+          "type": "cds.String",
+          "length": 24
+        },
+        "ANZAUPO": {
+          "@EndUserText.label": "오더 아이템 수",
+          "precision": 9,
+          "scale": 0,
+          "type": "cds.Decimal"
+        },
+        "PERIV": {
+          "@EndUserText.label": "회계연도 변형",
+          "type": "cds.String",
+          "length": 2
+        },
+        "MCEX_APCAMPAIGN": {
+          "@EndUserText.label": "캠페인 오더 항목",
+          "type": "cds.String",
+          "length": 36
+        },
+        "APOPLANNED": {
+          "@EndUserText.label": "APO 계획",
+          "type": "cds.String",
+          "length": 1
+        },
+        "MCBW_NETPR_AVKM": {
+          "@EndUserText.label": "판매수량당 순단가",
+          "type": "cds.DecimalFloat"
+        },
+        "ODQ_ENTITYCNTR": {
+          "@EndUserText.label": "데이터 단위 수",
+          "precision": 19,
+          "scale": 0,
+          "type": "cds.Decimal"
+        },
+        "__load_package_id": {
+          "@EndUserText.label": "__load_package_id",
+          "type": "cds.Binary",
+          "length": 256
+        }
+      },
+      "@EndUserText.label": "판매오더 항목 (2LIS_11_VAITM)",
+      "@ObjectModel.modelingPattern": {
+        "#": "DATA_STRUCTURE"
+      },
+      "_meta": {
+        "dependencies": {
+          "folderAssignment": "Folder_XJUMZYOC"
+        }
+      }
+    },
+    "SAP_SD_IL_2LIS_11_VAHDR": {
+      "kind": "entity",
+      "@ObjectModel.supportedCapabilities": [
+        {
+          "#": "DATA_STRUCTURE"
+        }
+      ],
+      "elements": {
+        "ROCANCEL": {
+          "@EndUserText.label": "취소 데이터 레코드 지시자",
+          "type": "cds.String",
+          "length": 1
+        },
+        "VBELN": {
+          "@EndUserText.label": "영업전표번호",
+          "type": "cds.String",
+          "length": 10
+        },
+        "ANGDT": {
+          "@EndUserText.label": "견적 유효 시작일",
+          "type": "cds.Date"
+        },
+        "AUART": {
+          "@EndUserText.label": "판매전표유형",
+          "type": "cds.String",
+          "length": 4
+        },
+        "AUGRU": {
+          "@EndUserText.label": "오더 사유",
+          "type": "cds.String",
+          "length": 3
+        },
+        "BNDDT": {
+          "@EndUserText.label": "견적 유효 종료일",
+          "type": "cds.Date"
+        },
+        "BUKRS": {
+          "@EndUserText.label": "회사코드",
+          "type": "cds.String",
+          "length": 4
+        },
+        "ERDAT": {
+          "@EndUserText.label": "생성일",
+          "type": "cds.Date"
+        },
+        "FAKSK": {
+          "@EndUserText.label": "대금청구블록",
+          "type": "cds.String",
+          "length": 2
+        },
+        "HWAER": {
+          "@EndUserText.label": "현지통화",
+          "type": "cds.String",
+          "length": 5
+        },
+        "KUNNR": {
+          "@EndUserText.label": "주문자(Sold-to)",
+          "type": "cds.String",
+          "length": 10
+        },
+        "KURST": {
+          "@EndUserText.label": "환율유형",
+          "type": "cds.String",
+          "length": 4
+        },
+        "KVGR1": {
+          "@EndUserText.label": "고객그룹 1",
+          "type": "cds.String",
+          "length": 3
+        },
+        "KVGR2": {
+          "@EndUserText.label": "고객그룹 2",
+          "type": "cds.String",
+          "length": 3
+        },
+        "KVGR3": {
+          "@EndUserText.label": "고객그룹 3",
+          "type": "cds.String",
+          "length": 3
+        },
+        "KVGR4": {
+          "@EndUserText.label": "고객그룹 4",
+          "type": "cds.String",
+          "length": 3
+        },
+        "KVGR5": {
+          "@EndUserText.label": "고객그룹 5",
+          "type": "cds.String",
+          "length": 3
+        },
+        "LIFSK": {
+          "@EndUserText.label": "납품블록",
+          "type": "cds.String",
+          "length": 2
+        },
+        "PVRTNR": {
+          "@EndUserText.label": "판매사원",
+          "type": "cds.String",
+          "length": 8
+        },
+        "STWAE": {
+          "@EndUserText.label": "통계통화",
+          "type": "cds.String",
+          "length": 5
+        },
+        "VBTYP": {
+          "@EndUserText.label": "영업전표범주",
+          "type": "cds.String",
+          "length": 4
+        },
+        "VDATU": {
+          "@EndUserText.label": "납품요청일",
+          "type": "cds.Date"
+        },
+        "VKBUR": {
+          "@EndUserText.label": "판매사무소",
+          "type": "cds.String",
+          "length": 4
+        },
+        "VKGRP": {
+          "@EndUserText.label": "판매그룹",
+          "type": "cds.String",
+          "length": 3
+        },
+        "VKORG": {
+          "@EndUserText.label": "판매조직",
+          "type": "cds.String",
+          "length": 4
+        },
+        "VTWEG": {
+          "@EndUserText.label": "유통채널",
+          "type": "cds.String",
+          "length": 2
+        },
+        "WAERK": {
+          "@EndUserText.label": "전표통화",
+          "type": "cds.String",
+          "length": 5
+        },
+        "SPARA": {
+          "@EndUserText.label": "제품군",
+          "type": "cds.String",
+          "length": 2
+        },
+        "VGTYP_AK": {
+          "@EndUserText.label": "참조전표의 영업전표범주",
+          "type": "cds.String",
+          "length": 4
+        },
+        "ANZAU": {
+          "@EndUserText.label": "오더 수",
+          "precision": 9,
+          "scale": 0,
+          "type": "cds.Decimal"
+        },
+        "PERIV": {
+          "@EndUserText.label": "회계연도 변형",
+          "type": "cds.String",
+          "length": 2
+        },
+        "ODQ_ENTITYCNTR": {
+          "@EndUserText.label": "데이터 단위 수",
+          "precision": 19,
+          "scale": 0,
+          "type": "cds.Decimal"
+        },
+        "__load_package_id": {
+          "@EndUserText.label": "__load_package_id",
+          "type": "cds.Binary",
+          "length": 256
+        }
+      },
+      "@EndUserText.label": "판매오더 헤더 (2LIS_11_VAHDR)",
+      "@ObjectModel.modelingPattern": {
+        "#": "DATA_STRUCTURE"
+      },
+      "_meta": {
+        "dependencies": {
+          "folderAssignment": "Folder_XJUMZYOC"
+        }
+      }
+    },
+    "SAP_SD_IL_2LIS_13_VDHDR": {
+      "kind": "entity",
+      "@EndUserText.label": "청구전표 헤더 (2LIS_13_VDHDR)",
+      "@ObjectModel.modelingPattern": {
+        "#": "DATA_STRUCTURE"
+      },
+      "@ObjectModel.supportedCapabilities": [
+        {
+          "#": "DATA_STRUCTURE"
+        }
+      ],
+      "elements": {
+        "ROCANCEL": {
+          "@EndUserText.label": "취소 데이터 레코드 지시자",
+          "type": "cds.String",
+          "key": false,
+          "length": 1
+        },
+        "VBELN": {
+          "@EndUserText.label": "영업전표번호",
+          "type": "cds.String",
+          "key": false,
+          "length": 10
+        },
+        "BUKRS": {
+          "@EndUserText.label": "회사코드",
+          "type": "cds.String",
+          "key": false,
+          "length": 4
+        },
+        "BZIRK": {
+          "@EndUserText.label": "판매지역",
+          "type": "cds.String",
+          "key": false,
+          "length": 6
+        },
+        "ERDAT": {
+          "@EndUserText.label": "생성일",
+          "type": "cds.Date",
+          "key": false
+        },
+        "FKART": {
+          "@EndUserText.label": "청구유형",
+          "type": "cds.String",
+          "key": false,
+          "length": 4
+        },
+        "FKDAT": {
+          "@EndUserText.label": "청구일",
+          "type": "cds.Date",
+          "key": false
+        },
+        "FKTYP": {
+          "@EndUserText.label": "청구범주",
+          "type": "cds.String",
+          "key": false,
+          "length": 1
+        },
+        "HWAER": {
+          "@EndUserText.label": "현지통화",
+          "type": "cds.String",
+          "key": false,
+          "length": 5
+        },
+        "KDGRP": {
+          "@EndUserText.label": "고객그룹",
+          "type": "cds.String",
+          "key": false,
+          "length": 2
+        },
+        "KUNAG": {
+          "@EndUserText.label": "주문자(Sold-to)",
+          "type": "cds.String",
+          "key": false,
+          "length": 10
+        },
+        "KUNRG": {
+          "@EndUserText.label": "지급인",
+          "type": "cds.String",
+          "key": false,
+          "length": 10
+        },
+        "KURRF": {
+          "@EndUserText.label": "회계 환율",
+          "type": "cds.Decimal",
+          "key": false,
+          "precision": 9,
+          "scale": 5
+        },
+        "KURST": {
+          "@EndUserText.label": "환율유형",
+          "type": "cds.String",
+          "key": false,
+          "length": 4
+        },
+        "PVRTNR": {
+          "@EndUserText.label": "판매사원",
+          "type": "cds.String",
+          "key": false,
+          "length": 8
+        },
+        "STWAE": {
+          "@EndUserText.label": "통계통화",
+          "type": "cds.String",
+          "key": false,
+          "length": 5
+        },
+        "VBTYP": {
+          "@EndUserText.label": "영업전표범주",
+          "type": "cds.String",
+          "key": false,
+          "length": 4
+        },
+        "VKORG": {
+          "@EndUserText.label": "판매조직",
+          "type": "cds.String",
+          "key": false,
+          "length": 4
+        },
+        "VTWEG": {
+          "@EndUserText.label": "유통채널",
+          "type": "cds.String",
+          "key": false,
+          "length": 2
+        },
+        "WAERK": {
+          "@EndUserText.label": "전표통화",
+          "type": "cds.String",
+          "key": false,
+          "length": 5
+        },
+        "ANZFK": {
+          "@EndUserText.label": "청구전표 수",
+          "type": "cds.Decimal",
+          "key": false,
+          "precision": 9,
+          "scale": 0
+        },
+        "PERIV": {
+          "@EndUserText.label": "회계연도 변형",
+          "type": "cds.String",
+          "key": false,
+          "length": 2
+        },
+        "ODQ_ENTITYCNTR": {
+          "@EndUserText.label": "데이터 단위 수",
+          "type": "cds.Decimal",
+          "key": false,
+          "precision": 19,
+          "scale": 0
+        },
+        "__load_package_id": {
+          "@EndUserText.label": "__load_package_id",
+          "type": "cds.Binary",
+          "key": false,
+          "length": 256
+        }
+      },
+      "_meta": {
+        "dependencies": {
+          "folderAssignment": "Folder_XJUMZYOC"
+        }
+      }
+    },
+    "SAP_SD_IL_2LIS_13_VDITM": {
+      "kind": "entity",
+      "@EndUserText.label": "청구전표 항목 (2LIS_13_VDITM)",
+      "@ObjectModel.modelingPattern": {
+        "#": "DATA_STRUCTURE"
+      },
+      "@ObjectModel.supportedCapabilities": [
+        {
+          "#": "DATA_STRUCTURE"
+        }
+      ],
+      "elements": {
+        "ROCANCEL": {
+          "@EndUserText.label": "취소 데이터 레코드 지시자",
+          "type": "cds.String",
+          "key": false,
+          "length": 1
+        },
+        "VBELN": {
+          "@EndUserText.label": "영업전표번호",
+          "type": "cds.String",
+          "key": false,
+          "length": 10
+        },
+        "POSNR": {
+          "@EndUserText.label": "항목번호",
+          "type": "cds.String",
+          "key": false,
+          "length": 6
+        },
+        "AEDAT": {
+          "@EndUserText.label": "변경일",
+          "type": "cds.Date",
+          "key": false
+        },
+        "BUKRS": {
+          "@EndUserText.label": "회사코드",
+          "type": "cds.String",
+          "key": false,
+          "length": 4
+        },
+        "BZIRK": {
+          "@EndUserText.label": "판매지역",
+          "type": "cds.String",
+          "key": false,
+          "length": 6
+        },
+        "FKART": {
+          "@EndUserText.label": "청구유형",
+          "type": "cds.String",
+          "key": false,
+          "length": 4
+        },
+        "FKDAT": {
+          "@EndUserText.label": "청구일",
+          "type": "cds.Date",
+          "key": false
+        },
+        "FKTYP": {
+          "@EndUserText.label": "청구범주",
+          "type": "cds.String",
+          "key": false,
+          "length": 1
+        },
+        "HWAER": {
+          "@EndUserText.label": "현지통화",
+          "type": "cds.String",
+          "key": false,
+          "length": 5
+        },
+        "KDGRP": {
+          "@EndUserText.label": "고객그룹",
+          "type": "cds.String",
+          "key": false,
+          "length": 2
+        },
+        "KUNAG": {
+          "@EndUserText.label": "주문자(Sold-to)",
+          "type": "cds.String",
+          "key": false,
+          "length": 10
+        },
+        "KUNRG": {
+          "@EndUserText.label": "지급인",
+          "type": "cds.String",
+          "key": false,
+          "length": 10
+        },
+        "KURRF": {
+          "@EndUserText.label": "회계 환율",
+          "type": "cds.Decimal",
+          "key": false,
+          "precision": 9,
+          "scale": 5
+        },
+        "KURST": {
+          "@EndUserText.label": "환율유형",
+          "type": "cds.String",
+          "key": false,
+          "length": 4
+        },
+        "STWAE": {
+          "@EndUserText.label": "통계통화",
+          "type": "cds.String",
+          "key": false,
+          "length": 5
+        },
+        "VBTYP": {
+          "@EndUserText.label": "영업전표범주",
+          "type": "cds.String",
+          "key": false,
+          "length": 4
+        },
+        "VKORG": {
+          "@EndUserText.label": "판매조직",
+          "type": "cds.String",
+          "key": false,
+          "length": 4
+        },
+        "VTWEG": {
+          "@EndUserText.label": "유통채널",
+          "type": "cds.String",
+          "key": false,
+          "length": 2
+        },
+        "WAERK": {
+          "@EndUserText.label": "전표통화",
+          "type": "cds.String",
+          "key": false,
+          "length": 5
+        },
+        "FKSTO": {
+          "@EndUserText.label": "취소됨",
+          "type": "cds.String",
+          "key": false,
+          "length": 1
+        },
+        "RFBSK": {
+          "@EndUserText.label": "전기상태",
+          "type": "cds.String",
+          "key": false,
+          "length": 1
+        },
+        "SFAKN": {
+          "@EndUserText.label": "취소된 청구전표",
+          "type": "cds.String",
+          "key": false,
+          "length": 10
+        },
+        "AKTNR": {
+          "@EndUserText.label": "리테일 프로모션",
+          "type": "cds.String",
+          "key": false,
+          "length": 10
+        },
+        "AUBEL": {
+          "@EndUserText.label": "판매전표",
+          "type": "cds.String",
+          "key": false,
+          "length": 10
+        },
+        "AUPOS": {
+          "@EndUserText.label": "판매전표 항목",
+          "type": "cds.String",
+          "key": false,
+          "length": 6
+        },
+        "BONBA": {
+          "@EndUserText.label": "리베이트 기준",
+          "type": "cds.DecimalFloat",
+          "key": false
+        },
+        "BONUS": {
+          "@EndUserText.label": "물량리베이트 그룹",
+          "type": "cds.String",
+          "key": false,
+          "length": 2
+        },
+        "BRGEW": {
+          "@EndUserText.label": "총중량",
+          "type": "cds.Decimal",
+          "key": false,
+          "precision": 15,
+          "scale": 3
+        },
+        "BRTWR": {
+          "@EndUserText.label": "총가치",
+          "type": "cds.DecimalFloat",
+          "key": false
+        },
+        "BWAPPLNM": {
+          "@EndUserText.label": "어플리케이션 컴포넌트",
+          "type": "cds.String",
+          "key": false,
+          "length": 30
+        },
+        "BWVORG": {
+          "@EndUserText.label": "이전 프로세스",
+          "type": "cds.String",
+          "key": false,
+          "length": 3
+        },
+        "CHARG": {
+          "@EndUserText.label": "배치",
+          "type": "cds.String",
+          "key": false,
+          "length": 10
+        },
+        "EAN11": {
+          "@EndUserText.label": "EAN/UPC",
+          "type": "cds.String",
+          "key": false,
+          "length": 18
+        },
+        "ERDAT": {
+          "@EndUserText.label": "생성일",
+          "type": "cds.Date",
+          "key": false
+        },
+        "FAREG": {
+          "@EndUserText.label": "청구규칙",
+          "type": "cds.String",
+          "key": false,
+          "length": 1
+        },
+        "FBUDA": {
+          "@EndUserText.label": "서비스 완료일",
+          "type": "cds.Date",
+          "key": false
+        },
+        "FKIMG": {
+          "@EndUserText.label": "송장수량",
+          "type": "cds.Decimal",
+          "key": false,
+          "precision": 13,
+          "scale": 3
+        },
+        "FKLMG": {
+          "@EndUserText.label": "청구수량(재고단위)",
+          "type": "cds.Decimal",
+          "key": false,
+          "precision": 13,
+          "scale": 3
+        },
+        "GEWEI": {
+          "@EndUserText.label": "중량단위",
+          "type": "cds.String",
+          "key": false,
+          "length": 3
+        },
+        "KNUMA_AG": {
+          "@EndUserText.label": "판매딜",
+          "type": "cds.String",
+          "key": false,
+          "length": 10
+        },
+        "KOKRS": {
+          "@EndUserText.label": "관리회계영역",
+          "type": "cds.String",
+          "key": false,
+          "length": 4
+        },
+        "KOSTL": {
+          "@EndUserText.label": "코스트센터",
+          "type": "cds.String",
+          "key": false,
+          "length": 10
+        },
+        "KURSK": {
+          "@EndUserText.label": "환율",
+          "type": "cds.Decimal",
+          "key": false,
+          "precision": 9,
+          "scale": 5
+        },
+        "KURSK_DAT": {
+          "@EndUserText.label": "환산일",
+          "type": "cds.Date",
+          "key": false
+        },
+        "KVGR1": {
+          "@EndUserText.label": "고객그룹 1",
+          "type": "cds.String",
+          "key": false,
+          "length": 3
+        },
+        "KVGR2": {
+          "@EndUserText.label": "고객그룹 2",
+          "type": "cds.String",
+          "key": false,
+          "length": 3
+        },
+        "KVGR3": {
+          "@EndUserText.label": "고객그룹 3",
+          "type": "cds.String",
+          "key": false,
+          "length": 3
+        },
+        "KVGR4": {
+          "@EndUserText.label": "고객그룹 4",
+          "type": "cds.String",
+          "key": false,
+          "length": 3
+        },
+        "KVGR5": {
+          "@EndUserText.label": "고객그룹 5",
+          "type": "cds.String",
+          "key": false,
+          "length": 3
+        },
+        "KZWI1": {
+          "@EndUserText.label": "소계 1",
+          "type": "cds.DecimalFloat",
+          "key": false
+        },
+        "KZWI2": {
+          "@EndUserText.label": "소계 2",
+          "type": "cds.DecimalFloat",
+          "key": false
+        },
+        "KZWI3": {
+          "@EndUserText.label": "소계 3",
+          "type": "cds.DecimalFloat",
+          "key": false
+        },
+        "KZWI4": {
+          "@EndUserText.label": "소계 4",
+          "type": "cds.DecimalFloat",
+          "key": false
+        },
+        "KZWI5": {
+          "@EndUserText.label": "소계 5",
+          "type": "cds.DecimalFloat",
+          "key": false
+        },
+        "KZWI6": {
+          "@EndUserText.label": "소계 6",
+          "type": "cds.DecimalFloat",
+          "key": false
+        },
+        "LGORT": {
+          "@EndUserText.label": "저장위치",
+          "type": "cds.String",
+          "key": false,
+          "length": 4
+        },
+        "LMENG": {
+          "@EndUserText.label": "소요수량",
+          "type": "cds.Decimal",
+          "key": false,
+          "precision": 13,
+          "scale": 3
+        },
+        "MATKL": {
+          "@EndUserText.label": "자재그룹",
+          "type": "cds.String",
+          "key": false,
+          "length": 9
+        },
+        "MATNR": {
+          "@EndUserText.label": "자재번호",
+          "type": "cds.String",
+          "key": false,
+          "length": 40
+        },
+        "MATWA": {
+          "@EndUserText.label": "입력 자재",
+          "type": "cds.String",
+          "key": false,
+          "length": 40
+        },
+        "MEINS": {
+          "@EndUserText.label": "기본단위",
+          "type": "cds.String",
+          "key": false,
+          "length": 3
+        },
+        "MVGR1": {
+          "@EndUserText.label": "자재그룹 1",
+          "type": "cds.String",
+          "key": false,
+          "length": 3
+        },
+        "MVGR2": {
+          "@EndUserText.label": "자재그룹 2",
+          "type": "cds.String",
+          "key": false,
+          "length": 3
+        },
+        "MVGR3": {
+          "@EndUserText.label": "자재그룹 3",
+          "type": "cds.String",
+          "key": false,
+          "length": 3
+        },
+        "MVGR4": {
+          "@EndUserText.label": "자재그룹 4",
+          "type": "cds.String",
+          "key": false,
+          "length": 3
+        },
+        "MVGR5": {
+          "@EndUserText.label": "자재그룹 5",
+          "type": "cds.String",
+          "key": false,
+          "length": 3
+        },
+        "MWSBP": {
+          "@EndUserText.label": "세액",
+          "type": "cds.DecimalFloat",
+          "key": false
+        },
+        "NETWR": {
+          "@EndUserText.label": "순가치",
+          "type": "cds.DecimalFloat",
+          "key": false
+        },
+        "NTGEW": {
+          "@EndUserText.label": "순중량",
+          "type": "cds.Decimal",
+          "key": false,
+          "precision": 15,
+          "scale": 3
+        },
+        "PKUNRE": {
+          "@EndUserText.label": "청구처(Bill-to)",
+          "type": "cds.String",
+          "key": false,
+          "length": 10
+        },
+        "PKUNWE": {
+          "@EndUserText.label": "납품처(Ship-to)",
+          "type": "cds.String",
+          "key": false,
+          "length": 10
+        },
+        "POSAR": {
+          "@EndUserText.label": "항목유형",
+          "type": "cds.String",
+          "key": false,
+          "length": 1
+        },
+        "PRODH": {
+          "@EndUserText.label": "제품 계층",
+          "type": "cds.String",
+          "key": false,
+          "length": 18
+        },
+        "PROVG": {
+          "@EndUserText.label": "수수료그룹",
+          "type": "cds.String",
+          "key": false,
+          "length": 2
+        },
+        "PRSDT": {
+          "@EndUserText.label": "가격결정일",
+          "type": "cds.Date",
+          "key": false
+        },
+        "PSTYV": {
+          "@EndUserText.label": "항목범주",
+          "type": "cds.String",
+          "key": false,
+          "length": 4
+        },
+        "PVRTNR": {
+          "@EndUserText.label": "판매사원",
+          "type": "cds.String",
+          "key": false,
+          "length": 8
+        },
+        "SKFBP": {
+          "@EndUserText.label": "현금할인 기준",
+          "type": "cds.DecimalFloat",
+          "key": false
+        },
+        "SMENG": {
+          "@EndUserText.label": "스케일수량",
+          "type": "cds.Decimal",
+          "key": false,
+          "precision": 13,
+          "scale": 3
+        },
+        "SPARA": {
+          "@EndUserText.label": "제품군",
+          "type": "cds.String",
+          "key": false,
+          "length": 2
+        },
+        "SPART": {
+          "@EndUserText.label": "제품군",
+          "type": "cds.String",
+          "key": false,
+          "length": 2
+        },
+        "STADAT": {
+          "@EndUserText.label": "통계일자",
+          "type": "cds.Date",
+          "key": false
+        },
+        "STCUR": {
+          "@EndUserText.label": "통계 환율",
+          "type": "cds.Decimal",
+          "key": false,
+          "precision": 9,
+          "scale": 5
+        },
+        "UMVKN": {
+          "@EndUserText.label": "분모",
+          "type": "cds.Decimal",
+          "key": false,
+          "precision": 5,
+          "scale": 0
+        },
+        "UMVKZ": {
+          "@EndUserText.label": "분자",
+          "type": "cds.Decimal",
+          "key": false,
+          "precision": 5,
+          "scale": 0
+        },
+        "VDATU": {
+          "@EndUserText.label": "통계 갱신일",
+          "type": "cds.Date",
+          "key": false
+        },
+        "VGBEL": {
+          "@EndUserText.label": "참조전표",
+          "type": "cds.String",
+          "key": false,
+          "length": 10
+        },
+        "VGPOS": {
+          "@EndUserText.label": "참조항목",
+          "type": "cds.String",
+          "key": false,
+          "length": 6
+        },
+        "VKBUR": {
+          "@EndUserText.label": "판매사무소",
+          "type": "cds.String",
+          "key": false,
+          "length": 4
+        },
+        "VKGRP": {
+          "@EndUserText.label": "판매그룹",
+          "type": "cds.String",
+          "key": false,
+          "length": 3
+        },
+        "VOLEH": {
+          "@EndUserText.label": "용적단위",
+          "type": "cds.String",
+          "key": false,
+          "length": 3
+        },
+        "VOLUM": {
+          "@EndUserText.label": "용적",
+          "type": "cds.Decimal",
+          "key": false,
+          "precision": 15,
+          "scale": 3
+        },
+        "VRKME": {
+          "@EndUserText.label": "판매단위",
+          "type": "cds.String",
+          "key": false,
+          "length": 3
+        },
+        "VSTEL": {
+          "@EndUserText.label": "출하지점",
+          "type": "cds.String",
+          "key": false,
+          "length": 4
+        },
+        "WAVWR": {
+          "@EndUserText.label": "원가",
+          "type": "cds.DecimalFloat",
+          "key": false
+        },
+        "WERKS": {
+          "@EndUserText.label": "플랜트",
+          "type": "cds.String",
+          "key": false,
+          "length": 4
+        },
+        "AUTYP": {
+          "@EndUserText.label": "영업전표범주",
+          "type": "cds.String",
+          "key": false,
+          "length": 4
+        },
+        "VGTYP": {
+          "@EndUserText.label": "선행전표범주",
+          "type": "cds.String",
+          "key": false,
+          "length": 4
+        },
+        "PS_POSID": {
+          "@EndUserText.label": "WBS 요소",
+          "type": "cds.String",
+          "key": false,
+          "length": 24
+        },
+        "ANZFKPOS": {
+          "@EndUserText.label": "청구 항목 수",
+          "type": "cds.Decimal",
+          "key": false,
+          "precision": 9,
+          "scale": 0
+        },
+        "PERIV": {
+          "@EndUserText.label": "회계연도 변형",
+          "type": "cds.String",
+          "key": false,
+          "length": 2
+        },
+        "MCEX_APCAMPAIGN": {
+          "@EndUserText.label": "캠페인 오더 항목",
+          "type": "cds.String",
+          "key": false,
+          "length": 36
+        },
+        "ODQ_ENTITYCNTR": {
+          "@EndUserText.label": "데이터 단위 수",
+          "type": "cds.Decimal",
+          "key": false,
+          "precision": 19,
+          "scale": 0
+        },
+        "__load_package_id": {
+          "@EndUserText.label": "__load_package_id",
+          "type": "cds.Binary",
+          "key": false,
+          "length": 256
+        }
+      },
+      "_meta": {
+        "dependencies": {
+          "folderAssignment": "Folder_XJUMZYOC"
+        }
+      }
+    },
+    "WS_HL_SQLV_OPEN_ORDER_CDSV": {
+      "kind": "entity",
+      "elements": {
+        "VBELN": {
+          "@EndUserText.label": "영업전표번호",
+          "type": "cds.String",
+          "length": 10
+        },
+        "ERDAT": {
           "@EndUserText.label": "생성일",
           "type": "cds.Date"
         },
         "CalendarYearMonth": {
           "@EndUserText.label": "생성년월",
           "type": "cds.String",
-          "length": 6
+          "length": 5000
         },
-        "RequestedDeliveryDate": {
+        "VDATU": {
           "@EndUserText.label": "납품요청일",
           "type": "cds.Date"
         },
-        "SalesOrganization": {
+        "VKORG": {
           "@EndUserText.label": "판매조직",
           "type": "cds.String",
           "length": 4
         },
-        "BillingCompanyCode": {
+        "BUKRS": {
           "@EndUserText.label": "회사코드",
           "type": "cds.String",
           "length": 4
         },
-        "DistributionChannel": {
+        "VTWEG": {
           "@EndUserText.label": "유통채널",
           "type": "cds.String",
           "length": 2
         },
-        "SalesDocumentType": {
+        "AUART": {
           "@EndUserText.label": "판매전표유형",
           "type": "cds.String",
           "length": 4
         },
-        "SoldToParty": {
+        "KUNNR": {
           "@EndUserText.label": "주문자(Sold-to)",
           "type": "cds.String",
           "length": 10
         },
-        "SalesOffice": {
+        "VKBUR": {
           "@EndUserText.label": "판매사무소",
           "type": "cds.String",
           "length": 4
         },
-        "SalesGroup": {
+        "VKGRP": {
           "@EndUserText.label": "판매그룹",
           "type": "cds.String",
           "length": 3
         },
-        "TransactionCurrency": {
+        "WAERK": {
           "@EndUserText.label": "전표통화",
           "type": "cds.String",
           "length": 5
         },
-        "SalesOrganizationCurrency": {
+        "HWAER": {
           "@EndUserText.label": "현지통화",
           "type": "cds.String",
           "length": 5
         },
-        "SDDocumentCategory": {
+        "VBTYP": {
           "@EndUserText.label": "영업전표범주",
           "type": "cds.String",
           "length": 4
         },
-        "SalesDocumentItem": {
+        "POSNR": {
           "@EndUserText.label": "항목번호",
           "type": "cds.String",
           "length": 6
         },
-        "Material": {
+        "MATNR": {
           "@EndUserText.label": "자재번호",
           "type": "cds.String",
           "length": 40,
@@ -5616,44 +8446,49 @@
             "=": "_SAP_LO_Pr"
           }
         },
-        "MaterialGroup": {
+        "MATKL": {
           "@EndUserText.label": "자재그룹",
           "type": "cds.String",
           "length": 9
         },
-        "Division": {
+        "SPART": {
           "@EndUserText.label": "제품군",
           "type": "cds.String",
           "length": 2
         },
-        "Plant": {
+        "WERKS": {
           "@EndUserText.label": "플랜트",
           "type": "cds.String",
           "length": 4
         },
-        "OrderQuantityUnit": {
+        "MEINS": {
+          "@EndUserText.label": "기본단위",
+          "type": "cds.String",
+          "length": 3
+        },
+        "VRKME": {
           "@EndUserText.label": "판매단위",
           "type": "cds.String",
           "length": 3
         },
-        "SalesDocumentItemCategory": {
+        "PSTYV": {
           "@EndUserText.label": "항목범주",
           "type": "cds.String",
           "length": 4
         },
-        "SalesDocumentRjcnReason": {
+        "ABGRU": {
           "@EndUserText.label": "거부사유",
           "type": "cds.String",
           "length": 2
         },
-        "SalesDistrict": {
+        "BZIRK": {
           "@EndUserText.label": "판매지역",
           "type": "cds.String",
           "length": 6
         },
-        "OrderQuantity": {
+        "KWMENG": {
           "@EndUserText.label": "주문수량",
-          "precision": 13,
+          "precision": 15,
           "scale": 3,
           "type": "cds.Decimal",
           "@AnalyticsDetails.measureType": {
@@ -5665,9 +8500,7 @@
         },
         "CONFIRMED_QTY": {
           "@EndUserText.label": "확정수량",
-          "precision": 13,
-          "scale": 3,
-          "type": "cds.Decimal",
+          "type": "cds.Integer",
           "@AnalyticsDetails.measureType": {
             "#": "BASE"
           },
@@ -5677,9 +8510,7 @@
         },
         "GI_QTY": {
           "@EndUserText.label": "출고수량",
-          "precision": 13,
-          "scale": 3,
-          "type": "cds.Decimal",
+          "type": "cds.Integer",
           "@AnalyticsDetails.measureType": {
             "#": "BASE"
           },
@@ -5694,9 +8525,7 @@
         },
         "BILL_QTY": {
           "@EndUserText.label": "청구수량",
-          "precision": 13,
-          "scale": 3,
-          "type": "cds.Decimal",
+          "type": "cds.Integer",
           "@AnalyticsDetails.measureType": {
             "#": "BASE"
           },
@@ -5706,9 +8535,7 @@
         },
         "BILL_AMT": {
           "@EndUserText.label": "청구금액",
-          "precision": 13,
-          "scale": 3,
-          "type": "cds.Decimal",
+          "type": "cds.Integer",
           "@AnalyticsDetails.measureType": {
             "#": "BASE"
           },
@@ -5718,7 +8545,7 @@
         },
         "OPEN_DLV_QTY": {
           "@EndUserText.label": "미납품수량",
-          "precision": 13,
+          "precision": 15,
           "scale": 3,
           "type": "cds.Decimal",
           "@AnalyticsDetails.measureType": {
@@ -5730,9 +8557,7 @@
         },
         "UNBILLED_QTY": {
           "@EndUserText.label": "미청구수량",
-          "precision": 13,
-          "scale": 3,
-          "type": "cds.Decimal",
+          "type": "cds.Integer",
           "@AnalyticsDetails.measureType": {
             "#": "BASE"
           },
@@ -5760,11 +8585,11 @@
         },
         "_SAP_LO_Pr": {
           "type": "cds.Association",
-          "@EndUserText.label": "WS_HL_SQLV_OPEN_ORDER_CDSV to SAP_LO_Product_V2",
+          "@EndUserText.label": "WS_HL_SQLV_OPEN_ORDER_ODP to SAP_LO_Product_V2",
           "on": [
             {
               "ref": [
-                "Material"
+                "MATNR"
               ]
             },
             "=",
@@ -5777,17 +8602,1341 @@
           ],
           "target": "SAP_LO_Product_V2"
         }
+      },
+      "query": {
+        "SELECT": {
+          "from": {
+            "join": "left",
+            "args": [
+              {
+                "join": "left",
+                "args": [
+                  {
+                    "join": "left",
+                    "args": [
+                      {
+                        "join": "inner",
+                        "args": [
+                          {
+                            "ref": [
+                              "SAP_SD_IL_2LIS_11_VAHDR"
+                            ],
+                            "as": "H"
+                          },
+                          {
+                            "ref": [
+                              "SAP_SD_IL_2LIS_11_VAITM"
+                            ],
+                            "as": "I"
+                          }
+                        ],
+                        "on": [
+                          {
+                            "ref": [
+                              "H",
+                              "VBELN"
+                            ]
+                          },
+                          "=",
+                          {
+                            "ref": [
+                              "I",
+                              "VBELN"
+                            ]
+                          },
+                          "and",
+                          {
+                            "ref": [
+                              "I",
+                              "ROCANCEL"
+                            ]
+                          },
+                          "=",
+                          {
+                            "val": ""
+                          }
+                        ]
+                      },
+                      {
+                        "SELECT": {
+                          "from": {
+                            "ref": [
+                              "SAP_SD_IL_2LIS_11_VASCL"
+                            ]
+                          },
+                          "columns": [
+                            {
+                              "ref": [
+                                "VBELN"
+                              ]
+                            },
+                            {
+                              "ref": [
+                                "POSNR"
+                              ]
+                            },
+                            {
+                              "func": "SUM",
+                              "args": [
+                                {
+                                  "ref": [
+                                    "BMENG"
+                                  ]
+                                }
+                              ],
+                              "as": "CONFIRMED_QTY"
+                            }
+                          ],
+                          "groupBy": [
+                            {
+                              "ref": [
+                                "VBELN"
+                              ]
+                            },
+                            {
+                              "ref": [
+                                "POSNR"
+                              ]
+                            }
+                          ],
+                          "where": [
+                            {
+                              "ref": [
+                                "ROCANCEL"
+                              ]
+                            },
+                            "=",
+                            {
+                              "val": ""
+                            }
+                          ]
+                        },
+                        "as": "C"
+                      }
+                    ],
+                    "on": [
+                      {
+                        "ref": [
+                          "I",
+                          "VBELN"
+                        ]
+                      },
+                      "=",
+                      {
+                        "ref": [
+                          "C",
+                          "VBELN"
+                        ]
+                      },
+                      "and",
+                      {
+                        "ref": [
+                          "I",
+                          "POSNR"
+                        ]
+                      },
+                      "=",
+                      {
+                        "ref": [
+                          "C",
+                          "POSNR"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "SELECT": {
+                      "from": {
+                        "ref": [
+                          "SAP_SD_IL_2LIS_12_VCITM"
+                        ]
+                      },
+                      "columns": [
+                        {
+                          "ref": [
+                            "VGBEL"
+                          ],
+                          "as": "SO_VBELN"
+                        },
+                        {
+                          "ref": [
+                            "VGPOS"
+                          ],
+                          "as": "SO_POSNR"
+                        },
+                        {
+                          "func": "SUM",
+                          "args": [
+                            {
+                              "ref": [
+                                "LFIMG"
+                              ]
+                            }
+                          ],
+                          "as": "GI_QTY"
+                        },
+                        {
+                          "func": "MAX",
+                          "args": [
+                            {
+                              "ref": [
+                                "WADAT_IST"
+                              ]
+                            }
+                          ],
+                          "as": "GI_DATE"
+                        }
+                      ],
+                      "groupBy": [
+                        {
+                          "ref": [
+                            "VGBEL"
+                          ]
+                        },
+                        {
+                          "ref": [
+                            "VGPOS"
+                          ]
+                        }
+                      ],
+                      "where": [
+                        {
+                          "ref": [
+                            "ROCANCEL"
+                          ]
+                        },
+                        "=",
+                        {
+                          "val": ""
+                        },
+                        "and",
+                        {
+                          "ref": [
+                            "VGTYP"
+                          ]
+                        },
+                        "=",
+                        {
+                          "val": "C"
+                        }
+                      ]
+                    },
+                    "as": "G"
+                  }
+                ],
+                "on": [
+                  {
+                    "ref": [
+                      "I",
+                      "VBELN"
+                    ]
+                  },
+                  "=",
+                  {
+                    "ref": [
+                      "G",
+                      "SO_VBELN"
+                    ]
+                  },
+                  "and",
+                  {
+                    "ref": [
+                      "I",
+                      "POSNR"
+                    ]
+                  },
+                  "=",
+                  {
+                    "ref": [
+                      "G",
+                      "SO_POSNR"
+                    ]
+                  }
+                ]
+              },
+              {
+                "SELECT": {
+                  "from": {
+                    "join": "inner",
+                    "args": [
+                      {
+                        "ref": [
+                          "SAP_SD_IL_2LIS_13_VDITM"
+                        ],
+                        "as": "I2"
+                      },
+                      {
+                        "ref": [
+                          "SAP_SD_IL_2LIS_13_VDHDR"
+                        ],
+                        "as": "H2"
+                      }
+                    ],
+                    "on": [
+                      {
+                        "ref": [
+                          "I2",
+                          "VBELN"
+                        ]
+                      },
+                      "=",
+                      {
+                        "ref": [
+                          "H2",
+                          "VBELN"
+                        ]
+                      }
+                    ]
+                  },
+                  "columns": [
+                    {
+                      "ref": [
+                        "I2",
+                        "AUBEL"
+                      ],
+                      "as": "SO_VBELN"
+                    },
+                    {
+                      "ref": [
+                        "I2",
+                        "AUPOS"
+                      ],
+                      "as": "SO_POSNR"
+                    },
+                    {
+                      "func": "SUM",
+                      "args": [
+                        {
+                          "xpr": [
+                            "case",
+                            "when",
+                            {
+                              "ref": [
+                                "I2",
+                                "AUTYP"
+                              ]
+                            },
+                            "in",
+                            {
+                              "list": [
+                                {
+                                  "val": "H"
+                                },
+                                {
+                                  "val": "K"
+                                }
+                              ]
+                            },
+                            "or",
+                            {
+                              "ref": [
+                                "I2",
+                                "VGTYP"
+                              ]
+                            },
+                            "=",
+                            {
+                              "val": "T"
+                            },
+                            "then",
+                            {
+                              "ref": [
+                                "I2",
+                                "FKIMG"
+                              ]
+                            },
+                            "*",
+                            {
+                              "val": -1
+                            },
+                            "else",
+                            {
+                              "ref": [
+                                "I2",
+                                "FKIMG"
+                              ]
+                            },
+                            "end"
+                          ]
+                        }
+                      ],
+                      "as": "BILL_QTY"
+                    },
+                    {
+                      "func": "SUM",
+                      "args": [
+                        {
+                          "xpr": [
+                            "case",
+                            "when",
+                            {
+                              "ref": [
+                                "I2",
+                                "AUTYP"
+                              ]
+                            },
+                            "in",
+                            {
+                              "list": [
+                                {
+                                  "val": "H"
+                                },
+                                {
+                                  "val": "K"
+                                }
+                              ]
+                            },
+                            "or",
+                            {
+                              "ref": [
+                                "I2",
+                                "VGTYP"
+                              ]
+                            },
+                            "=",
+                            {
+                              "val": "T"
+                            },
+                            "then",
+                            {
+                              "ref": [
+                                "I2",
+                                "NETWR"
+                              ]
+                            },
+                            "*",
+                            {
+                              "val": -1
+                            },
+                            "else",
+                            {
+                              "ref": [
+                                "I2",
+                                "NETWR"
+                              ]
+                            },
+                            "end"
+                          ]
+                        }
+                      ],
+                      "as": "BILL_AMT"
+                    }
+                  ],
+                  "groupBy": [
+                    {
+                      "ref": [
+                        "I2",
+                        "AUBEL"
+                      ]
+                    },
+                    {
+                      "ref": [
+                        "I2",
+                        "AUPOS"
+                      ]
+                    }
+                  ],
+                  "where": [
+                    {
+                      "ref": [
+                        "I2",
+                        "ROCANCEL"
+                      ]
+                    },
+                    "=",
+                    {
+                      "val": ""
+                    },
+                    "and",
+                    {
+                      "ref": [
+                        "H2",
+                        "ROCANCEL"
+                      ]
+                    },
+                    "=",
+                    {
+                      "val": ""
+                    },
+                    "and",
+                    {
+                      "ref": [
+                        "H2",
+                        "FKART"
+                      ]
+                    },
+                    "not",
+                    "in",
+                    {
+                      "list": [
+                        {
+                          "val": "ZINB"
+                        },
+                        {
+                          "val": "ZVSB"
+                        }
+                      ]
+                    },
+                    "and",
+                    {
+                      "xpr": [
+                        {
+                          "ref": [
+                            "I2",
+                            "RFBSK"
+                          ]
+                        },
+                        "is",
+                        "null",
+                        "or",
+                        {
+                          "ref": [
+                            "I2",
+                            "RFBSK"
+                          ]
+                        },
+                        "=",
+                        {
+                          "val": ""
+                        }
+                      ]
+                    },
+                    "and",
+                    {
+                      "xpr": [
+                        {
+                          "ref": [
+                            "I2",
+                            "SFAKN"
+                          ]
+                        },
+                        "is",
+                        "null",
+                        "or",
+                        {
+                          "ref": [
+                            "I2",
+                            "SFAKN"
+                          ]
+                        },
+                        "=",
+                        {
+                          "val": ""
+                        }
+                      ]
+                    },
+                    "and",
+                    {
+                      "xpr": [
+                        {
+                          "ref": [
+                            "I2",
+                            "FKSTO"
+                          ]
+                        },
+                        "is",
+                        "null",
+                        "or",
+                        {
+                          "ref": [
+                            "I2",
+                            "FKSTO"
+                          ]
+                        },
+                        "=",
+                        {
+                          "val": ""
+                        }
+                      ]
+                    },
+                    "and",
+                    {
+                      "ref": [
+                        "I2",
+                        "AUTYP"
+                      ]
+                    },
+                    "=",
+                    {
+                      "val": "C"
+                    }
+                  ]
+                },
+                "as": "B"
+              }
+            ],
+            "on": [
+              {
+                "ref": [
+                  "I",
+                  "VBELN"
+                ]
+              },
+              "=",
+              {
+                "ref": [
+                  "B",
+                  "SO_VBELN"
+                ]
+              },
+              "and",
+              {
+                "ref": [
+                  "I",
+                  "POSNR"
+                ]
+              },
+              "=",
+              {
+                "ref": [
+                  "B",
+                  "SO_POSNR"
+                ]
+              }
+            ]
+          },
+          "columns": [
+            {
+              "ref": [
+                "H",
+                "VBELN"
+              ]
+            },
+            {
+              "ref": [
+                "H",
+                "ERDAT"
+              ]
+            },
+            {
+              "func": "TO_VARCHAR",
+              "args": [
+                {
+                  "ref": [
+                    "H",
+                    "ERDAT"
+                  ]
+                },
+                {
+                  "val": "YYYYMM"
+                }
+              ],
+              "as": "CalendarYearMonth"
+            },
+            {
+              "ref": [
+                "H",
+                "VDATU"
+              ]
+            },
+            {
+              "ref": [
+                "H",
+                "VKORG"
+              ]
+            },
+            {
+              "ref": [
+                "H",
+                "BUKRS"
+              ]
+            },
+            {
+              "ref": [
+                "H",
+                "VTWEG"
+              ]
+            },
+            {
+              "ref": [
+                "H",
+                "AUART"
+              ]
+            },
+            {
+              "ref": [
+                "H",
+                "KUNNR"
+              ]
+            },
+            {
+              "ref": [
+                "H",
+                "VKBUR"
+              ]
+            },
+            {
+              "ref": [
+                "H",
+                "VKGRP"
+              ]
+            },
+            {
+              "ref": [
+                "H",
+                "WAERK"
+              ]
+            },
+            {
+              "ref": [
+                "H",
+                "HWAER"
+              ]
+            },
+            {
+              "ref": [
+                "H",
+                "VBTYP"
+              ]
+            },
+            {
+              "ref": [
+                "I",
+                "POSNR"
+              ]
+            },
+            {
+              "ref": [
+                "I",
+                "MATNR"
+              ]
+            },
+            {
+              "ref": [
+                "I",
+                "MATKL"
+              ]
+            },
+            {
+              "ref": [
+                "I",
+                "SPART"
+              ]
+            },
+            {
+              "ref": [
+                "I",
+                "WERKS"
+              ]
+            },
+            {
+              "ref": [
+                "I",
+                "MEINS"
+              ]
+            },
+            {
+              "ref": [
+                "I",
+                "VRKME"
+              ]
+            },
+            {
+              "ref": [
+                "I",
+                "PSTYV"
+              ]
+            },
+            {
+              "ref": [
+                "I",
+                "ABGRU"
+              ]
+            },
+            {
+              "ref": [
+                "I",
+                "BZIRK"
+              ]
+            },
+            {
+              "ref": [
+                "I",
+                "KWMENG"
+              ]
+            },
+            {
+              "func": "COALESCE",
+              "args": [
+                {
+                  "ref": [
+                    "C",
+                    "CONFIRMED_QTY"
+                  ]
+                },
+                {
+                  "val": 0
+                }
+              ],
+              "as": "CONFIRMED_QTY"
+            },
+            {
+              "func": "COALESCE",
+              "args": [
+                {
+                  "ref": [
+                    "G",
+                    "GI_QTY"
+                  ]
+                },
+                {
+                  "val": 0
+                }
+              ],
+              "as": "GI_QTY"
+            },
+            {
+              "ref": [
+                "G",
+                "GI_DATE"
+              ]
+            },
+            {
+              "func": "COALESCE",
+              "args": [
+                {
+                  "ref": [
+                    "B",
+                    "BILL_QTY"
+                  ]
+                },
+                {
+                  "val": 0
+                }
+              ],
+              "as": "BILL_QTY"
+            },
+            {
+              "func": "COALESCE",
+              "args": [
+                {
+                  "ref": [
+                    "B",
+                    "BILL_AMT"
+                  ]
+                },
+                {
+                  "val": 0
+                }
+              ],
+              "as": "BILL_AMT"
+            },
+            {
+              "xpr": [
+                {
+                  "ref": [
+                    "I",
+                    "KWMENG"
+                  ]
+                },
+                "-",
+                {
+                  "func": "COALESCE",
+                  "args": [
+                    {
+                      "ref": [
+                        "G",
+                        "GI_QTY"
+                      ]
+                    },
+                    {
+                      "val": 0
+                    }
+                  ]
+                }
+              ],
+              "as": "OPEN_DLV_QTY"
+            },
+            {
+              "xpr": [
+                {
+                  "func": "COALESCE",
+                  "args": [
+                    {
+                      "ref": [
+                        "G",
+                        "GI_QTY"
+                      ]
+                    },
+                    {
+                      "val": 0
+                    }
+                  ]
+                },
+                "-",
+                {
+                  "func": "COALESCE",
+                  "args": [
+                    {
+                      "ref": [
+                        "B",
+                        "BILL_QTY"
+                      ]
+                    },
+                    {
+                      "val": 0
+                    }
+                  ]
+                }
+              ],
+              "as": "UNBILLED_QTY"
+            },
+            {
+              "xpr": [
+                "case",
+                "when",
+                {
+                  "ref": [
+                    "G",
+                    "GI_DATE"
+                  ]
+                },
+                "is",
+                "null",
+                "then",
+                {
+                  "val": "Not Started"
+                },
+                "when",
+                {
+                  "xpr": [
+                    {
+                      "ref": [
+                        "I",
+                        "KWMENG"
+                      ]
+                    },
+                    "-",
+                    {
+                      "func": "COALESCE",
+                      "args": [
+                        {
+                          "ref": [
+                            "G",
+                            "GI_QTY"
+                          ]
+                        },
+                        {
+                          "val": 0
+                        }
+                      ]
+                    }
+                  ]
+                },
+                ">",
+                {
+                  "val": 0
+                },
+                "and",
+                {
+                  "ref": [
+                    "G",
+                    "GI_DATE"
+                  ]
+                },
+                "is",
+                "not",
+                "null",
+                "then",
+                {
+                  "val": "In Progress"
+                },
+                "else",
+                {
+                  "val": "Completed"
+                },
+                "end"
+              ],
+              "as": "DELIVERY_STATUS"
+            },
+            {
+              "xpr": [
+                "case",
+                "when",
+                {
+                  "ref": [
+                    "G",
+                    "GI_DATE"
+                  ]
+                },
+                "is",
+                "not",
+                "null",
+                "and",
+                {
+                  "xpr": [
+                    {
+                      "ref": [
+                        "I",
+                        "KWMENG"
+                      ]
+                    },
+                    "-",
+                    {
+                      "func": "COALESCE",
+                      "args": [
+                        {
+                          "ref": [
+                            "G",
+                            "GI_QTY"
+                          ]
+                        },
+                        {
+                          "val": 0
+                        }
+                      ]
+                    }
+                  ]
+                },
+                "<=",
+                {
+                  "val": 0
+                },
+                "then",
+                {
+                  "ref": [
+                    "G",
+                    "GI_DATE"
+                  ]
+                },
+                "else",
+                {
+                  "func": "CURRENT_DATE"
+                },
+                "end"
+              ],
+              "as": "COMPARISON_DATE"
+            },
+            {
+              "xpr": [
+                "case",
+                "when",
+                {
+                  "ref": [
+                    "G",
+                    "GI_DATE"
+                  ]
+                },
+                "is",
+                "not",
+                "null",
+                "and",
+                {
+                  "xpr": [
+                    {
+                      "ref": [
+                        "I",
+                        "KWMENG"
+                      ]
+                    },
+                    "-",
+                    {
+                      "func": "COALESCE",
+                      "args": [
+                        {
+                          "ref": [
+                            "G",
+                            "GI_QTY"
+                          ]
+                        },
+                        {
+                          "val": 0
+                        }
+                      ]
+                    }
+                  ]
+                },
+                "<=",
+                {
+                  "val": 0
+                },
+                "then",
+                {
+                  "func": "DAYS_BETWEEN",
+                  "args": [
+                    {
+                      "ref": [
+                        "H",
+                        "VDATU"
+                      ]
+                    },
+                    {
+                      "ref": [
+                        "G",
+                        "GI_DATE"
+                      ]
+                    }
+                  ]
+                },
+                "else",
+                {
+                  "func": "DAYS_BETWEEN",
+                  "args": [
+                    {
+                      "ref": [
+                        "H",
+                        "VDATU"
+                      ]
+                    },
+                    {
+                      "func": "CURRENT_DATE"
+                    }
+                  ]
+                },
+                "end"
+              ],
+              "as": "RDD_LEADTIME_DAYS"
+            },
+            {
+              "xpr": [
+                "case",
+                "when",
+                {
+                  "ref": [
+                    "G",
+                    "GI_DATE"
+                  ]
+                },
+                "is",
+                "not",
+                "null",
+                "and",
+                {
+                  "xpr": [
+                    {
+                      "ref": [
+                        "I",
+                        "KWMENG"
+                      ]
+                    },
+                    "-",
+                    {
+                      "func": "COALESCE",
+                      "args": [
+                        {
+                          "ref": [
+                            "G",
+                            "GI_QTY"
+                          ]
+                        },
+                        {
+                          "val": 0
+                        }
+                      ]
+                    }
+                  ]
+                },
+                "<=",
+                {
+                  "val": 0
+                },
+                "then",
+                "case",
+                "when",
+                {
+                  "func": "DAYS_BETWEEN",
+                  "args": [
+                    {
+                      "ref": [
+                        "H",
+                        "VDATU"
+                      ]
+                    },
+                    {
+                      "ref": [
+                        "G",
+                        "GI_DATE"
+                      ]
+                    }
+                  ]
+                },
+                "<=",
+                {
+                  "val": 0
+                },
+                "then",
+                {
+                  "val": "On-Time"
+                },
+                "else",
+                {
+                  "val": "Delay"
+                },
+                "end",
+                "else",
+                "case",
+                "when",
+                {
+                  "func": "DAYS_BETWEEN",
+                  "args": [
+                    {
+                      "ref": [
+                        "H",
+                        "VDATU"
+                      ]
+                    },
+                    {
+                      "func": "CURRENT_DATE"
+                    }
+                  ]
+                },
+                "<=",
+                {
+                  "val": 0
+                },
+                "then",
+                {
+                  "val": "On-Time"
+                },
+                "else",
+                {
+                  "val": "Delay"
+                },
+                "end",
+                "end"
+              ],
+              "as": "RDD_COMPLIANCE"
+            },
+            {
+              "ref": [
+                "_SAP_LO_Pr"
+              ]
+            }
+          ],
+          "where": [
+            {
+              "ref": [
+                "H",
+                "VKORG"
+              ]
+            },
+            "not",
+            "in",
+            {
+              "list": [
+                {
+                  "val": "7600"
+                },
+                {
+                  "val": "7700"
+                }
+              ]
+            },
+            "and",
+            {
+              "ref": [
+                "H",
+                "VBTYP"
+              ]
+            },
+            "=",
+            {
+              "val": "C"
+            },
+            "and",
+            {
+              "ref": [
+                "H",
+                "ROCANCEL"
+              ]
+            },
+            "=",
+            {
+              "val": ""
+            },
+            "and",
+            {
+              "xpr": [
+                {
+                  "ref": [
+                    "I",
+                    "ABGRU"
+                  ]
+                },
+                "=",
+                {
+                  "val": ""
+                },
+                "or",
+                {
+                  "ref": [
+                    "I",
+                    "ABGRU"
+                  ]
+                },
+                "is",
+                "null"
+              ]
+            }
+          ],
+          "mixin": {
+            "_SAP_LO_Pr": {
+              "type": "cds.Association",
+              "on": [
+                {
+                  "ref": [
+                    "$projection",
+                    "MATNR"
+                  ]
+                },
+                "=",
+                {
+                  "ref": [
+                    "_SAP_LO_Pr",
+                    "Product"
+                  ]
+                }
+              ],
+              "target": "SAP_LO_Product_V2"
+            }
+          }
+        }
+      },
+      "@ObjectModel.supportedCapabilities": [
+        {
+          "#": "DATA_STRUCTURE"
+        }
+      ],
+      "@EndUserText.label": "WS Open Order CDSV View",
+      "@ObjectModel.modelingPattern": {
+        "#": "ANALYTICAL_FACT"
+      },
+      "@DataWarehouse.consumption.external": false,
+      "@DataWarehouse.sqlEditor.query": "SELECT \n-- 헤더\nH.VBELN,\n\tH.ERDAT,\n\tTO_VARCHAR(H.ERDAT, 'YYYYMM') AS CalendarYearMonth,\n\tH.VDATU,\n\tH.VKORG,\n\tH.BUKRS,\n\tH.VTWEG,\n\tH.AUART,\n\tH.KUNNR,\n\tH.VKBUR,\n\tH.VKGRP,\n\tH.WAERK,\n\tH.HWAER,\n\tH.VBTYP, \n-- 아이템\n\n\tI.POSNR,\n\tI.MATNR,\n\tI.MATKL,\n\tI.SPART,\n\tI.WERKS,\n\tI.MEINS,\n\tI.VRKME,\n\tI.PSTYV,\n\tI.ABGRU,\n\tI.BZIRK, \n-- 4대 지표\n\n\tI.KWMENG,\n\tCOALESCE(C.CONFIRMED_QTY, 0) AS CONFIRMED_QTY,\n\tCOALESCE(G.GI_QTY, 0) AS GI_QTY,\n\tG.GI_DATE,\n\tCOALESCE(B.BILL_QTY, 0) AS BILL_QTY,\n\tCOALESCE(B.BILL_AMT, 0) AS BILL_AMT, \n-- 파생 지표\n\n\tI.KWMENG - COALESCE(G.GI_QTY, 0) AS OPEN_DLV_QTY,\n\tCOALESCE(G.GI_QTY, 0) - COALESCE(B.BILL_QTY, 0) AS UNBILLED_QTY, \n-- (1) 납품진행상태\n\n\tCASE WHEN G.GI_DATE IS NULL THEN 'Not Started' WHEN (I.KWMENG - COALESCE(G.GI_QTY, 0)) > 0 AND G.GI_DATE IS NOT NULL THEN 'In Progress' ELSE 'Completed' END AS DELIVERY_STATUS, \n-- (2) 비교기준일\n\n\tCASE WHEN G.GI_DATE IS NOT NULL AND (I.KWMENG - COALESCE(G.GI_QTY, 0)) <= 0 THEN G.GI_DATE ELSE CURRENT_DATE END AS COMPARISON_DATE, \n-- (3) Lead-time\n\n\tCASE WHEN G.GI_DATE IS NOT NULL AND (I.KWMENG - COALESCE(G.GI_QTY, 0)) <= 0 THEN DAYS_BETWEEN(H.VDATU, G.GI_DATE) ELSE DAYS_BETWEEN(H.VDATU, CURRENT_DATE) END AS RDD_LEADTIME_DAYS, \n-- (4) RDD 준수여부\n\n\tCASE WHEN G.GI_DATE IS NOT NULL AND (I.KWMENG - COALESCE(G.GI_QTY, 0)) <= 0 THEN CASE WHEN DAYS_BETWEEN(H.VDATU, G.GI_DATE) <= 0 THEN 'On-Time' ELSE 'Delay' END ELSE CASE WHEN DAYS_BETWEEN(H.VDATU, CURRENT_DATE) <= 0 THEN 'On-Time' ELSE 'Delay' END END AS RDD_COMPLIANCE \n-- 수주 헤더\n\nFROM \"SAP_SD_IL_2LIS_11_VAHDR\" H \n-- 수주 아이템\n\n\tINNER JOIN \"SAP_SD_IL_2LIS_11_VAITM\" I ON H.VBELN = I.VBELN AND I.ROCANCEL = '' \n-- 확정수량 (납품일정행)\n\n\tLEFT JOIN (\n\t\tSELECT VBELN,\n\t\t\tPOSNR,\n\t\t\tSUM(BMENG) AS CONFIRMED_QTY\n\t\tFROM \"SAP_SD_IL_2LIS_11_VASCL\"\n\t\tWHERE ROCANCEL = ''\n\t\tGROUP BY VBELN,\n\t\t\tPOSNR\n\t) C ON I.VBELN = C.VBELN AND I.POSNR = C.POSNR \n-- 출하수량 / 실출하일\n\n\tLEFT JOIN (\n\t\tSELECT VGBEL AS SO_VBELN,\n\t\t\tVGPOS AS SO_POSNR,\n\t\t\tSUM(LFIMG) AS GI_QTY,\n\t\t\tMAX(WADAT_IST) AS GI_DATE\n\t\tFROM \"SAP_SD_IL_2LIS_12_VCITM\"\n\t\tWHERE ROCANCEL = ''\n\t\t\tAND VGTYP = 'C'\n\t\tGROUP BY VGBEL,\n\t\t\tVGPOS\n\t) G ON I.VBELN = G.SO_VBELN AND I.POSNR = G.SO_POSNR \n-- 청구수량 / 청구금액\n\n\tLEFT JOIN (\n\t\tSELECT I2.AUBEL AS SO_VBELN,\n\t\t\tI2.AUPOS AS SO_POSNR,\n\t\t\tSUM(CASE WHEN I2.AUTYP IN ('H', 'K') OR I2.VGTYP = 'T' THEN I2.FKIMG * -1 ELSE I2.FKIMG END) AS BILL_QTY,\n\t\t\tSUM(CASE WHEN I2.AUTYP IN ('H', 'K') OR I2.VGTYP = 'T' THEN I2.NETWR * -1 ELSE I2.NETWR END) AS BILL_AMT\n\t\tFROM \"SAP_SD_IL_2LIS_13_VDITM\" I2\n\t\t\tINNER JOIN \"SAP_SD_IL_2LIS_13_VDHDR\" H2 ON I2.VBELN = H2.VBELN\n\t\tWHERE I2.ROCANCEL = ''\n\t\t\tAND H2.ROCANCEL = ''\n\t\t\tAND H2.FKART NOT IN ('ZINB', 'ZVSB')\n\t\t\tAND (I2.RFBSK IS NULL\n\t\t\t\tOR I2.RFBSK = '')\n\t\t\tAND (I2.SFAKN IS NULL\n\t\t\t\tOR I2.SFAKN = '')\n\t\t\tAND (I2.FKSTO IS NULL\n\t\t\t\tOR I2.FKSTO = '')\n\t\t\tAND I2.AUTYP = 'C'\n\t\tGROUP BY I2.AUBEL,\n\t\t\tI2.AUPOS\n\t) B ON I.VBELN = B.SO_VBELN AND I.POSNR = B.SO_POSNR\nWHERE H.VKORG NOT IN ('7600', '7700')\n\tAND H.VBTYP = 'C'\n\tAND H.ROCANCEL = ''\n\tAND (I.ABGRU = ''\n\t\tOR I.ABGRU IS NULL)",
+      "_meta": {
+        "dependencies": {
+          "folderAssignment": "Folder_BZTLBWNF"
+        }
       }
     },
     "WS_RL_OPEN_ORDER_CDSV": {
       "kind": "entity",
-      "@EndUserText.label": "[워크샵] Open Order ODP SQL View",
+      "@EndUserText.label": "WS Open Order CDSV AM",
       "elements": {
         "MATNR": {
           "@EndUserText.label": "자재번호",
           "@ObjectModel.foreignKey.association": {
-            "=": "_Material"
+            "=": "_MATNR"
           }
+        },
+        "_MATNR": {
+          "type": "cds.Association",
+          "on": [
+            {
+              "ref": [
+                "MATNR"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "_MATNR",
+                "Product"
+              ]
+            }
+          ],
+          "target": "SAP_LO_Product_V2",
+          "@EndUserText.label": "자재번호"
         },
         "VBELN": {
           "@EndUserText.label": "영업전표번호"
@@ -5843,6 +9992,9 @@
         "WERKS": {
           "@EndUserText.label": "플랜트"
         },
+        "MEINS": {
+          "@EndUserText.label": "기본단위"
+        },
         "VRKME": {
           "@EndUserText.label": "판매단위"
         },
@@ -5873,315 +10025,315 @@
         "ProductExternalID_": {
           "@EndUserText.label": "제품 외부 ID",
           "@Analytics.navigationAttributeRef": [
-            "_Material",
+            "_MATNR",
             "ProductExternalID"
           ]
         },
         "ProductType_": {
           "@EndUserText.label": "제품 유형",
           "@Analytics.navigationAttributeRef": [
-            "_Material",
+            "_MATNR",
             "ProductType"
           ]
         },
         "CreationTime_": {
           "@EndUserText.label": "생성 시간",
           "@Analytics.navigationAttributeRef": [
-            "_Material",
+            "_MATNR",
             "CreationTime"
           ]
         },
         "CreationDateTime_": {
           "@EndUserText.label": "오브젝트 생성 타임스탬프",
           "@Analytics.navigationAttributeRef": [
-            "_Material",
+            "_MATNR",
             "CreationDateTime"
           ]
         },
         "CreatedByUser_": {
           "@EndUserText.label": "생성 자 사용자",
           "@Analytics.navigationAttributeRef": [
-            "_Material",
+            "_MATNR",
             "CreatedByUser"
           ]
         },
         "LastChangedByUser_": {
           "@EndUserText.label": "최종 변경 자 사용자",
           "@Analytics.navigationAttributeRef": [
-            "_Material",
+            "_MATNR",
             "LastChangedByUser"
           ]
         },
         "IsMarkedForDeletion_": {
           "@EndUserText.label": "삭제 표시 여부",
           "@Analytics.navigationAttributeRef": [
-            "_Material",
+            "_MATNR",
             "IsMarkedForDeletion"
           ]
         },
         "GrossWeight_": {
           "@EndUserText.label": "총 중량",
           "@Analytics.navigationAttributeRef": [
-            "_Material",
+            "_MATNR",
             "GrossWeight"
           ]
         },
         "WeightUnit_": {
           "@EndUserText.label": "중량 단위",
           "@Analytics.navigationAttributeRef": [
-            "_Material",
+            "_MATNR",
             "WeightUnit"
           ]
         },
         "CompetitorID_": {
           "@EndUserText.label": "경쟁사",
           "@Analytics.navigationAttributeRef": [
-            "_Material",
+            "_MATNR",
             "CompetitorID"
           ]
         },
         "ProductGroup_": {
           "@EndUserText.label": "제품 그룹",
           "@Analytics.navigationAttributeRef": [
-            "_Material",
+            "_MATNR",
             "ProductGroup"
           ]
         },
         "BaseUnit_": {
           "@EndUserText.label": "기본 단위",
           "@Analytics.navigationAttributeRef": [
-            "_Material",
+            "_MATNR",
             "BaseUnit"
           ]
         },
         "ItemCategoryGroup_": {
           "@EndUserText.label": "항목 범주 그룹",
           "@Analytics.navigationAttributeRef": [
-            "_Material",
+            "_MATNR",
             "ItemCategoryGroup"
           ]
         },
         "NetWeight_": {
           "@EndUserText.label": "순 중량",
           "@Analytics.navigationAttributeRef": [
-            "_Material",
+            "_MATNR",
             "NetWeight"
           ]
         },
         "ProductHierarchy_": {
           "@EndUserText.label": "제품 계층",
           "@Analytics.navigationAttributeRef": [
-            "_Material",
+            "_MATNR",
             "ProductHierarchy"
           ]
         },
         "Division_": {
           "@EndUserText.label": "사업부",
           "@Analytics.navigationAttributeRef": [
-            "_Material",
+            "_MATNR",
             "Division"
           ]
         },
         "VolumeUnit_": {
           "@EndUserText.label": "부피 단위",
           "@Analytics.navigationAttributeRef": [
-            "_Material",
+            "_MATNR",
             "VolumeUnit"
           ]
         },
         "MaterialVolume_": {
           "@EndUserText.label": "볼륨",
           "@Analytics.navigationAttributeRef": [
-            "_Material",
+            "_MATNR",
             "MaterialVolume"
           ]
         },
         "ProductCategory_": {
           "@EndUserText.label": "제품 범주",
           "@Analytics.navigationAttributeRef": [
-            "_Material",
+            "_MATNR",
             "ProductCategory"
           ]
         },
         "SizeOrDimensionText_": {
           "@EndUserText.label": "크기 또는 치수 텍스트",
           "@Analytics.navigationAttributeRef": [
-            "_Material",
+            "_MATNR",
             "SizeOrDimensionText"
           ]
         },
         "IndustryStandardName_": {
           "@EndUserText.label": "산업 표준 내역( 또는 )",
           "@Analytics.navigationAttributeRef": [
-            "_Material",
+            "_MATNR",
             "IndustryStandardName"
           ]
         },
         "ProductStandardID_": {
           "@EndUserText.label": "제품 표준 ID",
           "@Analytics.navigationAttributeRef": [
-            "_Material",
+            "_MATNR",
             "ProductStandardID"
           ]
         },
         "ExternalProductGroup_": {
           "@EndUserText.label": "외부 제품 그룹",
           "@Analytics.navigationAttributeRef": [
-            "_Material",
+            "_MATNR",
             "ExternalProductGroup"
           ]
         },
         "CrossPlantConfigurableProduct_": {
           "@EndUserText.label": "플랜트간 구성 가능 제품",
           "@Analytics.navigationAttributeRef": [
-            "_Material",
+            "_MATNR",
             "CrossPlantConfigurableProduct"
           ]
         },
         "ProductManufacturerNumber_": {
           "@EndUserText.label": "제품 제조업체 번호",
           "@Analytics.navigationAttributeRef": [
-            "_Material",
+            "_MATNR",
             "ProductManufacturerNumber"
           ]
         },
         "ManufacturerNumber_": {
           "@EndUserText.label": "제조업체 번호",
           "@Analytics.navigationAttributeRef": [
-            "_Material",
+            "_MATNR",
             "ManufacturerNumber"
           ]
         },
         "BaseUnitSpecificProductLength_": {
           "@EndUserText.label": "기본 단위 기준 제품 길이",
           "@Analytics.navigationAttributeRef": [
-            "_Material",
+            "_MATNR",
             "BaseUnitSpecificProductLength"
           ]
         },
         "BaseUnitSpecificProductWidth_": {
           "@EndUserText.label": "기본 단위 기준 제품 너비",
           "@Analytics.navigationAttributeRef": [
-            "_Material",
+            "_MATNR",
             "BaseUnitSpecificProductWidth"
           ]
         },
         "BaseUnitSpecificProductHeight_": {
           "@EndUserText.label": "기본 단위 기준 제품 높이",
           "@Analytics.navigationAttributeRef": [
-            "_Material",
+            "_MATNR",
             "BaseUnitSpecificProductHeight"
           ]
         },
         "ProductMeasurementUnit_": {
           "@EndUserText.label": "제품 측정 단위",
           "@Analytics.navigationAttributeRef": [
-            "_Material",
+            "_MATNR",
             "ProductMeasurementUnit"
           ]
         },
         "ProductValidStartDate_": {
           "@EndUserText.label": "제품 유효 시작일",
           "@Analytics.navigationAttributeRef": [
-            "_Material",
+            "_MATNR",
             "ProductValidStartDate"
           ]
         },
         "ArticleCategory_": {
           "@EndUserText.label": "상품 범주",
           "@Analytics.navigationAttributeRef": [
-            "_Material",
+            "_MATNR",
             "ArticleCategory"
           ]
         },
         "ContentUnit_": {
           "@EndUserText.label": "컨텐트 단위",
           "@Analytics.navigationAttributeRef": [
-            "_Material",
+            "_MATNR",
             "ContentUnit"
           ]
         },
         "NetContent_": {
           "@EndUserText.label": "순 내용량",
           "@Analytics.navigationAttributeRef": [
-            "_Material",
+            "_MATNR",
             "NetContent"
           ]
         },
         "GrossContent_": {
           "@EndUserText.label": "총 내용량",
           "@Analytics.navigationAttributeRef": [
-            "_Material",
+            "_MATNR",
             "GrossContent"
           ]
         },
         "ProductValidEndDate_": {
           "@EndUserText.label": "제품 유효 종료일",
           "@Analytics.navigationAttributeRef": [
-            "_Material",
+            "_MATNR",
             "ProductValidEndDate"
           ]
         },
         "IndustrySector_": {
           "@EndUserText.label": "산업",
           "@Analytics.navigationAttributeRef": [
-            "_Material",
+            "_MATNR",
             "IndustrySector"
           ]
         },
         "BasicMaterial_": {
           "@EndUserText.label": "기본 자재",
           "@Analytics.navigationAttributeRef": [
-            "_Material",
+            "_MATNR",
             "BasicMaterial"
           ]
         },
         "ProductIsLocked_": {
           "@EndUserText.label": "제품 잠금 여부",
           "@Analytics.navigationAttributeRef": [
-            "_Material",
+            "_MATNR",
             "ProductIsLocked"
           ]
         },
         "PackagingMaterialGroup_": {
           "@EndUserText.label": "포장 자재 그룹",
           "@Analytics.navigationAttributeRef": [
-            "_Material",
+            "_MATNR",
             "PackagingMaterialGroup"
           ]
         },
         "LastChangeDateTime_": {
           "@EndUserText.label": "최종 변경 일시",
           "@Analytics.navigationAttributeRef": [
-            "_Material",
+            "_MATNR",
             "LastChangeDateTime"
           ]
         },
         "LastChangeTime_": {
           "@EndUserText.label": "최종 변경 시간",
           "@Analytics.navigationAttributeRef": [
-            "_Material",
+            "_MATNR",
             "LastChangeTime"
           ]
         },
         "ValidityStartDate_": {
           "@EndUserText.label": "효력 시작일",
           "@Analytics.navigationAttributeRef": [
-            "_Material",
+            "_MATNR",
             "ValidityStartDate"
           ]
         },
         "CreationDate_": {
           "@EndUserText.label": "레코드 생성일",
           "@Analytics.navigationAttributeRef": [
-            "_Material",
+            "_MATNR",
             "CreationDate"
           ]
         },
         "LastChangeDate_": {
           "@EndUserText.label": "최종 변경 일",
           "@Analytics.navigationAttributeRef": [
-            "_Material",
+            "_MATNR",
             "LastChangeDate"
           ]
         },
@@ -6268,25 +10420,6 @@
             "#": "RESTRICTION"
           },
           "@AnalyticsDetails.query.onCharacteristicStructure": true
-        },
-        "_Material": {
-          "type": "cds.Association",
-          "on": [
-            {
-              "ref": [
-                "Material"
-              ]
-            },
-            "=",
-            {
-              "ref": [
-                "_Material",
-                "Product"
-              ]
-            }
-          ],
-          "target": "SAP_LO_Product_V2",
-          "@EndUserText.label": "자재번호"
         }
       },
       "@ObjectModel.modelingPattern": {
@@ -6318,19 +10451,19 @@
             {
               "ref": [
                 "WS_HL_SQLV_OPEN_ORDE",
-                "Material"
+                "MATNR"
               ],
               "as": "MATNR"
             },
             {
               "ref": [
-                "_Material"
+                "_MATNR"
               ]
             },
             {
               "ref": [
                 "WS_HL_SQLV_OPEN_ORDE",
-                "SalesDocument"
+                "VBELN"
               ],
               "as": "VBELN"
             },
@@ -6358,126 +10491,133 @@
             {
               "ref": [
                 "WS_HL_SQLV_OPEN_ORDE",
-                "SalesOrganization"
+                "VKORG"
               ],
               "as": "VKORG"
             },
             {
               "ref": [
                 "WS_HL_SQLV_OPEN_ORDE",
-                "BillingCompanyCode"
+                "BUKRS"
               ],
               "as": "BUKRS"
             },
             {
               "ref": [
                 "WS_HL_SQLV_OPEN_ORDE",
-                "DistributionChannel"
+                "VTWEG"
               ],
               "as": "VTWEG"
             },
             {
               "ref": [
                 "WS_HL_SQLV_OPEN_ORDE",
-                "SalesDocumentType"
+                "AUART"
               ],
               "as": "AUART"
             },
             {
               "ref": [
                 "WS_HL_SQLV_OPEN_ORDE",
-                "SoldToParty"
+                "KUNNR"
               ],
               "as": "KUNNR"
             },
             {
               "ref": [
                 "WS_HL_SQLV_OPEN_ORDE",
-                "SalesOffice"
+                "VKBUR"
               ],
               "as": "VKBUR"
             },
             {
               "ref": [
                 "WS_HL_SQLV_OPEN_ORDE",
-                "SalesGroup"
+                "VKGRP"
               ],
               "as": "VKGRP"
             },
             {
               "ref": [
                 "WS_HL_SQLV_OPEN_ORDE",
-                "TransactionCurrency"
+                "WAERK"
               ],
               "as": "WAERK"
             },
             {
               "ref": [
                 "WS_HL_SQLV_OPEN_ORDE",
-                "SalesOrganizationCurrency"
+                "HWAER"
               ],
               "as": "HWAER"
             },
             {
               "ref": [
                 "WS_HL_SQLV_OPEN_ORDE",
-                "SDDocumentCategory"
+                "VBTYP"
               ],
               "as": "VBTYP"
             },
             {
               "ref": [
                 "WS_HL_SQLV_OPEN_ORDE",
-                "SalesDocumentItem"
+                "POSNR"
               ],
               "as": "POSNR"
             },
             {
               "ref": [
                 "WS_HL_SQLV_OPEN_ORDE",
-                "MaterialGroup"
+                "MATKL"
               ],
               "as": "MATKL"
             },
             {
               "ref": [
                 "WS_HL_SQLV_OPEN_ORDE",
-                "Division"
+                "SPART"
               ],
               "as": "SPART"
             },
             {
               "ref": [
                 "WS_HL_SQLV_OPEN_ORDE",
-                "Plant"
+                "WERKS"
               ],
               "as": "WERKS"
             },
             {
               "ref": [
                 "WS_HL_SQLV_OPEN_ORDE",
-                "OrderQuantityUnit"
+                "MEINS"
+              ],
+              "as": "MEINS"
+            },
+            {
+              "ref": [
+                "WS_HL_SQLV_OPEN_ORDE",
+                "VRKME"
               ],
               "as": "VRKME"
             },
             {
               "ref": [
                 "WS_HL_SQLV_OPEN_ORDE",
-                "SalesDocumentItemCategory"
+                "PSTYV"
               ],
               "as": "PSTYV"
             },
             {
               "ref": [
                 "WS_HL_SQLV_OPEN_ORDE",
-                "SalesDocumentRjcnReason"
+                "ABGRU"
               ],
               "as": "ABGRU"
             },
             {
               "ref": [
                 "WS_HL_SQLV_OPEN_ORDE",
-                "SalesDistrict"
+                "BZIRK"
               ],
               "as": "BZIRK"
             },
@@ -6518,315 +10658,315 @@
             },
             {
               "ref": [
-                "_Material",
+                "_MATNR",
                 "ProductExternalID"
               ],
               "as": "ProductExternalID_"
             },
             {
               "ref": [
-                "_Material",
+                "_MATNR",
                 "ProductType"
               ],
               "as": "ProductType_"
             },
             {
               "ref": [
-                "_Material",
+                "_MATNR",
                 "CreationTime"
               ],
               "as": "CreationTime_"
             },
             {
               "ref": [
-                "_Material",
+                "_MATNR",
                 "CreationDateTime"
               ],
               "as": "CreationDateTime_"
             },
             {
               "ref": [
-                "_Material",
+                "_MATNR",
                 "CreatedByUser"
               ],
               "as": "CreatedByUser_"
             },
             {
               "ref": [
-                "_Material",
+                "_MATNR",
                 "LastChangedByUser"
               ],
               "as": "LastChangedByUser_"
             },
             {
               "ref": [
-                "_Material",
+                "_MATNR",
                 "IsMarkedForDeletion"
               ],
               "as": "IsMarkedForDeletion_"
             },
             {
               "ref": [
-                "_Material",
+                "_MATNR",
                 "GrossWeight"
               ],
               "as": "GrossWeight_"
             },
             {
               "ref": [
-                "_Material",
+                "_MATNR",
                 "WeightUnit"
               ],
               "as": "WeightUnit_"
             },
             {
               "ref": [
-                "_Material",
+                "_MATNR",
                 "CompetitorID"
               ],
               "as": "CompetitorID_"
             },
             {
               "ref": [
-                "_Material",
+                "_MATNR",
                 "ProductGroup"
               ],
               "as": "ProductGroup_"
             },
             {
               "ref": [
-                "_Material",
+                "_MATNR",
                 "BaseUnit"
               ],
               "as": "BaseUnit_"
             },
             {
               "ref": [
-                "_Material",
+                "_MATNR",
                 "ItemCategoryGroup"
               ],
               "as": "ItemCategoryGroup_"
             },
             {
               "ref": [
-                "_Material",
+                "_MATNR",
                 "NetWeight"
               ],
               "as": "NetWeight_"
             },
             {
               "ref": [
-                "_Material",
+                "_MATNR",
                 "ProductHierarchy"
               ],
               "as": "ProductHierarchy_"
             },
             {
               "ref": [
-                "_Material",
+                "_MATNR",
                 "Division"
               ],
               "as": "Division_"
             },
             {
               "ref": [
-                "_Material",
+                "_MATNR",
                 "VolumeUnit"
               ],
               "as": "VolumeUnit_"
             },
             {
               "ref": [
-                "_Material",
+                "_MATNR",
                 "MaterialVolume"
               ],
               "as": "MaterialVolume_"
             },
             {
               "ref": [
-                "_Material",
+                "_MATNR",
                 "ProductCategory"
               ],
               "as": "ProductCategory_"
             },
             {
               "ref": [
-                "_Material",
+                "_MATNR",
                 "SizeOrDimensionText"
               ],
               "as": "SizeOrDimensionText_"
             },
             {
               "ref": [
-                "_Material",
+                "_MATNR",
                 "IndustryStandardName"
               ],
               "as": "IndustryStandardName_"
             },
             {
               "ref": [
-                "_Material",
+                "_MATNR",
                 "ProductStandardID"
               ],
               "as": "ProductStandardID_"
             },
             {
               "ref": [
-                "_Material",
+                "_MATNR",
                 "ExternalProductGroup"
               ],
               "as": "ExternalProductGroup_"
             },
             {
               "ref": [
-                "_Material",
+                "_MATNR",
                 "CrossPlantConfigurableProduct"
               ],
               "as": "CrossPlantConfigurableProduct_"
             },
             {
               "ref": [
-                "_Material",
+                "_MATNR",
                 "ProductManufacturerNumber"
               ],
               "as": "ProductManufacturerNumber_"
             },
             {
               "ref": [
-                "_Material",
+                "_MATNR",
                 "ManufacturerNumber"
               ],
               "as": "ManufacturerNumber_"
             },
             {
               "ref": [
-                "_Material",
+                "_MATNR",
                 "BaseUnitSpecificProductLength"
               ],
               "as": "BaseUnitSpecificProductLength_"
             },
             {
               "ref": [
-                "_Material",
+                "_MATNR",
                 "BaseUnitSpecificProductWidth"
               ],
               "as": "BaseUnitSpecificProductWidth_"
             },
             {
               "ref": [
-                "_Material",
+                "_MATNR",
                 "BaseUnitSpecificProductHeight"
               ],
               "as": "BaseUnitSpecificProductHeight_"
             },
             {
               "ref": [
-                "_Material",
+                "_MATNR",
                 "ProductMeasurementUnit"
               ],
               "as": "ProductMeasurementUnit_"
             },
             {
               "ref": [
-                "_Material",
+                "_MATNR",
                 "ProductValidStartDate"
               ],
               "as": "ProductValidStartDate_"
             },
             {
               "ref": [
-                "_Material",
+                "_MATNR",
                 "ArticleCategory"
               ],
               "as": "ArticleCategory_"
             },
             {
               "ref": [
-                "_Material",
+                "_MATNR",
                 "ContentUnit"
               ],
               "as": "ContentUnit_"
             },
             {
               "ref": [
-                "_Material",
+                "_MATNR",
                 "NetContent"
               ],
               "as": "NetContent_"
             },
             {
               "ref": [
-                "_Material",
+                "_MATNR",
                 "GrossContent"
               ],
               "as": "GrossContent_"
             },
             {
               "ref": [
-                "_Material",
+                "_MATNR",
                 "ProductValidEndDate"
               ],
               "as": "ProductValidEndDate_"
             },
             {
               "ref": [
-                "_Material",
+                "_MATNR",
                 "IndustrySector"
               ],
               "as": "IndustrySector_"
             },
             {
               "ref": [
-                "_Material",
+                "_MATNR",
                 "BasicMaterial"
               ],
               "as": "BasicMaterial_"
             },
             {
               "ref": [
-                "_Material",
+                "_MATNR",
                 "ProductIsLocked"
               ],
               "as": "ProductIsLocked_"
             },
             {
               "ref": [
-                "_Material",
+                "_MATNR",
                 "PackagingMaterialGroup"
               ],
               "as": "PackagingMaterialGroup_"
             },
             {
               "ref": [
-                "_Material",
+                "_MATNR",
                 "LastChangeDateTime"
               ],
               "as": "LastChangeDateTime_"
             },
             {
               "ref": [
-                "_Material",
+                "_MATNR",
                 "LastChangeTime"
               ],
               "as": "LastChangeTime_"
             },
             {
               "ref": [
-                "_Material",
+                "_MATNR",
                 "ValidityStartDate"
               ],
               "as": "ValidityStartDate_"
             },
             {
               "ref": [
-                "_Material",
+                "_MATNR",
                 "CreationDate"
               ],
               "as": "CreationDate_"
             },
             {
               "ref": [
-                "_Material",
+                "_MATNR",
                 "LastChangeDate"
               ],
               "as": "LastChangeDate_"
@@ -7050,19 +11190,19 @@
             }
           ],
           "mixin": {
-            "_Material": {
+            "_MATNR": {
               "type": "cds.Association",
               "on": [
                 {
                   "ref": [
                     "$projection",
-                    "Material"
+                    "MATNR"
                   ]
                 },
                 "=",
                 {
                   "ref": [
-                    "_Material",
+                    "_MATNR",
                     "Product"
                   ]
                 }
