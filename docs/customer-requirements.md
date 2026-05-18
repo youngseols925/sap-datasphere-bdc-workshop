@@ -123,7 +123,7 @@ S/4HANA CDS View → Replication Flow → Local Table
 ### Lead-time 계산 방식
 
 ```
-DATEDIFF('day', 납품요청일, 비교기준일)
+DAYS_BETWEEN(납품요청일, 비교기준일)
   - 납품완료 상태:  비교기준일 = MAX(실제납품일자)
   - 미진행/진행 상태: 비교기준일 = CURRENT_DATE
 ```
