@@ -2,45 +2,81 @@
 
 ## 목표
 
-S/4HANA ODP DataSource를 소스로 한 Local Table을 기반으로 **미결 판매 오더 Fact View**와 **Analytic Model**을 직접 개발합니다.
+S/4HANA ODP DataSource를 Replication Flow로 복제한 **Local Table**을 소스로, 미결 판매 오더를 분석하는 **Fact View**와 **Analytic Model**을 개발합니다.
 
 **소요 시간**: 약 60분
 
 ---
 
-## 개발 목표 오브젝트
+## 개발 오브젝트
 
-| 오브젝트 | ID | 설명 |
-|---------|-----|------|
-| SQL View (Fact View) | `WS_HL_SQLV_OPEN_ORDER_ODP` | ODP 기반 미결 오더 Fact View |
-| Analytic Model | `WS_RL_OPEN_ORDER_ODP` | ODP 기반 미결 오더 분석 모델 |
+| 오브젝트 | Technical Name | 소스 |
+|---------|----------------|------|
+| SQL View (Fact View) | `WS_HL_SQLV_OPEN_ORDER_ODP` | Local Tables |
+| Analytic Model | `WS_RL_OPEN_ORDER_ODP` | `WS_HL_SQLV_OPEN_ORDER_ODP` |
 
 ---
 
 ## 소스 데이터 구조
 
+Lab 2에서 Replication Flow로 복제된 Local Table 6개를 사용합니다.
+
 ```mermaid
 erDiagram
-    SAP_SD_VBAK ||--o{ SAP_SD_VBAP : "1:N"
-    SAP_SD_VBAK {
-        string VBELN PK "판매 오더 번호"
-        string KUNNR "고객 코드"
-        string VKORG "판매 조직"
-        string VTWEG "유통 채널"
-        string SPART "제품군"
-        date AUDAT "오더 생성일"
-        decimal NETWR "순 금액"
-        string GBSTA "전체 처리 상태"
-        string ABGRU "거절 사유"
+    SAP_SD_IL_2LIS_11_VAHDR ||--o{ SAP_SD_IL_2LIS_11_VAITM : "VBELN"
+    SAP_SD_IL_2LIS_11_VAITM ||--o{ SAP_SD_IL_2LIS_11_VASCL : "VBELN+POSNR"
+    SAP_SD_IL_2LIS_11_VAITM ||--o{ SAP_SD_IL_2LIS_12_VCITM : "VBELN+POSNR"
+    SAP_SD_IL_2LIS_11_VAITM ||--o{ SAP_SD_IL_2LIS_13_VDITM : "VBELN+POSNR"
+    SAP_SD_IL_2LIS_13_VDITM }o--|| SAP_SD_IL_2LIS_13_VDHDR : "VBELN"
+
+    SAP_SD_IL_2LIS_11_VAHDR {
+        string VBELN PK "수주번호"
+        string VKORG "판매조직"
+        string VTWEG "유통채널"
+        string AUART "전표유형"
+        string KUNNR "주문자"
+        date ERDAT "생성일"
+        date VDATU "납품요청일(RDD)"
+        string VBTYP "전표범주"
+        string ROCANCEL "취소여부"
     }
-    SAP_SD_VBAP {
-        string VBELN PK,FK "판매 오더 번호"
-        string POSNR PK "항목 번호"
-        string MATNR "자재 코드"
-        decimal KWMENG "오더 수량"
-        string MEINS "단위"
-        decimal NETPR "순 단가"
-        string ABGRU "항목 거절 사유"
+    SAP_SD_IL_2LIS_11_VAITM {
+        string VBELN PK,FK "수주번호"
+        string POSNR PK "항목번호"
+        string MATNR "자재번호"
+        string SPART "제품군"
+        string WERKS "플랜트"
+        decimal KWMENG "주문수량"
+        string ABGRU "거부사유"
+        string ROCANCEL "취소여부"
+    }
+    SAP_SD_IL_2LIS_11_VASCL {
+        string VBELN PK,FK "수주번호"
+        string POSNR PK,FK "항목번호"
+        decimal BMENG "확정수량"
+        string ROCANCEL "취소여부"
+    }
+    SAP_SD_IL_2LIS_12_VCITM {
+        string VGBEL FK "수주번호(참조)"
+        string VGPOS FK "수주항목(참조)"
+        decimal LFIMG "출고수량"
+        date WADAT_IST "실제출고일"
+        string VGTYP "참조전표범주"
+        string ROCANCEL "취소여부"
+    }
+    SAP_SD_IL_2LIS_13_VDITM {
+        string AUBEL FK "수주번호(참조)"
+        string AUPOS FK "수주항목(참조)"
+        string VBELN FK "청구전표번호"
+        decimal FKIMG "청구수량"
+        decimal NETWR "청구금액"
+        string AUTYP "참조전표범주"
+        string ROCANCEL "취소여부"
+    }
+    SAP_SD_IL_2LIS_13_VDHDR {
+        string VBELN PK "청구전표번호"
+        string FKART "청구유형"
+        string ROCANCEL "취소여부"
     }
 ```
 
@@ -48,269 +84,321 @@ erDiagram
 
 ## Part A. Fact View 생성
 
-### Step A-1. SQL View 오브젝트 생성
+### Step A-1. SQL View 생성
 
-1. Data Builder → **New** 버튼 클릭
-2. **SQL View** 선택
-3. 기본 속성 설정:
-
-```mermaid
-flowchart TD
-    A["New → SQL View"] --> B["Business Name 입력\nOpen Order ODP Fact View"]
-    B --> C["Technical Name 입력\nWS_HL_SQLV_OPEN_ORDER_ODP"]
-    C --> D["Semantic Type 선택\n→ Fact"]
-    D --> E["SQL Editor 열기"]
-```
-
-**오브젝트 속성:**
+1. Data Builder → **New** → **SQL View**
+2. 기본 속성 설정:
 
 | 속성 | 값 |
 |------|-----|
 | Business Name | `Open Order ODP Fact View` |
 | Technical Name | `WS_HL_SQLV_OPEN_ORDER_ODP` |
-| Semantic Type | `Fact` |
-
----
+| Semantic Usage | `Fact` |
 
 ### Step A-2. SQL 작성
 
-SQL Editor에 다음 쿼리를 입력합니다:
+SQL Editor에 아래 쿼리를 입력합니다.
 
 ```sql
-SELECT
-    -- 키 필드
+SELECT 
+-- 헤더
     H.VBELN,
-    I.POSNR,
-    -- 차원 필드 (Dimensions)
-    H.KUNNR,
+    H.ERDAT,
+    TO_VARCHAR(H.ERDAT, 'YYYYMM')                       AS CalendarYearMonth,
+    H.VDATU,
     H.VKORG,
+    H.BUKRS,
     H.VTWEG,
-    H.SPART,
-    H.AUDAT,
+    H.AUART,
+    H.KUNNR,
+    H.VKBUR,
+    H.VKGRP,
+    H.WAERK,
+    H.HWAER,
+    H.VBTYP, 
+-- 아이템
+    I.POSNR,
     I.MATNR,
+    I.MATKL,
+    I.SPART,
+    I.WERKS,
     I.MEINS,
-    -- 측정값 (Measures)
-    H.NETWR        AS NET_AMOUNT,
-    I.KWMENG       AS ORDER_QTY,
-    I.NETPR        AS NET_PRICE,
-    -- 상태 필드
-    H.GBSTA,
-    H.ABGRU        AS HDR_REASON_REJECTION,
-    I.ABGRU        AS ITM_REASON_REJECTION
+    I.VRKME,
+    I.PSTYV,
+    I.ABGRU,
+    I.BZIRK, 
+-- 4대 지표
+    I.KWMENG,
+    COALESCE(C.CONFIRMED_QTY, 0)                        AS CONFIRMED_QTY,
+    COALESCE(G.GI_QTY, 0)                               AS GI_QTY,
+    G.GI_DATE,
+    COALESCE(B.BILL_QTY, 0)                             AS BILL_QTY,
+    COALESCE(B.BILL_AMT, 0)                             AS BILL_AMT, 
+-- 파생 지표
+    I.KWMENG - COALESCE(G.GI_QTY, 0)                   AS OPEN_DLV_QTY,
+    COALESCE(G.GI_QTY, 0) - COALESCE(B.BILL_QTY, 0)   AS UNBILLED_QTY, 
+-- (1) 납품진행상태
+    CASE
+        WHEN G.GI_DATE IS NULL THEN 'Not Started'
+        WHEN (I.KWMENG - COALESCE(G.GI_QTY, 0)) > 0
+             AND G.GI_DATE IS NOT NULL THEN 'In Progress'
+        ELSE 'Completed'
+    END                                                  AS DELIVERY_STATUS, 
+-- (2) 비교기준일
+    CASE
+        WHEN G.GI_DATE IS NOT NULL
+             AND (I.KWMENG - COALESCE(G.GI_QTY, 0)) <= 0 THEN G.GI_DATE
+        ELSE CURRENT_DATE
+    END                                                  AS COMPARISON_DATE, 
+-- (3) Lead-time (납품요청일 기준)
+    CASE
+        WHEN G.GI_DATE IS NOT NULL
+             AND (I.KWMENG - COALESCE(G.GI_QTY, 0)) <= 0
+            THEN DAYS_BETWEEN(H.VDATU, G.GI_DATE)
+        ELSE DAYS_BETWEEN(H.VDATU, CURRENT_DATE)
+    END                                                  AS RDD_LEADTIME_DAYS, 
+-- (4) RDD 준수여부
+    CASE
+        WHEN G.GI_DATE IS NOT NULL
+             AND (I.KWMENG - COALESCE(G.GI_QTY, 0)) <= 0
+            THEN CASE
+                     WHEN DAYS_BETWEEN(H.VDATU, G.GI_DATE) <= 0 THEN 'On-Time'
+                     ELSE 'Delay'
+                 END
+        ELSE CASE
+                 WHEN DAYS_BETWEEN(H.VDATU, CURRENT_DATE) <= 0 THEN 'On-Time'
+                 ELSE 'Delay'
+             END
+    END                                                  AS RDD_COMPLIANCE 
 
-FROM SAP_SD_VBAK AS H
-INNER JOIN SAP_SD_VBAP AS I
-    ON H.VBELN = I.VBELN
+-- 수주 헤더 (메인)
+FROM "SAP_SD_IL_2LIS_11_VAHDR" H 
 
-WHERE
-    -- 미결 오더 필터: 완전히 처리되지 않은 오더만
-    (H.GBSTA IS NULL OR H.GBSTA <> 'C')
-    AND H.ABGRU IS NULL
-    AND I.ABGRU IS NULL
+-- 수주 아이템
+    INNER JOIN "SAP_SD_IL_2LIS_11_VAITM" I
+        ON H.VBELN = I.VBELN AND I.ROCANCEL = '' 
+
+-- 확정수량 (납품일정행)
+    LEFT JOIN (
+        SELECT VBELN, POSNR,
+               SUM(BMENG) AS CONFIRMED_QTY
+        FROM "SAP_SD_IL_2LIS_11_VASCL"
+        WHERE ROCANCEL = ''
+        GROUP BY VBELN, POSNR
+    ) C ON I.VBELN = C.VBELN AND I.POSNR = C.POSNR 
+
+-- 출하수량 / 실출하일
+    LEFT JOIN (
+        SELECT VGBEL AS SO_VBELN,
+               VGPOS AS SO_POSNR,
+               SUM(LFIMG)       AS GI_QTY,
+               MAX(WADAT_IST)   AS GI_DATE
+        FROM "SAP_SD_IL_2LIS_12_VCITM"
+        WHERE ROCANCEL = '' AND VGTYP = 'C'
+        GROUP BY VGBEL, VGPOS
+    ) G ON I.VBELN = G.SO_VBELN AND I.POSNR = G.SO_POSNR 
+
+-- 청구수량 / 청구금액
+    LEFT JOIN (
+        SELECT I2.AUBEL AS SO_VBELN,
+               I2.AUPOS AS SO_POSNR,
+               SUM(CASE WHEN I2.AUTYP IN ('H','K') OR I2.VGTYP = 'T'
+                        THEN I2.FKIMG * -1 ELSE I2.FKIMG END) AS BILL_QTY,
+               SUM(CASE WHEN I2.AUTYP IN ('H','K') OR I2.VGTYP = 'T'
+                        THEN I2.NETWR * -1 ELSE I2.NETWR END) AS BILL_AMT
+        FROM "SAP_SD_IL_2LIS_13_VDITM" I2
+            INNER JOIN "SAP_SD_IL_2LIS_13_VDHDR" H2 ON I2.VBELN = H2.VBELN
+        WHERE I2.ROCANCEL = ''
+          AND H2.ROCANCEL = ''
+          AND H2.FKART NOT IN ('ZINB', 'ZVSB')
+          AND (I2.RFBSK IS NULL OR I2.RFBSK = '')
+          AND (I2.SFAKN IS NULL OR I2.SFAKN = '')
+          AND (I2.FKSTO IS NULL OR I2.FKSTO = '')
+          AND I2.AUTYP = 'C'
+        GROUP BY I2.AUBEL, I2.AUPOS
+    ) B ON I.VBELN = B.SO_VBELN AND I.POSNR = B.SO_POSNR
+
+-- 메인 WHERE절
+WHERE H.VKORG NOT IN ('7600', '7700')   -- 제외 판매조직
+  AND H.VBTYP = 'C'                     -- 수주 전표만
+  AND H.ROCANCEL = ''                   -- 취소 제외
+  AND (I.ABGRU = '' OR I.ABGRU IS NULL) -- 거부 제외
 ```
 
-> 💡 테이블 이름은 실제 BCT_SD Import된 오브젝트 이름에 맞게 수정하세요.
+> 핵심 필터 포인트:
+> - `ROCANCEL = ''` : 취소된 레코드 제외 (ODP 핵심 조건)
+> - `VBTYP = 'C'` : 수주 전표 유형만 포함
+> - `ABGRU = ''` : 거부되지 않은 아이템만
 
----
+### Step A-3. 필드 속성 설정 (Semantic Type)
 
-### Step A-3. 필드 속성 설정
+SQL 실행 후 Output 패널에서 각 필드의 Semantic Type을 설정합니다:
 
-SQL 실행 후 결과 필드에 Semantic Type을 설정합니다:
+| 필드 | Semantic Type | Business Name |
+|------|-------------|---------------|
+| `VBELN` | Key | 영업전표번호 |
+| `POSNR` | Key | 항목번호 |
+| `ERDAT` | Attribute (Date) | 생성일 |
+| `CalendarYearMonth` | Attribute | 생성년월 |
+| `VDATU` | Attribute (Date) | 납품요청일 |
+| `VKORG` | Attribute | 판매조직 |
+| `KUNNR` | Attribute | 주문자 |
+| `MATNR` | Attribute | 자재번호 |
+| `KWMENG` | Measure | 주문수량 |
+| `CONFIRMED_QTY` | Measure | 확정수량 |
+| `GI_QTY` | Measure | 출고수량 |
+| `BILL_QTY` | Measure | 청구수량 |
+| `BILL_AMT` | Measure | 청구금액 |
+| `OPEN_DLV_QTY` | Measure | 미납품수량 |
+| `UNBILLED_QTY` | Measure | 미청구수량 |
+| `RDD_LEADTIME_DAYS` | Measure | 리드타임(일) |
 
-| 필드 | Semantic Type | 설명 |
-|------|-------------|------|
-| `VBELN` | **Key** | 판매 오더 번호 (Primary Key) |
-| `POSNR` | **Key** | 판매 오더 항목 번호 (Primary Key) |
-| `KUNNR` | **Dimension** | 고객 (텍스트 없음 → 마스터 연결 예정) |
-| `VKORG` | **Dimension** | 판매 조직 |
-| `VTWEG` | **Dimension** | 유통 채널 |
-| `SPART` | **Dimension** | 제품군 |
-| `AUDAT` | **Dimension** | 오더 생성일 (Date) |
-| `MATNR` | **Dimension** | 자재 코드 |
-| `NET_AMOUNT` | **Measure** | 순 금액 |
-| `ORDER_QTY` | **Measure** | 오더 수량 |
-| `NET_PRICE` | **Measure** | 순 단가 |
+### Step A-4. Preview 및 저장
 
-```mermaid
-flowchart TD
-    A["SQL 실행\n(Run 버튼)"] --> B["결과 필드 확인"]
-    B --> C["각 필드 클릭\n→ Semantic Type 설정"]
-    C --> D["Key 필드 설정\nVBELN, POSNR"]
-    C --> E["Measure 필드 설정\nNET_AMOUNT 등"]
-    C --> F["Dimension 필드 설정\nKUNNR, MATNR 등"]
-```
-
----
-
-### Step A-4. 데이터 Preview 확인
-
-1. 화면 상단 **Preview** 버튼 클릭
-2. 미결 오더 데이터 확인
-3. 레코드 수 및 주요 필드 값 확인
-
----
-
-### Step A-5. 저장
-
-1. 화면 상단 **Save** 버튼 클릭 (또는 Ctrl+S)
-2. 저장 확인 메시지 확인
+1. **Preview** 버튼 클릭 → 데이터 확인
+2. **Save** 클릭 (Ctrl+S)
 
 ---
 
 ## Part B. Analytic Model 생성
 
-### Step B-1. Analytic Model 오브젝트 생성
+### Step B-1. Analytic Model 생성
 
-1. Data Builder → **New** 버튼 클릭
-2. **Analytic Model** 선택
-3. 기본 속성 설정:
+1. Data Builder → **New** → **Analytic Model**
+2. 기본 속성:
 
 | 속성 | 값 |
 |------|-----|
-| Business Name | `Open Order ODP Analytic Model` |
+| Business Name | `Open Order ODP AM` |
 | Technical Name | `WS_RL_OPEN_ORDER_ODP` |
-
----
 
 ### Step B-2. Fact Source 연결
 
 ```mermaid
-flowchart TD
-    A["Analytic Model 편집 화면"] --> B["+ Add Source 클릭\n(또는 Fact Source 드래그)"]
-    B --> C["WS_HL_SQLV_OPEN_ORDER_ODP\n검색 및 선택"]
-    C --> D["Fact Source로 추가됨"]
-    D --> E["자동으로 필드 목록\nMeasures/Dimensions 분류"]
+flowchart LR
+    FV["WS_HL_SQLV_OPEN_ORDER_ODP\n(SQL View / Fact)"]
+    AM["WS_RL_OPEN_ORDER_ODP\n(Analytic Model)"]
+    FV -->|"Add Fact Source"| AM
 ```
 
----
+Add Source 버튼 클릭 → `WS_HL_SQLV_OPEN_ORDER_ODP` 검색 후 선택
 
-### Step B-3. 측정값(Measures) 구성
+### Step B-3. Measures 구성
 
-Measures 패널에서 다음 측정값을 설정합니다:
+Fact View의 수치 필드가 자동으로 Measures로 인식됩니다.
 
-#### BASE 측정값
+**BASE Measures (집계 기본값: SUM)**
 
-| 측정값 ID | Business Name | 소스 필드 | 집계 |
-|----------|-------------|---------|------|
-| `NET_AMOUNT` | 미결 오더 금액 | `NET_AMOUNT` | SUM |
-| `ORDER_QTY` | 미결 오더 수량 | `ORDER_QTY` | SUM |
+| Measure | Business Name |
+|---------|--------------|
+| `KWMENG` | 주문수량 |
+| `CONFIRMED_QTY` | 확정수량 |
+| `GI_QTY` | 출고수량 |
+| `BILL_QTY` | 청구수량 |
+| `BILL_AMT` | 청구금액 |
+| `OPEN_DLV_QTY` | 미납품수량 |
+| `UNBILLED_QTY` | 미청구수량 |
 
-#### CALCULATED 측정값 추가
+**RESTRICTION Measures** (기간 비교 분석용)
 
-**오더 건수** (고유 오더 번호 기준):
+Variables(변수)와 연동되어 기간별 필터링을 수행합니다:
 
-1. Measures 패널 → **+ Add Measure** 클릭
-2. **Calculated Measure** 선택
-3. 설정:
+| Measure | 설명 |
+|---------|------|
+| `Measure_Value` | 전체 (필터 없음) |
+| `01_CURR_MONTH` | 당월 (`CalendarYearMonth = RV_CURR_MONTH`) |
+| `02_PRE_MONTH` | 전월 (`CalendarYearMonth = RV_PREVIOUS_MONTH`) |
+| `03_CURRENT_YEAR_CUMUL` | 당년 누계 (`RV_CURR_YEAR_JAN` ~ `RV_CURR_MONTH`) |
+| `04_PRE_YEAR_CUM` | 전년 누계 (`RV_PREVIOUS_YEAR_JAN` ~ `RV_PREVIOUS_YEAR_SAME_MONTH`) |
+| `05_PRE_SAME_MONTH` | 전년동기 (`CalendarYearMonth = RV_PREVIOUS_YEAR_SAME_MONTH`) |
 
-```
-Measure ID: ORDER_COUNT
-Business Name: 미결 오더 건수
-Formula: COUNT(DISTINCT VBELN)
-```
+### Step B-4. Variables (변수) 구성
 
-```mermaid
-graph LR
-    subgraph MEASURES["Measures 최종 구성"]
-        M1["NET_AMOUNT\n미결 오더 금액 (SUM)"]
-        M2["ORDER_QTY\n미결 오더 수량 (SUM)"]
-        M3["ORDER_COUNT\n미결 오더 건수 (COUNT DISTINCT)"]
-    end
-```
+RESTRICTION Measures에서 참조하는 Variables 6개:
 
----
+| Variable | 설명 | 기본값 |
+|----------|------|--------|
+| `P_MONTH` | 기준월 (사용자 입력) | `202501` |
+| `RV_PREVIOUS_MONTH` | 전월 (자동 계산) | `V_MONTH_COMPARISON` 참조 |
+| `RV_CURR_MONTH` | 당월 | `V_MONTH_COMPARISON` 참조 |
+| `RV_CURR_YEAR_JAN` | 당년 1월 | `V_MONTH_COMPARISON` 참조 |
+| `RV_PREVIOUS_YEAR_SAME_MONTH` | 전년동기월 | `V_MONTH_COMPARISON` 참조 |
+| `RV_PREVIOUS_YEAR_JAN` | 전년 1월 | `V_MONTH_COMPARISON` 참조 |
 
-### Step B-4. 차원(Dimensions) 구성
+> `P_MONTH`에 기준월(YYYYMM)을 입력하면 나머지 5개 변수가 자동으로 계산됩니다.
 
-Dimensions 패널에서 다음 차원을 활성화합니다:
+### Step B-5. Dimension 연결 (자재 마스터)
 
-| 차원 | 차원 활성화 여부 | Dimension View 연결 |
-|------|--------------|-----------------|
-| `KUNNR` | ✅ 활성화 | (선택) 고객 마스터 View |
-| `MATNR` | ✅ 활성화 | (선택) 자재 마스터 View |
-| `VKORG` | ✅ 활성화 | - |
-| `VTWEG` | ✅ 활성화 | - |
-| `SPART` | ✅ 활성화 | - |
-| `AUDAT` | ✅ 활성화 | (추천) 날짜 차원 연결 |
+`MATNR` 필드에 `SAP_LO_Product_V2` Dimension View를 연결하여 자재명 등 텍스트 속성을 사용할 수 있게 합니다.
 
----
+1. Dimensions 패널에서 `MATNR` 선택
+2. Association 설정: `MATNR` → `SAP_LO_Product_V2.Product`
 
-### Step B-5. 날짜 차원 연결 (AUDAT)
+### Step B-6. 저장 및 Preview
 
-`AUDAT` 필드에 날짜 계층(연/분기/월/일)을 추가합니다:
+1. **Save** 클릭
+2. **Preview** 클릭
+3. `P_MONTH` 변수 입력 (예: `202501`) → 데이터 확인
 
-```mermaid
-flowchart TD
-    A["AUDAT 차원 선택"] --> B["Dimension Type: Date"]
-    B --> C["날짜 계층 자동 생성\nYear > Quarter > Month > Day"]
-    C --> D["Preview에서 날짜 드릴다운 가능"]
-```
+**검증 포인트:**
 
----
-
-### Step B-6. 미결 오더 필터 추가 (선택 사항)
-
-Analytic Model 레벨에서 추가 필터를 설정합니다:
-
-1. 상단 **Filters** 탭 클릭 (또는 Filter 패널)
-2. **+ Add Filter** 클릭
-3. `GBSTA` 필드에 필터 추가: `≠ 'C'`
+| 확인 항목 | 기대 결과 |
+|----------|----------|
+| Structure Members 패널 | RESTRICTION 6개 표시 |
+| Variables 패널 | P_MONTH 등 6개 표시 |
+| Preview 데이터 | 당월/전월/누계 수치 비교 가능 |
 
 ---
 
-### Step B-7. 저장 및 Preview
-
-1. **Save** 버튼 클릭
-2. **Preview** 버튼 클릭하여 데이터 확인
-
-**검증 시나리오:**
-
-| 분석 | 확인 내용 |
-|------|----------|
-| 판매 조직별 미결 오더 금액 | 조직별 합계 금액 확인 |
-| 월별 미결 오더 건수 | 날짜 계층 드릴다운 확인 |
-| 고객별 미결 오더 수량 | 상위 고객 확인 |
-
----
-
-## 전체 흐름 정리
+## 전체 데이터 흐름
 
 ```mermaid
 flowchart LR
-    SAP_SD_VBAK["SAP_SD_VBAK\n(Local Table)"]
-    SAP_SD_VBAP["SAP_SD_VBAP\n(Local Table)"]
-    FV["WS_HL_SQLV_OPEN_ORDER_ODP\n(SQL View / Fact View)"]
-    AM["WS_RL_OPEN_ORDER_ODP\n(Analytic Model)"]
-    BI["SAP Analytics Cloud\n/ Excel"]
+    subgraph S4H["S/4HANA (HE4)"]
+        ODP1["2LIS_11_VAHDR\n수주헤더"]
+        ODP2["2LIS_11_VAITM\n수주아이템"]
+        ODP3["2LIS_11_VASCL\n납품일정행"]
+        ODP4["2LIS_12_VCITM\n납품아이템"]
+        ODP5["2LIS_13_VDITM\n청구아이템"]
+        ODP6["2LIS_13_VDHDR\n청구헤더"]
+    end
 
-    SAP_SD_VBAK & SAP_SD_VBAP -->|"JOIN + WHERE 필터\n미결 오더만"| FV
-    FV -->|"Fact Source"| AM
-    AM -->|"데이터 소비"| BI
+    subgraph DSP["SAP Datasphere"]
+        LT1["SAP_SD_IL_2LIS_11_VAHDR\n(Local Table)"]
+        LT2["SAP_SD_IL_2LIS_11_VAITM\n(Local Table)"]
+        LT3["SAP_SD_IL_2LIS_11_VASCL\n(Local Table)"]
+        LT4["SAP_SD_IL_2LIS_12_VCITM\n(Local Table)"]
+        LT5["SAP_SD_IL_2LIS_13_VDITM\n(Local Table)"]
+        LT6["SAP_SD_IL_2LIS_13_VDHDR\n(Local Table)"]
+        FV["WS_HL_SQLV_OPEN_ORDER_ODP\n(SQL View / Fact)"]
+        AM["WS_RL_OPEN_ORDER_ODP\n(Analytic Model)"]
+    end
 
-    style SAP_SD_VBAK fill:#0070F2,color:#fff
-    style SAP_SD_VBAP fill:#0070F2,color:#fff
-    style FV fill:#1A6640,color:#fff
-    style AM fill:#E8A000,color:#fff
-    style BI fill:#5A2D82,color:#fff
+    ODP1 -->|"Replication Flow"| LT1
+    ODP2 -->|"Replication Flow"| LT2
+    ODP3 -->|"Replication Flow"| LT3
+    ODP4 -->|"Replication Flow"| LT4
+    ODP5 -->|"Replication Flow"| LT5
+    ODP6 -->|"Replication Flow"| LT6
+
+    LT1 & LT2 & LT3 & LT4 & LT5 & LT6 -->|"JOIN + 집계"| FV
+    FV --> AM
 ```
 
 ---
 
 ## 완료 체크리스트
 
-```mermaid
-graph TD
-    A["Lab 4-A 체크리스트"] --> B["✅ WS_HL_SQLV_OPEN_ORDER_ODP SQL View 생성"]
-    A --> C["✅ Semantic Type: Fact 설정"]
-    A --> D["✅ Key/Measure/Dimension 필드 설정"]
-    A --> E["✅ WS_RL_OPEN_ORDER_ODP Analytic Model 생성"]
-    A --> F["✅ 측정값 3개 구성 (금액/수량/건수)"]
-    A --> G["✅ 차원 구성 및 날짜 계층 설정"]
-    A --> H["✅ Preview로 데이터 확인"]
-```
+- [ ] `WS_HL_SQLV_OPEN_ORDER_ODP` SQL View 생성 (Semantic Usage: Fact)
+- [ ] SQL 정상 실행 확인 (Run 버튼)
+- [ ] Key/Measure/Attribute Semantic Type 설정
+- [ ] Preview 데이터 확인
+- [ ] `WS_RL_OPEN_ORDER_ODP` Analytic Model 생성
+- [ ] Fact Source 연결 확인
+- [ ] Structure Members (RESTRICTION 6개) 표시 확인
+- [ ] Variables (6개) 표시 확인
+- [ ] P_MONTH 입력 후 Preview 정상 동작 확인
 
 ---
 
-## 다음 단계
-
-✅ Lab 4-A 완료 후 → **[Lab 4-B: CDS View 기반 모델 개발](./lab4b-cdsv-fact-view-am.md)** 진행
+다음 단계 → **[Lab 4-B: CDS View 기반 모델 개발](./lab4b-cdsv-fact-view-am.md)**

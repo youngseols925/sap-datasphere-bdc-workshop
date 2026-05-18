@@ -2,28 +2,29 @@
 
 ## 목표
 
-S/4HANA **CDS View**를 소스로 하는 Remote Table을 기반으로 **미결 판매 오더 Fact View**와 **Analytic Model**을 개발합니다.
-Lab 4-A(ODP 방식)와 비교하여 두 방식의 차이를 이해합니다.
+S/4HANA **CDS View**를 Remote Table로 직접 접근하여 **미결 판매 오더 Fact View**와 **Analytic Model**을 개발합니다.
+Lab 4-A(ODP 방식)와 동일한 비즈니스 로직을 구현하며, 두 방식의 아키텍처 차이를 이해합니다.
 
 **소요 시간**: 약 60분
 
 ---
 
-## 개발 목표 오브젝트
+## 개발 오브젝트
 
-| 오브젝트 | ID | 설명 |
-|---------|-----|------|
-| SQL View (Fact View) | `WS_HL_SQLV_OPEN_ORDER_CDSV` | CDS View 기반 미결 오더 Fact View |
-| Analytic Model | `WS_RL_OPEN_ORDER_CDSV` | CDS View 기반 미결 오더 분석 모델 |
+| 오브젝트 | Technical Name | 소스 |
+|---------|----------------|------|
+| SQL View (Fact View) | `WS_HL_SQLV_OPEN_ORDER_CDSV` | Remote Tables (CDS View) |
+| Analytic Model | `WS_RL_OPEN_ORDER_CDSV` | `WS_HL_SQLV_OPEN_ORDER_CDSV` |
 
 ---
 
 ## ODP 방식 vs CDS View 방식 비교
 
 ```mermaid
-graph TB
+graph LR
     subgraph ODP["Lab 4-A: ODP 방식"]
-        O1["S/4HANA ODP\n(2LIS_11_VAHDR)"]
+        direction TB
+        O1["S/4HANA\nODP DataSource\n(2LIS_xx_xxx)"]
         O2["Replication Flow\n(데이터 복제)"]
         O3["Local Table\n(물리 저장)"]
         O4["WS_HL_SQLV_OPEN_ORDER_ODP"]
@@ -31,330 +32,402 @@ graph TB
     end
 
     subgraph CDS["Lab 4-B: CDS View 방식"]
-        C1["S/4HANA CDS View\n(I_SalesOrder)"]
+        direction TB
+        C1["S/4HANA\nCDS View\n(C_SalesDocumentItemDEX_1 외)"]
         C2["Remote Table\n(가상 접근, 저장 없음)"]
         C3["WS_HL_SQLV_OPEN_ORDER_CDSV"]
         C1 --> C2 --> C3
     end
-
-    subgraph DIFF["방식 차이"]
-        D1["ODP: 복제 → 로컬 저장\n성능 ↑ / 실시간 ↓"]
-        D2["CDS: 실시간 접근\n실시간 ↑ / S4H 부하 가능"]
-    end
-
-    style ODP fill:#1A6640,color:#fff
-    style CDS fill:#0070F2,color:#fff
 ```
+
+| 비교 항목 | ODP (Lab 4-A) | CDS View (Lab 4-B) |
+|----------|--------------|-------------------|
+| 데이터 저장 | Local Table (물리 복제) | Remote Table (가상 접근) |
+| 데이터 신선도 | 복제 주기에 따라 지연 | 실시간 (S/4HANA 직접 조회) |
+| 쿼리 성능 | 빠름 (로컬 처리) | S/4HANA 부하에 따라 다름 |
+| 소스 테이블 수 | 6개 (헤더/아이템 분리) | 5개 (일부 통합 CDS View) |
+| 핵심 차이 | `ROCANCEL=''` 필터 | `SDDocumentCategory='C'` 필터 |
 
 ---
 
 ## 소스 CDS View 구조
 
-S/4HANA의 표준 CDS View를 활용합니다:
+CDS View는 ODP DataSource와 달리 S/4HANA에서 이미 통합/가공된 데이터를 제공합니다.
 
 ```mermaid
 erDiagram
-    I_SalesOrder ||--o{ I_SalesOrderItem : "1:N"
-    I_SalesOrder {
-        string SalesOrder PK "판매 오더 번호"
-        string SoldToParty "판매처 (고객)"
-        string SalesOrganization "판매 조직"
-        string DistributionChannel "유통 채널"
+    SAP_SD_IL_C_SALESDOCUMENTITEMDEX_1 ||--o{ SAP_SD_IL_C_SALESDOCUMENTSCHEDLINEDEX_1 : "SalesDocument+Item"
+    SAP_SD_IL_C_SALESDOCUMENTITEMDEX_1 ||--o{ SAP_SD_IL_I_DELIVERYDOCUMENTITEM : "참조"
+    SAP_SD_IL_I_DELIVERYDOCUMENTITEM }o--|| SAP_SD_IL_I_DELIVERYDOCUMENT : "DeliveryDocument"
+    SAP_SD_IL_C_SALESDOCUMENTITEMDEX_1 ||--o{ SAP_SD_IL_C_BILLINGDOCITEMBASICDEX_1 : "참조"
+
+    SAP_SD_IL_C_SALESDOCUMENTITEMDEX_1 {
+        string SalesDocument PK "수주번호"
+        string SalesDocumentItem PK "수주항목"
+        string SalesOrganization "판매조직"
+        string SoldToParty "주문자"
+        string Material "자재번호"
         string Division "제품군"
-        date SalesOrderDate "오더 생성일"
-        decimal NetAmount "순 금액"
-        string OverallSDProcessStatus "전체 처리 상태"
-        string RejectionReason "거절 사유"
+        date SalesDocumentDate "수주일자"
+        date RequestedDeliveryDate "납품요청일(RDD)"
+        decimal OrderQuantity "주문수량"
+        string SDDocumentCategory "전표범주(C=수주)"
+        string SalesDocumentRjcnReason "거부사유"
     }
-    I_SalesOrderItem {
-        string SalesOrder PK,FK "판매 오더 번호"
-        string SalesOrderItem PK "항목 번호"
-        string Material "자재 코드"
-        decimal OrderQuantity "오더 수량"
-        string OrderQuantityUnit "단위"
-        decimal NetPriceAmount "순 단가"
-        string RejectionReason "항목 거절 사유"
+    SAP_SD_IL_C_SALESDOCUMENTSCHEDLINEDEX_1 {
+        string SalesDocument FK "수주번호"
+        string SalesDocumentItem FK "수주항목"
+        decimal ConfdOrderQtyByMatlAvailCheck "확정수량"
+        string IsConfirmedDelivSchedLine "확정여부(X)"
+    }
+    SAP_SD_IL_I_DELIVERYDOCUMENTITEM {
+        string DeliveryDocument FK "납품번호"
+        string ReferenceSDDocument FK "참조수주번호"
+        string ReferenceSDDocumentItem FK "참조수주항목"
+        decimal ActualDeliveredQtyInBaseUnit "출고수량"
+        string GoodsMovementStatus "출고상태(C=완료)"
+        string ReferenceSDDocumentCategory "참조전표범주(C)"
+    }
+    SAP_SD_IL_I_DELIVERYDOCUMENT {
+        string DeliveryDocument PK "납품번호"
+        date ActualGoodsMovementDate "실제출고일"
+    }
+    SAP_SD_IL_C_BILLINGDOCITEMBASICDEX_1 {
+        string SalesDocument FK "참조수주번호"
+        string SalesDocumentItem FK "참조수주항목"
+        decimal BillingQuantityInBaseUnit "청구수량"
+        decimal NetAmount "청구금액"
+        string BillingDocumentCategory "청구전표범주"
+        string SalesSDDocumentCategory "참조전표범주(C=수주)"
+        string BillingDocumentIsCancelled "취소여부"
     }
 ```
 
 ---
 
-## Part A. Remote Table 등록
+## Part A. Fact View 생성
 
-CDS View를 Remote Table로 Datasphere에 등록합니다.
-
-### Step A-1. Remote Table 생성
-
-1. Data Builder → **New** 버튼 클릭
-2. **Remote Table** 선택
-3. Connection 선택: `HE4_S4H`
-
-```mermaid
-flowchart TD
-    A["New → Remote Table"] --> B["Connection 선택\nHE4_S4H"]
-    B --> C["소스 오브젝트 검색\nI_SalesOrder 입력"]
-    C --> D["CDS View 목록에서 선택"]
-    D --> E["Remote Table 생성 완료"]
-```
-
-### Step A-2. I_SalesOrder Remote Table 등록
-
-1. Connection `HE4_S4H` 선택
-2. Source Object 검색: `I_SalesOrder`
-3. CDS View 선택 → **Create Remote Table** 클릭
-
-### Step A-3. I_SalesOrderItem Remote Table 등록
-
-동일 방법으로 `I_SalesOrderItem` Remote Table 생성
-
-> 💡 Remote Table은 S/4HANA의 데이터를 가상으로 접근합니다. 데이터를 로컬에 저장하지 않습니다.
-
----
-
-## Part B. Fact View 생성
-
-### Step B-1. SQL View 오브젝트 생성
+### Step A-1. SQL View 생성
 
 1. Data Builder → **New** → **SQL View**
 2. 기본 속성 설정:
 
 | 속성 | 값 |
 |------|-----|
-| Business Name | `Open Order CDS View Fact View` |
+| Business Name | `Open Order CDSV Fact View` |
 | Technical Name | `WS_HL_SQLV_OPEN_ORDER_CDSV` |
-| Semantic Type | `Fact` |
+| Semantic Usage | `Fact` |
 
----
+### Step A-2. SQL 작성
 
-### Step B-2. SQL 작성
-
-CDS View 기반 SQL:
+SQL Editor에 아래 쿼리를 입력합니다.
 
 ```sql
 SELECT
-    -- 키 필드
-    H.SALESORDER           AS VBELN,
-    I.SALESORDERITEM       AS POSNR,
-    -- 차원 필드 (Dimensions)
-    H.SOLDTOPARTY          AS KUNNR,
-    H.SALESORGANIZATION    AS VKORG,
-    H.DISTRIBUTIONCHANNEL  AS VTWEG,
-    H.DIVISION             AS SPART,
-    H.SALESORDERDATE       AS AUDAT,
-    I.MATERIAL             AS MATNR,
-    I.ORDERQUANTITYUNIT    AS MEINS,
-    -- 측정값 (Measures)
-    H.NETAMOUNT            AS NET_AMOUNT,
-    I.ORDERQUANTITY        AS ORDER_QTY,
-    I.NETPRICEAMOUNT       AS NET_PRICE,
-    -- 상태 필드
-    H.OVERALLSDPROCESSSTATUS AS GBSTA,
-    H.REJECTIONREASON      AS HDR_REASON_REJECTION,
-    I.REJECTIONREASON      AS ITM_REASON_REJECTION
+-- 헤더
+    I.SalesDocument,                                                 
+    TO_DATE(I.SalesDocumentDate)                        AS ERDAT,
+    TO_VARCHAR(I.SalesDocumentDate, 'YYYYMM')           AS CalendarYearMonth,
+    TO_DATE(I.RequestedDeliveryDate)                    AS VDATU,       
+    I.SalesOrganization,                                              
+    I.BillingCompanyCode,                                            
+    I.DistributionChannel,                                           
+    I.SalesDocumentType,                                             
+    I.SoldToParty,                                                    
+    I.SalesOffice,                                                    
+    I.SalesGroup,                                                     
+    I.TransactionCurrency,                                             
+    I.SalesOrganizationCurrency,                                        
+    I.SDDocumentCategory,                                               
+-- 아이템 
+    I.SalesDocumentItem,                                               
+    I.Material,                                                       
+    I.MaterialGroup,                                                  
+    I.Division,                                                       
+    I.Plant,                                                          
+    I.BaseUnit,                                                       
+    I.OrderQuantityUnit,                                             
+    I.SalesDocumentItemCategory,                                      
+    I.SalesDocumentRjcnReason,                                        
+    I.SalesDistrict,                                                  
+-- 4대 지표
+    I.OrderQuantity                                     AS KWMENG,     
+    COALESCE(C.CONFIRMED_QTY, 0)                        AS CONFIRMED_QTY,
+    COALESCE(G.GI_QTY, 0)                               AS GI_QTY,
+    G.GI_DATE,
+    COALESCE(B.BILL_QTY, 0)                             AS BILL_QTY,
+    COALESCE(B.BILL_AMT, 0)                             AS BILL_AMT,
 
-FROM I_SALESORDER AS H
-INNER JOIN I_SALESORDERITEM AS I
-    ON H.SALESORDER = I.SALESORDER
+-- 파생 지표
+    I.OrderQuantity - COALESCE(G.GI_QTY, 0)            AS OPEN_DLV_QTY,
+    COALESCE(G.GI_QTY, 0) - COALESCE(B.BILL_QTY, 0)   AS UNBILLED_QTY,
 
-WHERE
-    -- 미결 오더 필터: 완전히 처리되지 않은 오더만
-    (H.OVERALLSDPROCESSSTATUS IS NULL
-        OR H.OVERALLSDPROCESSSTATUS <> 'C')
-    AND H.REJECTIONREASON IS NULL
-    AND I.REJECTIONREASON IS NULL
+-- (1) 납품진행상태
+    CASE
+        WHEN G.GI_DATE IS NULL THEN 'Not Started'
+        WHEN (I.OrderQuantity - COALESCE(G.GI_QTY, 0)) > 0
+             AND G.GI_DATE IS NOT NULL THEN 'In Progress'
+        ELSE 'Completed'
+    END AS DELIVERY_STATUS,
+
+-- (2) 비교기준일
+    CASE
+        WHEN G.GI_DATE IS NOT NULL
+             AND (I.OrderQuantity - COALESCE(G.GI_QTY, 0)) <= 0 THEN G.GI_DATE
+        ELSE CURRENT_DATE
+    END AS COMPARISON_DATE,
+
+-- (3) Lead-time (납품요청일 기준)
+    CASE
+        WHEN G.GI_DATE IS NOT NULL
+             AND (I.OrderQuantity - COALESCE(G.GI_QTY, 0)) <= 0
+            THEN DAYS_BETWEEN(TO_DATE(I.RequestedDeliveryDate), G.GI_DATE)
+        ELSE DAYS_BETWEEN(TO_DATE(I.RequestedDeliveryDate), CURRENT_DATE)
+    END AS RDD_LEADTIME_DAYS,
+
+-- (4) RDD 준수여부
+    CASE
+        WHEN G.GI_DATE IS NOT NULL
+             AND (I.OrderQuantity - COALESCE(G.GI_QTY, 0)) <= 0
+            THEN CASE
+                     WHEN DAYS_BETWEEN(TO_DATE(I.RequestedDeliveryDate), G.GI_DATE) <= 0 THEN 'On-Time'
+                     ELSE 'Delay'
+                 END
+        ELSE CASE
+                 WHEN DAYS_BETWEEN(TO_DATE(I.RequestedDeliveryDate), CURRENT_DATE) <= 0 THEN 'On-Time'
+                 ELSE 'Delay'
+             END
+    END AS RDD_COMPLIANCE
+
+-- 수주 아이템 (헤더+아이템 통합)
+FROM "SAP_SD_IL_C_SALESDOCUMENTITEMDEX_1" I
+
+-- 확정수량 (납품일정행 집계)
+-- ODP 대응: 2LIS_11_VASCL WHERE ROCANCEL=''
+-- CDS: IsConfirmedDelivSchedLine='X' 만 필터
+LEFT JOIN (
+    SELECT SalesDocument,
+           SalesDocumentItem,
+           SUM(ConfdOrderQtyByMatlAvailCheck) AS CONFIRMED_QTY 
+    FROM "SAP_SD_IL_C_SALESDOCUMENTSCHEDLINEDEX_1"
+    WHERE IsConfirmedDelivSchedLine = 'X'
+    GROUP BY SalesDocument, SalesDocumentItem
+) C ON I.SalesDocument = C.SalesDocument
+   AND I.SalesDocumentItem = C.SalesDocumentItem
+
+-- 출고수량 / 실제출고일
+-- ODP 대응: 2LIS_12_VCITM WHERE ROCANCEL='' AND VGTYP='C'
+LEFT JOIN (
+    SELECT DI.ReferenceSDDocument              AS SO_VBELN,
+           DI.ReferenceSDDocumentItem          AS SO_POSNR,
+           SUM(DI.ActualDeliveredQtyInBaseUnit) AS GI_QTY,
+           MAX(DH.ActualGoodsMovementDate)     AS GI_DATE
+    FROM "SAP_SD_IL_I_DELIVERYDOCUMENTITEM" DI
+    INNER JOIN "SAP_SD_IL_I_DELIVERYDOCUMENT" DH
+        ON DI.DeliveryDocument = DH.DeliveryDocument
+    WHERE DI.ReferenceSDDocumentCategory = 'C'  -- ODP: VGTYP='C'
+      AND DI.GoodsMovementStatus = 'C'           -- 출고 완료
+    GROUP BY DI.ReferenceSDDocument, DI.ReferenceSDDocumentItem
+) G ON I.SalesDocument = G.SO_VBELN
+   AND I.SalesDocumentItem = G.SO_POSNR
+
+-- 청구수량 / 청구금액
+-- ODP 대응: 2LIS_13_VDITM + 2LIS_13_VDHDR WHERE ROCANCEL='' AND AUTYP='C'
+LEFT JOIN (
+    SELECT SalesDocument,
+           SalesDocumentItem,
+           SUM(
+               CASE
+                   WHEN BillingDocumentCategory IN ('H', 'K')
+                     OR ReferenceSDDocumentCategory = 'T'
+                   THEN BillingQuantityInBaseUnit * -1
+                   ELSE BillingQuantityInBaseUnit
+               END
+           ) AS BILL_QTY,
+           SUM(
+               CASE
+                   WHEN BillingDocumentCategory IN ('H', 'K')
+                     OR ReferenceSDDocumentCategory = 'T'
+                   THEN NetAmount * -1
+                   ELSE NetAmount
+               END
+           ) AS BILL_AMT
+    FROM "SAP_SD_IL_C_BILLINGDOCITEMBASICDEX_1"
+    WHERE BillingDocumentIsCancelled = ''           -- ODP: ROCANCEL=''
+      AND BillingDocumentType NOT IN ('ZINB', 'ZVSB')
+      AND SalesSDDocumentCategory = 'C'             -- ODP: AUTYP='C'
+    GROUP BY SalesDocument, SalesDocumentItem
+) B ON I.SalesDocument = B.SalesDocument
+   AND I.SalesDocumentItem = B.SalesDocumentItem
+
+-- 메인 WHERE절
+WHERE I.SalesOrganization NOT IN ('7600', '7700')             -- 제외 판매조직
+  AND I.SDDocumentCategory = 'C'                              -- 수주 전표만 (ODP: VBTYP='C')
+  AND (I.SalesDocumentRjcnReason = '' OR I.SalesDocumentRjcnReason IS NULL)  -- 거부 제외
 ```
 
-> ⚠️ **참고**: CDS View 필드명은 ODP 필드명과 다릅니다. 위 SQL은 ODP 방식과 동일한 컬럼 구조(별칭)로 통일했습니다.
+> ODP vs CDS View 핵심 필터 차이:
+> - ODP: `ROCANCEL = ''` (취소 레코드 제외)
+> - CDS: `SDDocumentCategory = 'C'` (수주 전표 필터), `BillingDocumentIsCancelled = ''`
+
+### Step A-3. 필드 속성 설정 (Semantic Type)
+
+| 필드 | Semantic Type | ODP 대응 필드 |
+|------|-------------|--------------|
+| `SalesDocument` | Key | `VBELN` |
+| `SalesDocumentItem` | Key | `POSNR` |
+| `ERDAT` | Attribute (Date) | `ERDAT` |
+| `CalendarYearMonth` | Attribute | `CalendarYearMonth` |
+| `VDATU` | Attribute (Date) | `VDATU` |
+| `SalesOrganization` | Attribute | `VKORG` |
+| `SoldToParty` | Attribute | `KUNNR` |
+| `Material` | Attribute | `MATNR` |
+| `KWMENG` | Measure | `KWMENG` |
+| `CONFIRMED_QTY` | Measure | `CONFIRMED_QTY` |
+| `GI_QTY` | Measure | `GI_QTY` |
+| `BILL_QTY` | Measure | `BILL_QTY` |
+| `BILL_AMT` | Measure | `BILL_AMT` |
+| `OPEN_DLV_QTY` | Measure | `OPEN_DLV_QTY` |
+| `UNBILLED_QTY` | Measure | `UNBILLED_QTY` |
+| `RDD_LEADTIME_DAYS` | Measure | `RDD_LEADTIME_DAYS` |
+
+### Step A-4. Preview 및 저장
+
+1. **Preview** 클릭 → 데이터 확인 (S/4HANA 실시간 쿼리)
+2. **Save** 클릭
+
+> Remote Table 기반이므로 Preview 속도가 Local Table보다 느릴 수 있습니다.
 
 ---
 
-### Step B-3. 필드 속성 설정
+## Part B. Analytic Model Import
 
-Lab 4-A와 동일한 방법으로 필드 Semantic Type 설정:
+### Step B-1. JSON 파일 Import
 
-| 필드 | Semantic Type |
-|------|-------------|
-| `VBELN` | **Key** |
-| `POSNR` | **Key** |
-| `KUNNR`, `VKORG`, `VTWEG`, `SPART`, `AUDAT`, `MATNR` | **Dimension** |
-| `NET_AMOUNT`, `ORDER_QTY`, `NET_PRICE` | **Measure** |
+AM을 직접 생성하는 대신, 미리 준비된 CSN JSON을 Import하여 Variables와 RESTRICTION Measures가 포함된 AM을 사용합니다.
 
----
+1. Data Builder → 우상단 **Import** 버튼(↓ 아이콘) 클릭
+2. **Import Objects from CSN/JSON File** 선택
+3. 파일 선택: `WS_RL_OPEN_ORDER_CDSV.json`
+4. Import 완료 후 `WS_RL_OPEN_ORDER_CDSV` AM 오픈
 
-### Step B-4. Data Preview 확인
+### Step B-2. AM 구조 확인
+
+Import된 AM의 구조를 확인합니다:
 
 ```mermaid
-flowchart TD
-    A["Preview 클릭"] --> B{"데이터 로드"}
-    B -->|"성공"| C["실시간 S/4HANA 데이터 확인\n(Remote Table 가상 접근)"]
-    B -->|"느림/오류"| D["네트워크/커넥션 상태 확인\n강사 문의"]
-    C --> E["ODP 방식 결과와 비교"]
+graph TB
+    FV["WS_HL_SQLV_OPEN_ORDER_CDSV\n(Fact View)"]
+
+    subgraph AM["WS_RL_OPEN_ORDER_CDSV (Analytic Model)"]
+        direction TB
+        subgraph MEASURES["Measures"]
+            BASE["BASE Measures\nKWMENG / CONFIRMED_QTY / GI_QTY\nBILL_QTY / BILL_AMT\nOPEN_DLV_QTY / UNBILLED_QTY"]
+            REST["RESTRICTION Measures\nMeasure_Value\n01_CURR_MONTH (당월)\n02_PRE_MONTH (전월)\n03_CURRENT_YEAR_CUMUL (당년누계)\n04_PRE_YEAR_CUM (전년누계)\n05_PRE_SAME_MONTH (전년동기)"]
+        end
+        subgraph VARS["Variables"]
+            P["P_MONTH\n기준월 (사용자 입력)"]
+            RV["RV_CURR_MONTH\nRV_PREVIOUS_MONTH\nRV_CURR_YEAR_JAN\nRV_PREVIOUS_YEAR_JAN\nRV_PREVIOUS_YEAR_SAME_MONTH\n(자동 계산)"]
+        end
+        subgraph DIMS["Dimensions"]
+            D["SalesOrganization / SoldToParty\nMaterial / Division / Plant\nCalendarYearMonth / VDATU 등"]
+        end
+    end
+
+    FV --> AM
 ```
 
-> 💡 **성능 차이 체감**: Remote Table은 S/4HANA 쿼리 성능에 따라 Local Table보다 느릴 수 있습니다.
+**Structure Members 패널 확인:**
+- `Measure_Value`, `01_CURR_MONTH`, `02_PRE_MONTH`, `03_CURRENT_YEAR_CUMUL`, `04_PRE_YEAR_CUM`, `05_PRE_SAME_MONTH` 표시 여부 확인
 
----
+**Variables 패널 확인:**
+- `P_MONTH` 및 5개 `RV_*` 변수 표시 여부 확인
 
-### Step B-5. 저장
+### Step B-3. Preview 실행
 
-**Save** 버튼 클릭하여 저장
-
----
-
-## Part C. Analytic Model 생성
-
-### Step C-1. Analytic Model 생성
-
-1. Data Builder → **New** → **Analytic Model**
-2. 기본 속성 설정:
-
-| 속성 | 값 |
-|------|-----|
-| Business Name | `Open Order CDS View Analytic Model` |
-| Technical Name | `WS_RL_OPEN_ORDER_CDSV` |
-
----
-
-### Step C-2. Fact Source 연결
-
-`WS_HL_SQLV_OPEN_ORDER_CDSV` 를 Fact Source로 추가
-
----
-
-### Step C-3. 측정값/차원 구성
-
-Lab 4-A (`WS_RL_OPEN_ORDER_ODP`)와 **동일한 구조**로 구성:
-
-| 구성 요소 | 내용 |
-|----------|------|
-| Measures | NET_AMOUNT(SUM), ORDER_QTY(SUM), ORDER_COUNT(COUNT DISTINCT) |
-| Dimensions | KUNNR, MATNR, VKORG, VTWEG, SPART, AUDAT(날짜 계층) |
-
-> 💡 동일한 구조로 만들어 두 AM을 **비교 분석**할 수 있도록 합니다.
-
----
-
-### Step C-4. 저장 및 Preview
-
-1. **Save** 클릭
-2. **Preview** 클릭하여 데이터 확인
+1. **Preview** 클릭
+2. Variables 입력 창에서 `P_MONTH` 기준월 입력 (예: `202501`)
+3. 데이터 확인
 
 ---
 
 ## ODP vs CDS View 결과 비교
 
-두 Analytic Model을 실행하여 결과를 비교해봅니다:
+두 AM을 각각 열어 동일한 기준월로 비교합니다:
 
-```mermaid
-graph LR
-    subgraph ODP_AM["WS_RL_OPEN_ORDER_ODP\n(ODP 기반)"]
-        O_M["측정값 결과"]
-        O_D["차원 데이터"]
-    end
-
-    subgraph CDS_AM["WS_RL_OPEN_ORDER_CDSV\n(CDS View 기반)"]
-        C_M["측정값 결과"]
-        C_D["차원 데이터"]
-    end
-
-    subgraph COMPARE["비교 포인트"]
-        direction TB
-        P1["💰 금액 합계 일치 여부"]
-        P2["📦 건수 일치 여부"]
-        P3["⚡ 쿼리 속도 차이"]
-    end
-
-    ODP_AM & CDS_AM --> COMPARE
-```
-
-**비교 체크리스트:**
-
-| 비교 항목 | ODP 결과 | CDS View 결과 | 일치 여부 |
-|----------|---------|-------------|---------|
-| 미결 오더 총 금액 | | | |
-| 미결 오더 건수 | | | |
+| 비교 항목 | `WS_RL_OPEN_ORDER_ODP` | `WS_RL_OPEN_ORDER_CDSV` | 일치 여부 |
+|----------|----------------------|------------------------|---------|
+| 당월 주문수량 합계 | | | |
+| 전월 주문수량 합계 | | | |
+| 당년 누계 주문수량 | | | |
 | 쿼리 응답 속도 | | | |
 
-> 💡 데이터 복제 시점에 따라 결과가 다를 수 있습니다.
+> 복제 시점 차이, 필터 로직 차이(ROCANCEL vs SDDocumentCategory)로 인해 수치가 다를 수 있습니다.
 
 ---
 
-## 전체 흐름 정리
+## 전체 데이터 흐름
 
 ```mermaid
 flowchart LR
-    subgraph SRC["S/4HANA (실시간)"]
-        CDS_H["I_SalesOrder\n(CDS View)"]
-        CDS_I["I_SalesOrderItem\n(CDS View)"]
+    subgraph S4H["S/4HANA (HE4) - 실시간"]
+        CDS1["C_SalesDocumentItemDEX_1\n(수주 헤더+아이템 통합)"]
+        CDS2["C_SalesDocumentSchedLineDEX_1\n(납품일정행)"]
+        CDS3["I_DeliveryDocumentItem\n(납품 아이템)"]
+        CDS4["I_DeliveryDocument\n(납품 헤더)"]
+        CDS5["C_BillingDocItemBasicDEX_1\n(청구 아이템)"]
     end
 
-    subgraph DSP["SAP Datasphere DSPWSxx"]
-        RT_H["Remote Table\nI_SalesOrder"]
-        RT_I["Remote Table\nI_SalesOrderItem"]
-        FV["WS_HL_SQLV_OPEN_ORDER_CDSV\n(SQL View / Fact View)"]
+    subgraph DSP["SAP Datasphere"]
+        RT1["Remote Table\nSAP_SD_IL_C_SALESDOCUMENTITEMDEX_1"]
+        RT2["Remote Table\nSAP_SD_IL_C_SALESDOCUMENTSCHEDLINEDEX_1"]
+        RT3["Remote Table\nSAP_SD_IL_I_DELIVERYDOCUMENTITEM"]
+        RT4["Remote Table\nSAP_SD_IL_I_DELIVERYDOCUMENT"]
+        RT5["Remote Table\nSAP_SD_IL_C_BILLINGDOCITEMBASICDEX_1"]
+        FV["WS_HL_SQLV_OPEN_ORDER_CDSV\n(SQL View / Fact)"]
         AM["WS_RL_OPEN_ORDER_CDSV\n(Analytic Model)"]
     end
 
-    CDS_H -->|"Virtual Access\n(저장 없음)"| RT_H
-    CDS_I -->|"Virtual Access\n(저장 없음)"| RT_I
-    RT_H & RT_I -->|"JOIN + 미결 필터"| FV
-    FV --> AM
+    CDS1 -->|"Virtual Access"| RT1
+    CDS2 -->|"Virtual Access"| RT2
+    CDS3 -->|"Virtual Access"| RT3
+    CDS4 -->|"Virtual Access"| RT4
+    CDS5 -->|"Virtual Access"| RT5
 
-    style SRC fill:#0070F2,color:#fff
-    style DSP fill:#1A6640,color:#fff
+    RT1 & RT2 & RT3 & RT4 & RT5 -->|"JOIN + 집계"| FV
+    FV --> AM
 ```
 
 ---
 
 ## 완료 체크리스트
 
-```mermaid
-graph TD
-    A["Lab 4-B 체크리스트"] --> B["✅ I_SalesOrder Remote Table 등록"]
-    A --> C["✅ I_SalesOrderItem Remote Table 등록"]
-    A --> D["✅ WS_HL_SQLV_OPEN_ORDER_CDSV SQL View 생성"]
-    A --> E["✅ Semantic Type: Fact 설정"]
-    A --> F["✅ WS_RL_OPEN_ORDER_CDSV Analytic Model 생성"]
-    A --> G["✅ ODP 방식과 결과 비교"]
-```
+- [ ] `WS_HL_SQLV_OPEN_ORDER_CDSV` SQL View 생성 (Semantic Usage: Fact)
+- [ ] SQL 정상 실행 확인
+- [ ] Key/Measure/Attribute Semantic Type 설정
+- [ ] Preview 데이터 확인 (실시간 S/4HANA 조회)
+- [ ] `WS_RL_OPEN_ORDER_CDSV` AM import 완료
+- [ ] Structure Members (RESTRICTION 6개) 표시 확인
+- [ ] Variables (P_MONTH 등 6개) 표시 확인
+- [ ] P_MONTH 입력 후 Preview 정상 동작 확인
+- [ ] ODP AM과 수치 비교
 
 ---
 
-## 워크샵 마무리 정리
+## 워크샵 마무리
 
-```mermaid
-journey
-    title 워크샵 학습 여정
-    section Part 1 표준 컨텐츠
-      BCT_SD Import: 5: 참가자
-      Replication Flow: 5: 참가자
-      표준 AM 확인: 5: 참가자
-    section Part 2 커스텀 모델링
-      ODP Fact View: 5: 참가자
-      ODP Analytic Model: 5: 참가자
-      CDS View Fact View: 5: 참가자
-      CDS View Analytic Model: 5: 참가자
-```
+오늘 학습한 내용:
 
-### 오늘 배운 것
+| Lab | 학습 내용 |
+|-----|----------|
+| Lab 1 | Content Network에서 표준 패키지(BCT_SD) Import |
+| Lab 2 | Replication Flow로 S/4HANA ODP 데이터 복제 |
+| Lab 3 | 표준 Analytic Model 구조 탐색 및 데이터 분석 |
+| Lab 4-A | ODP 기반 SQL View + Analytic Model 직접 개발 |
+| Lab 4-B | CDS View 기반 SQL View + Analytic Model 개발, ODP 방식과 비교 |
 
-| 학습 내용 | 관련 Lab |
-|----------|---------|
-| Content Network에서 표준 패키지 Import | Lab 1 |
-| Replication Flow로 S/4HANA 데이터 복제 | Lab 2 |
-| Analytic Model 구조 및 데이터 분석 | Lab 3 |
-| SQL View로 Fact View 개발 | Lab 4-A, 4-B |
-| ODP vs CDS View 소스 방식 비교 | Lab 4-A vs 4-B |
-
----
-
-## 다음 단계 (워크샵 이후)
-
-- SAP Analytics Cloud 연결 및 대시보드 생성
-- Replication Flow 증분 복제(Delta) 설정
-- Data Flow로 데이터 변환 및 집계
-- 추가 마스터 데이터 연결 (고객/자재 Dimension View)
-
----
-
-수고하셨습니다! 🎉
+워크샵 이후 추가 학습 방향:
+- SAP Analytics Cloud 연결 및 대시보드 구성
+- Replication Flow 증분(Delta) 복제 설정
+- Data Flow를 활용한 데이터 변환/집계
+- 고객/자재 Dimension View 추가 연결
