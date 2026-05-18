@@ -36,7 +36,7 @@ flowchart LR
 ### Step 2. 개인 Space 확인
 
 1. 왼쪽 메뉴에서 **Space Management** 클릭
-2. 본인 Space(`DSPUSERXX_SPACE`) 확인 (예: DSPUSER01_SPACE)
+2. 본인 Space(ID: `DSPWSXX`) 확인 (이름: 'DSP Workshop XX')
 3. Space 클릭하여 진입
 
 > Tip: Space ID에서 `XX`는 본인 번호입니다 (예: +01 → DSPUSER01_SPACE)
@@ -75,7 +75,7 @@ flowchart TD
 
 1. 패키지 화면 우측 상단 **Import** 버튼 클릭
 2. Import 설정 화면에서 다음 확인:
-   - **Target Space**: `DSPUSERXX_SPACE` (본인 Space 선택)
+   - **Target Space**: `DSP Workshop XX` (본인 Space 선택)
    - **Import Mode**: `Create New` 선택 (기존 오브젝트 없으므로)
 3. **Import** 버튼 클릭하여 실행
 
@@ -89,7 +89,7 @@ flowchart TD
     E -->|"완료"| G["Import 성공"]
 ```
 
-> Import는 약 3~5분 소요됩니다. 완료될 때까지 대기하세요.
+> Import는 약 30분정도 소요됩니다. 완료될 때까지 대기하세요.
 
 ---
 
