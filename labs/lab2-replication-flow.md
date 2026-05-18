@@ -2,7 +2,7 @@
 
 ## 목표
 
-BCT_SD 패키지에 포함된 **Replication Flow**를 사용하여 S/4HANA(`HE4_S4H`) 시스템의 SD 데이터를 개인 Space의 Local Table에 복제합니다.
+BCT_SD 패키지에 포함된 **Replication Flow**를 사용하여 S/4HANA(`HE4_S4H`) 시스템의 ODP DataSource 데이터를 개인 Space의 Local Table에 복제합니다.
 
 **소요 시간**: 약 20~30분
 
@@ -16,9 +16,9 @@ graph LR
         ODP["ODP DataSource\n2LIS_11_VAHDR\n2LIS_11_VAITM 등"]
     end
 
-    subgraph DSP["SAP Datasphere DSPWSxx"]
-        RF["Replication Flow\nSAP_SD_REPLICATION"]
-        LT["Local Tables\nSAP_SD_VBAK\nSAP_SD_VBAP\nSAP_SD_KNA1 등"]
+    subgraph DSP["SAP Datasphere DSPUSERXX_SPACE"]
+        RF["Replication Flow\n(BCT_SD 표준 RF)"]
+        LT["Local Tables\nSAP_SD_IL_2LIS_11_VAHDR\nSAP_SD_IL_2LIS_11_VAITM 등"]
     end
 
     ODP -->|"초기 적재\n(Full Load)"| RF
@@ -40,15 +40,15 @@ graph LR
 ### Step 1. Data Builder에서 Replication Flow 열기
 
 1. 왼쪽 메뉴 → **Data Builder** 클릭
-2. 본인 Space(`DSPWSxx`) 선택
+2. 본인 Space(`DSPUSERXX_SPACE`) 선택
 3. 오브젝트 목록에서 **Replication Flows** 탭 클릭
-4. `SAP_SD_REPLICATION` 선택하여 열기
+4. Lab 1에서 Import된 BCT_SD Replication Flow 선택하여 열기
 
 ```mermaid
 flowchart TD
-    A["Data Builder 접속"] --> B["DSPWSxx Space 선택"]
+    A["Data Builder 접속"] --> B["DSPUSERXX_SPACE Space 선택"]
     B --> C["Replication Flows 탭"]
-    C --> D["SAP_SD_REPLICATION 클릭"]
+    C --> D["BCT_SD Replication Flow 클릭"]
     D --> E["Replication Flow 편집 화면"]
 ```
 
@@ -60,7 +60,7 @@ Replication Flow 편집 화면에서 다음 항목을 확인합니다:
 
 ```mermaid
 graph LR
-    subgraph RF["SAP_SD_REPLICATION"]
+    subgraph RF["BCT_SD Replication Flow"]
         SRC_CONN["Source Connection\nHE4_S4H"]
         TGT_CONN["Target Connection\n(Local Tables)"]
         MAPPING["Replication Objects\n소스→대상 매핑"]
@@ -73,25 +73,27 @@ graph LR
 | 항목 | 예상 값 |
 |------|--------|
 | Source Connection | `HE4_S4H` |
-| Source Type | `ABAP` or `ODP` |
+| Source Type | `ABAP (ODP)` |
 | Replication Mode | `Initial and Delta` |
 
-> ⚠️ Source Connection이 다르게 보인다면 강사에게 문의하세요.
+> 주의: Source Connection이 다르게 보인다면 강사에게 문의하세요.
 
 ---
 
 ### Step 3. Replication Objects 확인
 
-화면 하단 또는 중간 패널에서 복제 대상 테이블 목록 확인:
+화면 하단 또는 중간 패널에서 복제 대상 오브젝트 목록 확인:
 
-| 소스 DataSource | 대상 Local Table | 설명 |
-|----------------|-----------------|------|
-| `2LIS_11_VAHDR` | `SAP_SD_VBAK` | 판매 오더 헤더 |
-| `2LIS_11_VAITM` | `SAP_SD_VBAP` | 판매 오더 항목 |
-| `0CUSTOMER_ATTR` | `SAP_SD_KNA1` | 고객 마스터 |
-| `0MATERIAL_ATTR` | `SAP_SD_MARA` | 자재 마스터 |
+| 소스 ODP DataSource | 대상 Local Table | 설명 |
+|--------------------|-----------------|------|
+| `2LIS_11_VAHDR` | `SAP_SD_IL_2LIS_11_VAHDR` | 수주 헤더 |
+| `2LIS_11_VAITM` | `SAP_SD_IL_2LIS_11_VAITM` | 수주 아이템 |
+| `2LIS_11_VASCL` | `SAP_SD_IL_2LIS_11_VASCL` | 납품일정행 (확정수량) |
+| `2LIS_12_VCITM` | `SAP_SD_IL_2LIS_12_VCITM` | 납품 아이템 (출고수량) |
+| `2LIS_13_VDITM` | `SAP_SD_IL_2LIS_13_VDITM` | 청구 아이템 |
+| `2LIS_13_VDHDR` | `SAP_SD_IL_2LIS_13_VDHDR` | 청구 헤더 |
 
-> 💡 실제 목록은 패키지 버전에 따라 다를 수 있습니다.
+> 실제 목록은 BCT_SD 패키지 버전에 따라 다를 수 있습니다.
 
 ---
 
@@ -109,10 +111,10 @@ flowchart TD
     C --> D["복제 시작\n(Running 상태)"]
     D --> E{"완료 확인"}
     E -->|"오류"| F["로그 확인\n강사 문의"]
-    E -->|"완료"| G["✅ 데이터 적재 완료"]
+    E -->|"완료"| G["데이터 적재 완료"]
 ```
 
-> ⏱️ 데이터 양에 따라 5~15분 소요될 수 있습니다.
+> 데이터 양에 따라 5~15분 소요될 수 있습니다.
 
 ---
 
@@ -123,9 +125,9 @@ flowchart TD
 
 | 상태 | 의미 |
 |------|------|
-| 🟡 **Running** | 복제 진행 중 |
-| 🟢 **Completed** | 복제 완료 |
-| 🔴 **Failed** | 오류 발생 |
+| **Running** | 복제 진행 중 |
+| **Completed** | 복제 완료 |
+| **Failed** | 오류 발생 |
 
 ---
 
@@ -134,22 +136,22 @@ flowchart TD
 복제 완료 후 Local Table에 데이터가 적재되었는지 확인합니다.
 
 1. Data Builder → **Tables** 탭
-2. `SAP_SD_VBAK` 클릭하여 열기
+2. `SAP_SD_IL_2LIS_11_VAHDR` 클릭하여 열기
 3. 테이블 상단 **Data Preview** 버튼 클릭
 4. 데이터 조회 확인
 
 ```mermaid
 flowchart TD
-    A["Data Builder → Tables"] --> B["SAP_SD_VBAK 선택"]
+    A["Data Builder → Tables"] --> B["SAP_SD_IL_2LIS_11_VAHDR 선택"]
     B --> C["Data Preview 클릭"]
     C --> D{"데이터 존재 여부"}
-    D -->|"데이터 있음"| E["✅ 적재 성공"]
+    D -->|"데이터 있음"| E["적재 성공"]
     D -->|"데이터 없음"| F["복제 상태 재확인\n강사 문의"]
 ```
 
 **Data Preview 확인 포인트:**
-- 판매 오더 번호 (`VBELN`) 데이터 확인
-- 생성일자 (`AUDAT`) 범위 확인
+- 판매 오더 번호(`VBELN`) 데이터 확인
+- 생성일자(`ERDAT`) 범위 확인
 - 데이터 건수 확인 (우측 하단)
 
 ---
@@ -159,10 +161,13 @@ flowchart TD
 각 Local Table의 데이터를 확인합니다:
 
 | 테이블 | 확인 항목 |
-|--------|----------|
-| `SAP_SD_VBAK` | 판매 오더 헤더 데이터 |
-| `SAP_SD_VBAP` | 판매 오더 항목 데이터 |
-| `SAP_SD_KNA1` | 고객 마스터 데이터 |
+|--------|---------|
+| `SAP_SD_IL_2LIS_11_VAHDR` | 수주 헤더 (VBELN, VKORG, KUNNR 등) |
+| `SAP_SD_IL_2LIS_11_VAITM` | 수주 아이템 (POSNR, MATNR, KWMENG 등) |
+| `SAP_SD_IL_2LIS_11_VASCL` | 납품일정행 (확정수량 BMENG) |
+| `SAP_SD_IL_2LIS_12_VCITM` | 납품 아이템 (출고수량 LFIMG) |
+| `SAP_SD_IL_2LIS_13_VDITM` | 청구 아이템 (청구수량/금액) |
+| `SAP_SD_IL_2LIS_13_VDHDR` | 청구 헤더 (청구유형 FKART) |
 
 ---
 
@@ -170,10 +175,10 @@ flowchart TD
 
 ```mermaid
 graph TD
-    A["Lab 2 완료 체크리스트"] --> B["✅ Replication Flow 열기 완료"]
-    A --> C["✅ Source Connection HE4_S4H 확인"]
-    A --> D["✅ Initial Load 실행 완료"]
-    A --> E["✅ Local Tables에 데이터 적재 확인"]
+    A["Lab 2 완료 체크리스트"] --> B["Replication Flow 열기 완료"]
+    A --> C["Source Connection HE4_S4H 확인"]
+    A --> D["Initial Load 실행 완료"]
+    A --> E["6개 Local Table에 데이터 적재 확인"]
 ```
 
 ---
@@ -191,4 +196,4 @@ graph TD
 
 ## 다음 단계
 
-✅ Lab 2 완료 후 → **[Lab 3: 표준 Analytic Model로 데이터 확인](./lab3-standard-analytic-model.md)** 진행
+Lab 2 완료 후 → **[Lab 3: 표준 Analytic Model로 데이터 확인](./lab3-standard-analytic-model.md)** 진행

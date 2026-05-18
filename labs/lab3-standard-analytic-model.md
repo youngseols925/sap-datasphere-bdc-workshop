@@ -22,8 +22,8 @@ graph TB
     end
 
     subgraph AM["Analytic Model 구성"]
-        MEASURE["📊 Measures (측정값)\n• 금액\n• 수량\n• 건수"]
-        DIM["📐 Dimensions (차원)\n• 고객\n• 자재\n• 판매 조직\n• 날짜"]
+        MEASURE["Measures (측정값)\n- 금액\n- 수량\n- 건수"]
+        DIM["Dimensions (차원)\n- 고객\n- 자재\n- 판매 조직\n- 날짜"]
     end
 
     L3 -.-> AM
@@ -44,15 +44,15 @@ graph TB
 
 1. Data Builder → 왼쪽 상단 오브젝트 타입 필터
 2. **Analytic Models** 선택
-3. `SAP_SD_C_BILLING` (또는 BCT_SD 패키지의 표준 AM) 클릭
+3. BCT_SD 패키지에서 Import된 표준 AM 클릭 (이름은 패키지 버전에 따라 상이)
 
 ```mermaid
 flowchart LR
     A["Data Builder"] --> B["오브젝트 타입 필터\n→ Analytic Models"]
-    B --> C["SAP_SD_C_BILLING\n클릭하여 열기"]
+    B --> C["BCT_SD 표준 AM\n클릭하여 열기"]
 ```
 
-> 💡 BCT_SD 패키지에 포함된 Analytic Model 이름은 버전에 따라 다를 수 있습니다.
+> Tip: BCT_SD 패키지에 포함된 Analytic Model 이름은 패키지 버전에 따라 다를 수 있습니다. `SAP_SD_` 접두어로 시작하는 AM을 선택하세요.
 
 ---
 
@@ -76,7 +76,7 @@ graph LR
 **확인 항목:**
 
 | 패널 | 확인 내용 |
-|------|----------|
+|------|---------|
 | Source | 연결된 Fact View 이름 |
 | Measures | 금액, 수량 등 측정값 목록 |
 | Dimensions | 고객, 자재, 날짜 등 차원 목록 |
@@ -89,7 +89,7 @@ graph LR
 Measures 패널에서 각 측정값의 속성 확인:
 
 | 측정값 | 타입 | 집계 방식 |
-|--------|------|----------|
+|--------|------|---------|
 | 청구 금액 | BASE | SUM |
 | 청구 수량 | BASE | SUM |
 | 건수 | CALCULATED | COUNT |
@@ -107,8 +107,8 @@ Dimensions 패널에서 각 차원의 속성 확인:
 
 | 차원 | 연결 오브젝트 | 설명 |
 |------|------------|------|
-| 고객 (KUNNR) | 고객 Dimension View | 고객 마스터 |
-| 자재 (MATNR) | 자재 Dimension View | 자재 마스터 |
+| 고객 | 고객 Dimension View | 고객 마스터 (이름, 지역 등) |
+| 자재 | 자재 Dimension View | 자재 마스터 (자재명, 자재그룹) |
 | 판매 조직 | - | 판매 조직 코드 |
 | 날짜 | 날짜 Dimension | 연/분기/월/일 계층 |
 
@@ -144,7 +144,7 @@ flowchart TD
 
 #### 분석 1: 판매 조직별 청구 금액 합계
 
-- 행(Row): 판매 조직 (`VKORG`)
+- 행(Row): 판매 조직
 - 측정값: 청구 금액
 - 결과 확인: 판매 조직별 금액 비교
 
@@ -156,7 +156,7 @@ flowchart TD
 
 #### 분석 3: 고객별 Top 10 분석
 
-- 행(Row): 고객 (`KUNNR`)
+- 행(Row): 고객
 - 측정값: 청구 금액
 - 정렬: 청구 금액 내림차순
 - 결과 확인: 상위 고객 식별
@@ -177,10 +177,10 @@ flowchart LR
 
 Analytic Model에서 차원에 마스터 데이터가 연결되면 코드 대신 텍스트로 표시됩니다.
 
-- 고객 코드 `0000001000` → 고객명 `ABC Corp` 표시 여부 확인
-- 자재 코드 `MAT-001` → 자재명 표시 여부 확인
+- 고객 코드 `0000001000` → 고객명 표시 여부 확인
+- 자재 코드 → 자재명 표시 여부 확인
 
-> 💡 마스터 데이터가 연결되지 않은 경우 코드만 표시됩니다.
+> 마스터 데이터가 연결되지 않은 경우 코드만 표시됩니다.
 
 ---
 
@@ -188,11 +188,11 @@ Analytic Model에서 차원에 마스터 데이터가 연결되면 코드 대신
 
 ```mermaid
 graph TD
-    A["Lab 3 완료 체크리스트"] --> B["✅ Analytic Model 구조 이해"]
-    A --> C["✅ 측정값 목록 확인"]
-    A --> D["✅ 차원 목록 확인"]
-    A --> E["✅ Data Preview 데이터 조회"]
-    A --> F["✅ 기본 분석 3가지 실습"]
+    A["Lab 3 완료 체크리스트"] --> B["Analytic Model 구조 이해"]
+    A --> C["측정값 목록 확인"]
+    A --> D["차원 목록 확인"]
+    A --> E["Data Preview 데이터 조회"]
+    A --> F["기본 분석 3가지 실습"]
 ```
 
 ---
@@ -200,9 +200,9 @@ graph TD
 ## 표준 컨텐츠 vs 커스텀 개발 비교
 
 ```mermaid
-graph TB
-    STD["📦 표준 컨텐츠 (BCT_SD)\n✅ 빠른 구현\n✅ SAP 검증 모델\n⚠️ 요건 변경 제한적"]
-    CUSTOM["🛠️ 커스텀 개발 (Lab 4)\n✅ 요건에 맞게 유연 개발\n✅ 필요한 필드만 선택\n⚠️ 개발 시간 필요"]
+graph LR
+    STD["표준 컨텐츠 (BCT_SD)\n- 빠른 구현\n- SAP 검증 모델\n- 요건 변경 시 제약"]
+    CUSTOM["커스텀 개발 (Lab 4)\n- 요건에 맞게 유연 개발\n- 필요한 필드만 선택\n- 개발 시간 필요"]
 
     STD -.->|"기반으로 확장"| CUSTOM
 ```
@@ -211,4 +211,4 @@ graph TB
 
 ## 다음 단계
 
-✅ Lab 3 완료 후 → **점심 식사 후** → **[Lab 4-A: ODP 기반 커스텀 모델 개발](./lab4a-odp-fact-view-am.md)** 진행
+Lab 3 완료 후 → 점심 식사 후 → **[Lab 4-A: ODP 기반 커스텀 모델 개발](./lab4a-odp-fact-view-am.md)** 진행

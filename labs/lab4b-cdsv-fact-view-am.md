@@ -2,7 +2,7 @@
 
 ## 목표
 
-S/4HANA **CDS View**를 Remote Table로 직접 접근하여 **미결 판매 오더 Fact View**와 **Analytic Model**을 개발합니다.
+S/4HANA **CDS View**를 Replication Flow로 복제한 **Local Table**을 소스로, **미결 판매 오더 Fact View**와 **Analytic Model**을 개발합니다.
 Lab 4-A(ODP 방식)와 동일한 비즈니스 로직을 구현하며, 두 방식의 아키텍처 차이를 이해합니다.
 
 **소요 시간**: 약 60분
@@ -13,7 +13,7 @@ Lab 4-A(ODP 방식)와 동일한 비즈니스 로직을 구현하며, 두 방식
 
 | 오브젝트 | Technical Name | 소스 |
 |---------|----------------|------|
-| SQL View (Fact View) | `WS_HL_SQLV_OPEN_ORDER_CDSV` | Remote Tables (CDS View) |
+| SQL View (Fact View) | `WS_HL_SQLV_OPEN_ORDER_CDSV` | Local Tables (CDS View 복제) |
 | Analytic Model | `WS_RL_OPEN_ORDER_CDSV` | `WS_HL_SQLV_OPEN_ORDER_CDSV` |
 
 ---
@@ -435,7 +435,7 @@ flowchart LR
 - [ ] `WS_HL_SQLV_OPEN_ORDER_CDSV` SQL View 생성 (Semantic Usage: Fact)
 - [ ] SQL 정상 실행 확인
 - [ ] Key/Measure/Attribute Semantic Type 설정
-- [ ] Preview 데이터 확인 (실시간 S/4HANA 조회)
+- [ ] Preview 데이터 확인
 - [ ] `WS_RL_OPEN_ORDER_CDSV` AM import 완료
 - [ ] Structure Members (RESTRICTION 6개) 표시 확인
 - [ ] Variables (P_MONTH 등 6개) 표시 확인

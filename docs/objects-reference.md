@@ -74,12 +74,12 @@ Lab 1에서 Content Network에서 import하는 SAP 표준 패키지입니다.
 
 | 오브젝트 타입 | Technical Name | Business Name | 소스 |
 |-------------|----------------|---------------|------|
-| SQL View (Fact View) | `WS_HL_SQLV_OPEN_ORDER_CDSV` | Open Order CDSV Fact View | Remote Tables (CDS View) |
+| SQL View (Fact View) | `WS_HL_SQLV_OPEN_ORDER_CDSV` | Open Order CDSV Fact View | Local Tables (CDS View 복제) |
 | Analytic Model | `WS_RL_OPEN_ORDER_CDSV` | Open Order CDSV AM | `WS_HL_SQLV_OPEN_ORDER_CDSV` |
 
-#### CDS View Fact View 소스 테이블 (Remote Table)
+#### CDS View Fact View 소스 테이블 (Local Table)
 
-| Remote Table | S/4HANA CDS View | 설명 |
+| Local Table | S/4HANA CDS View | 설명 |
 |-------------|-------------------|------|
 | `SAP_SD_IL_C_SALESDOCUMENTITEMDEX_1` | `C_SalesDocumentItemDEX_1` | 수주 헤더+아이템 통합 |
 | `SAP_SD_IL_C_SALESDOCUMENTSCHEDLINEDEX_1` | `C_SalesDocumentSchedLineDEX_1` | 납품일정행 (확정수량) |
@@ -123,7 +123,7 @@ ODP 방식과 동일한 비즈니스 의미, 필드명은 CDS View 표준명 사
 
 | 커넥션 ID | 타입 | 대상 시스템 | 용도 |
 |----------|------|-----------|------|
-| `HE4_S4H` | ABAP | S/4HANA HE4 | ODP DataSource, Remote Table (CDS View) |
+| `HE4_S4H` | ABAP | S/4HANA HE4 | ODP DataSource 복제, CDS View 복제 |
 
 ---
 
