@@ -4,21 +4,21 @@
 
 ```mermaid
 graph TB
-    subgraph Source["🏢 소스 시스템 (SAP S/4HANA On-Premise)"]
+    subgraph Source["소스 시스템 (SAP S/4HANA HE4 On-Premise)"]
         S4H[SAP S/4HANA HE4<br/>SD 모듈]
-        ODP[ODP<br/>Operational Data Provisioning<br/>2LIS_11_VAHDR / 2LIS_11_VAITM 등]
-        CDS[CDS Views<br/>I_SalesOrder<br/>I_SalesOrderItem 등]
+        ODP[ODP DataSources<br/>2LIS_11_VAHDR / 2LIS_11_VAITM<br/>2LIS_11_VASCL / 2LIS_12_VCITM<br/>2LIS_13_VDITM / 2LIS_13_VDHDR]
+        CDS[CDS Views<br/>C_SalesDocumentItemDEX_1<br/>C_SalesDocumentSchedLineDEX_1<br/>I_DeliveryDocumentItem / I_DeliveryDocument<br/>C_BillingDocItemBasicDEX_1]
         S4H --> ODP
         S4H --> CDS
     end
 
-    subgraph DSP["☁️ SAP Datasphere (poc-dsp-1)"]
-        CONN[Connection<br/>HE4_S4H<br/>ABAP / S4HANA OP]
+    subgraph DSP["SAP Datasphere (poc-dsp-1)"]
+        CONN[Connection<br/>HE4_S4H<br/>ABAP Connection]
 
         subgraph SPACE["개인 Space: DSPWSxx"]
             direction TB
 
-            subgraph STD["📦 표준 컨텐츠 (BCT_SD 패키지)"]
+            subgraph STD["표준 컨텐츠 (BCT_SD 패키지)"]
                 RF[Replication Flow<br/>SAP_SD_REPLICATION]
                 LT[Local Tables<br/>SD 마스터/트랜잭션]
                 SV[Standard Views<br/>Graphical/SQL Views]
@@ -26,38 +26,34 @@ graph TB
                 RF --> LT --> SV --> AM_STD
             end
 
-            subgraph CUSTOM["🛠️ 커스텀 모델 (Lab 4)"]
+            subgraph CUSTOM["커스텀 모델 (Lab 4)"]
                 direction TB
-                subgraph ODP_FLOW["ODP 기반"]
-                    ODP_SRC[ODP Source<br/>2LIS_11_VAHDR]
+                subgraph ODP_FLOW["Lab 4-A: ODP 기반"]
+                    LT_ODP[Local Tables<br/>SAP_SD_IL_2LIS_11_VAHDR 등<br/>6개 테이블]
                     FV_ODP[Fact View<br/>WS_HL_SQLV_OPEN_ORDER_ODP]
                     AM_ODP[Analytic Model<br/>WS_RL_OPEN_ORDER_ODP]
-                    ODP_SRC --> FV_ODP --> AM_ODP
+                    LT_ODP --> FV_ODP --> AM_ODP
                 end
-                subgraph CDS_FLOW["CDS View 기반"]
-                    CDS_SRC[CDS View Source<br/>I_SalesOrder etc.]
+                subgraph CDS_FLOW["Lab 4-B: CDS View 기반"]
+                    RT_CDS[Remote Tables<br/>SAP_SD_IL_C_SALESDOCUMENTITEMDEX_1 등<br/>5개 테이블]
                     FV_CDS[Fact View<br/>WS_HL_SQLV_OPEN_ORDER_CDSV]
                     AM_CDS[Analytic Model<br/>WS_RL_OPEN_ORDER_CDSV]
-                    CDS_SRC --> FV_CDS --> AM_CDS
+                    RT_CDS --> FV_CDS --> AM_CDS
                 end
             end
         end
     end
 
-    subgraph CONSUME["📊 데이터 소비"]
+    subgraph CONSUME["데이터 소비"]
         SAC[SAP Analytics Cloud]
         EXCEL[Excel / BI Tools]
     end
 
     ODP --"Replication Flow"--> CONN
-    CDS --"Remote Table / Virtual Access"--> CONN
+    CDS --"Remote Table (Virtual Access)"--> CONN
     CONN --> SPACE
-    AM_STD --> SAC
-    AM_ODP --> SAC
-    AM_CDS --> SAC
-    AM_STD --> EXCEL
-    AM_ODP --> EXCEL
-    AM_CDS --> EXCEL
+    AM_STD & AM_ODP & AM_CDS --> SAC
+    AM_STD & AM_ODP & AM_CDS --> EXCEL
 
     style Source fill:#0070F2,color:#fff,stroke:#0070F2
     style DSP fill:#1A6640,color:#fff,stroke:#1A6640
@@ -80,24 +76,18 @@ graph LR
 
         subgraph USERS["참가자 공간 (40개)"]
             direction LR
-            WS01["DSPWS01<br/>dspuser01"]
-            WS02["DSPWS02<br/>dspuser02"]
+            WS01["DSPWS01<br/>sap.dsp.ws.kr+01@gmail.com"]
+            WS02["DSPWS02<br/>sap.dsp.ws.kr+02@gmail.com"]
             DOTS["..."]
-            WS40["DSPWS40<br/>dspuser40"]
+            WS40["DSPWS40<br/>sap.dsp.ws.kr+40@gmail.com"]
         end
 
-        subgraph CONN_POOL["공통 커넥션 (Space별 할당)"]
-            C1[HE4_S4H<br/>ABAP Connection]
-            C2[HE4_S4HANAOP<br/>S4HANA OP Connection]
-            C3[기타 커넥션...]
+        subgraph CONN_POOL["커넥션 (Space별 할당)"]
+            C1[HE4_S4H<br/>ABAP Connection<br/>ODP + Remote Table]
         end
     end
 
-    ACADEMY -.->|"BCT_SD 패키지<br/>참조"| WS01
-    ACADEMY -.->|"BCT_SD 패키지<br/>참조"| WS02
-    C1 --> WS01
-    C1 --> WS02
-    C1 --> WS40
+    C1 --> WS01 & WS02 & WS40
 ```
 
 ---
@@ -106,82 +96,106 @@ graph LR
 
 ```mermaid
 flowchart LR
-    subgraph SRC["S/4HANA HE4"]
-        T1[VBAK<br/>판매오더 헤더]
-        T2[VBAP<br/>판매오더 항목]
-        T3[VBEP<br/>납품일정]
-        T4[CDS View<br/>I_SalesOrder<br/>I_SalesOrderItem]
+    subgraph S4H["S/4HANA HE4"]
+        subgraph ODP_SRC["ODP DataSources"]
+            O1[2LIS_11_VAHDR<br/>수주헤더]
+            O2[2LIS_11_VAITM<br/>수주아이템]
+            O3[2LIS_11_VASCL<br/>납품일정행]
+            O4[2LIS_12_VCITM<br/>납품아이템]
+            O5[2LIS_13_VDITM<br/>청구아이템]
+            O6[2LIS_13_VDHDR<br/>청구헤더]
+        end
+        subgraph CDS_SRC["CDS Views"]
+            C1[C_SalesDocumentItemDEX_1<br/>수주 헤더+아이템]
+            C2[C_SalesDocumentSchedLineDEX_1<br/>납품일정행]
+            C3[I_DeliveryDocumentItem<br/>납품아이템]
+            C4[I_DeliveryDocument<br/>납품헤더]
+            C5[C_BillingDocItemBasicDEX_1<br/>청구아이템]
+        end
     end
 
-    subgraph REP["Replication Flow (Lab 2)"]
-        RF_NODE[SAP_SD_REPLICATION<br/>BCT_SD 표준]
+    subgraph DSP["SAP Datasphere (DSPWSxx)"]
+        subgraph LOCAL["Local Tables (Lab 2 복제 결과)"]
+            LT1[SAP_SD_IL_2LIS_11_VAHDR]
+            LT2[SAP_SD_IL_2LIS_11_VAITM]
+            LT3[SAP_SD_IL_2LIS_11_VASCL]
+            LT4[SAP_SD_IL_2LIS_12_VCITM]
+            LT5[SAP_SD_IL_2LIS_13_VDITM]
+            LT6[SAP_SD_IL_2LIS_13_VDHDR]
+        end
+        subgraph REMOTE["Remote Tables (가상 접근)"]
+            RT1[SAP_SD_IL_C_SALESDOCUMENTITEMDEX_1]
+            RT2[SAP_SD_IL_C_SALESDOCUMENTSCHEDLINEDEX_1]
+            RT3[SAP_SD_IL_I_DELIVERYDOCUMENTITEM]
+            RT4[SAP_SD_IL_I_DELIVERYDOCUMENT]
+            RT5[SAP_SD_IL_C_BILLINGDOCITEMBASICDEX_1]
+        end
+        FV_ODP[WS_HL_SQLV_OPEN_ORDER_ODP<br/>ODP Fact View]
+        AM_ODP[WS_RL_OPEN_ORDER_ODP]
+        FV_CDS[WS_HL_SQLV_OPEN_ORDER_CDSV<br/>CDSV Fact View]
+        AM_CDS[WS_RL_OPEN_ORDER_CDSV]
     end
 
-    subgraph LOCAL["Local Tables (DSPWSxx)"]
-        LT1[VBAK_LOCAL]
-        LT2[VBAP_LOCAL]
-        LT3[VBEP_LOCAL]
-    end
+    O1 & O2 & O3 & O4 & O5 & O6 -->|"Replication Flow"| LT1 & LT2 & LT3 & LT4 & LT5 & LT6
+    LT1 & LT2 & LT3 & LT4 & LT5 & LT6 -->|"JOIN + 집계"| FV_ODP --> AM_ODP
 
-    subgraph MODEL["데이터 모델 (Lab 3 & 4)"]
-        SV1[Standard View<br/>BCT_SD Views]
-        AM1[Standard AM<br/>SAP_SD_C_BILLING]
-        FV_ODP2[WS_HL_SQLV_OPEN_ORDER_ODP<br/>ODP 기반 Fact View]
-        AM_ODP2[WS_RL_OPEN_ORDER_ODP<br/>ODP 기반 AM]
-        FV_CDS2[WS_HL_SQLV_OPEN_ORDER_CDSV<br/>CDS View 기반 Fact View]
-        AM_CDS2[WS_RL_OPEN_ORDER_CDSV<br/>CDS View 기반 AM]
-    end
-
-    T1 & T2 & T3 -->|"ODP<br/>2LIS_11_VAHDR/VAITM"| RF_NODE
-    RF_NODE --> LT1 & LT2 & LT3
-    LT1 & LT2 & LT3 --> SV1 --> AM1
-    LT1 & LT2 & LT3 --> FV_ODP2 --> AM_ODP2
-    T4 -->|"Remote Table<br/>(Virtual Access)"| FV_CDS2 --> AM_CDS2
-
-    style SRC fill:#0070F2,color:#fff
-    style REP fill:#5A2D82,color:#fff
-    style LOCAL fill:#1A6640,color:#fff
-    style MODEL fill:#E8A000,color:#fff
+    C1 & C2 & C3 & C4 & C5 -->|"Virtual Access"| RT1 & RT2 & RT3 & RT4 & RT5
+    RT1 & RT2 & RT3 & RT4 & RT5 -->|"JOIN + 집계"| FV_CDS --> AM_CDS
 ```
 
 ---
 
-## 4. 커스텀 모델 오브젝트 네이밍 규칙
+## 4. ODP vs CDS View 소스 비교
 
 ```mermaid
-graph TD
-    A["오브젝트 ID 규칙"] --> B["접두어 - 오브젝트 타입 - 설명"]
+graph TB
+    subgraph ODP["Lab 4-A: ODP 방식 소스 구성"]
+        direction LR
+        V[수주헤더<br/>2LIS_11_VAHDR] 
+        I[수주아이템<br/>2LIS_11_VAITM]
+        SC[납품일정행<br/>2LIS_11_VASCL]
+        DI[납품아이템<br/>2LIS_12_VCITM]
+        BI[청구아이템<br/>2LIS_13_VDITM]
+        BH[청구헤더<br/>2LIS_13_VDHDR]
+    end
 
-    B --> C["WS_HL_SQLV_...<br/>Fact View (Graphical/SQL View)<br/>HL = Harmonization Layer"]
-    B --> D["WS_RL_...<br/>Analytic Model<br/>RL = Reporting Layer"]
+    subgraph CDS["Lab 4-B: CDS View 방식 소스 구성"]
+        direction LR
+        SD[수주 헤더+아이템 통합<br/>C_SalesDocumentItemDEX_1]
+        SSL[납품일정행<br/>C_SalesDocumentSchedLineDEX_1]
+        DDI[납품아이템<br/>I_DeliveryDocumentItem]
+        DDH[납품헤더<br/>I_DeliveryDocument]
+        BDI[청구아이템<br/>C_BillingDocItemBasicDEX_1]
+    end
 
-    C --> E["WS_HL_SQLV_OPEN_ORDER_ODP<br/>ODP 소스 기반 미결 오더 Fact View"]
-    C --> F["WS_HL_SQLV_OPEN_ORDER_CDSV<br/>CDS View 소스 기반 미결 오더 Fact View"]
-    D --> G["WS_RL_OPEN_ORDER_ODP<br/>ODP 기반 미결 오더 Analytic Model"]
-    D --> H["WS_RL_OPEN_ORDER_CDSV<br/>CDS View 기반 미결 오더 Analytic Model"]
+    subgraph DIFF["핵심 차이점"]
+        direction TB
+        D1["ODP: 헤더/아이템 분리 6개 테이블<br/>ROCANCEL='' 필터로 취소 제외"]
+        D2["CDS: 헤더+아이템 통합 5개 테이블<br/>SDDocumentCategory='C' 필터"]
+    end
 ```
 
 ---
 
-## 5. SAP Datasphere 레이어 구조
+## 5. SAP Datasphere 데이터 레이어 구조
 
 ```mermaid
 graph BT
     subgraph DSP_LAYERS["SAP Datasphere 데이터 레이어"]
         direction BT
 
-        L1["🔵 Raw Data Layer (원천 데이터)\nLocal Tables (Replication/Import)\nRemote Tables (가상 접근)"]
-        L2["🟢 Harmonization Layer (정합 레이어)\nSQL/Graphical Views (정제/변환)\nFact Views (팩트 정의)"]
-        L3["🟡 Consumption Layer (소비 레이어)\nAnalytic Models (지표/차원 정의)\nPerspectives (SAC 연결)"]
+        L1["Raw Data Layer\nLocal Tables (Replication Flow 복제)\nRemote Tables (CDS View 가상 접근)"]
+        L2["Harmonization Layer\nSQL/Graphical Views (정제/변환)\nFact Views (팩트 시맨틱 정의)"]
+        L3["Consumption Layer\nAnalytic Models (지표/차원/변수 정의)\nPerspectives (SAC 연결)"]
 
         L1 -->|"Views, Transforms"| L2
         L2 -->|"Analytic Models"| L3
     end
 
     subgraph OBJECTS["실습 오브젝트 매핑"]
-        OBJ1["Lab 2: Replication Flow → Local Tables<br/>(BCT_SD 표준 테이블)"]
-        OBJ2["Lab 3: Standard Views + BCT_SD\nLab 4: WS_HL_SQLV_OPEN_ORDER_ODP/CDSV"]
-        OBJ3["Lab 3: SAP_SD_C_BILLING (Standard AM)\nLab 4: WS_RL_OPEN_ORDER_ODP/CDSV"]
+        OBJ1["Lab 2: Replication Flow → SAP_SD_IL_2LIS_xx Local Tables\nLab 4-B: Remote Tables (SAP_SD_IL_C_xxx / I_xxx)"]
+        OBJ2["Lab 4-A: WS_HL_SQLV_OPEN_ORDER_ODP\nLab 4-B: WS_HL_SQLV_OPEN_ORDER_CDSV"]
+        OBJ3["Lab 3: SAP_SD_C_BILLING (Standard AM)\nLab 4-A: WS_RL_OPEN_ORDER_ODP\nLab 4-B: WS_RL_OPEN_ORDER_CDSV"]
     end
 
     OBJ1 -.-> L1
