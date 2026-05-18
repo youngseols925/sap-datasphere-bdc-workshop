@@ -112,6 +112,9 @@ erDiagram
 
 SQL Editor에 아래 쿼리를 입력합니다.
 
+<details>
+<summary>정답 보기 — 먼저 스스로 작성해 본 후 확인하세요</summary>
+
 ```sql
 SELECT 
 -- 헤더
@@ -236,6 +239,8 @@ WHERE H.VKORG NOT IN ('7600', '7700')   -- 제외 판매조직
   AND H.ROCANCEL = ''                   -- 취소 제외
   AND (I.ABGRU = '' OR I.ABGRU IS NULL) -- 거부 제외
 ```
+
+</details>
 
 > 핵심 필터 포인트:
 > - `ROCANCEL = ''` : 취소된 레코드 제외 (ODP 핵심 조건)
