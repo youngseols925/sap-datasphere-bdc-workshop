@@ -137,49 +137,6 @@ DATEDIFF('day', 납품요청일, 비교기준일)
 
 ---
 
-## 분석 요건 3: Sell-in 실적현황 (참고 — 본 워크샵 범위 외)
-
-> **이 요건은 이번 워크샵 실습 범위에는 포함되지 않지만, 고객의 전체 요건 배경으로 참고합니다.**
-
-### 비즈니스 목적
-
-청구 기준의 SD Sell-in 실적 현황을 분석. 표준 SD 집계 로직 기반.
-
-### AS-IS 소스 테이블
-
-| 시스템 | 테이블 | 설명 |
-|--------|--------|------|
-| HE4 | `VBRK` | Billing Document Header |
-| HE4 | `VBRP` | Billing Document Item |
-| HE4 | `VBAK` | Sales Document Header (참조) |
-| HE4 | `KNA1` | Customer Master |
-| HE4 | `MARA` | Material Master - General Data |
-
-### 주요 제외 조건
-
-| 구분 | 조건 | 설명 |
-|------|------|------|
-| Intercompany Billing 제외 | `VBRK-FKART IN ('IV', 'IG')` | 법인간 거래 청구 제외 (IV: Intercompany Invoice, IG: Intercompany Credit Memo) |
-| FI 전기 미처리 제외 | `VBRK-RFBSK = ' '` | FI Posting 미완료 건 제외 |
-| 취소 청구 제외 | `VBRK-SFAKN <> ''` 또는 `VBRK-FKSTO <> ''` | 취소된 청구전표 제외 |
-| 관계사 거래 제외 | `VBRK-KTGRD = '03'` | 관계사간 거래 제외 |
-
-### 반품 및 Credit 처리 (마이너스 부호)
-
-조건: `VBRP-AUTYP = 'H'` or `VBRP-AUTYP = 'K'` or `VBRP-VGTYP = 'T'`
-
-대상 필드에 `-1` 적용:
-- `VBRP-FKIMG` (청구수량)
-- `VBRP-BRGEW` (중량)
-- `VBRP-NETWR` (청구금액)
-- `VBRP-KZWI1`, `VBRP-WAVWR` (조건금액)
-
-### Credit/Debit Memo 수량 0 처리
-
-조건: `VBRP-PSTYV IN ('G2N', 'L2N')` → FKIMG, BRGEW = 0
-(G2N: Credit Memo Item, L2N: Debit Memo Item)
-
----
 
 ## Fact View 핵심 필드 (Open Order)
 
