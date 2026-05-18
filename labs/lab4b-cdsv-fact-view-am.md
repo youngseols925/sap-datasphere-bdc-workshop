@@ -385,14 +385,17 @@ Lab 4-A의 Step B-3과 동일한 방법으로 6개 변수를 생성합니다.
 Structure Members 패널 → **+ Add Restricted Measure** 로 아래 6개를 생성합니다.  
 필터 기준 필드는 `CalendarYearMonth` (CDS View 기반 Fact View에도 동일 필드명으로 존재)입니다.
 
-| Technical Name | Base Measure | Filter 조건 |
-|----------------|-------------|-------------|
+> **Expression 입력 방법**: Expression 필드에 아래 조건식을 **직접 텍스트로 입력**합니다.  
+> 변수는 `:변수명` 형식으로 참조합니다. **Insert Values** 버튼으로 목록 조회 후 삽입할 수 있습니다.
+
+| Technical Name | Base Measure | Expression |
+|----------------|-------------|------------|
 | `Measure_Value` | `KWMENG` | (없음) |
-| `01_CURR_MONTH` | `KWMENG` | `CalendarYearMonth = RV_CURR_MONTH` |
-| `02_PRE_MONTH` | `KWMENG` | `CalendarYearMonth = RV_PREVIOUS_MONTH` |
-| `03_CURRENT_YEAR_CUMUL` | `KWMENG` | `CalendarYearMonth >= RV_CURR_YEAR_JAN` AND `<= RV_CURR_MONTH` |
-| `04_PRE_YEAR_CUM` | `KWMENG` | `CalendarYearMonth >= RV_PREVIOUS_YEAR_JAN` AND `<= RV_PREVIOUS_YEAR_SAME_MONTH` |
-| `05_PRE_SAME_MONTH` | `KWMENG` | `CalendarYearMonth = RV_PREVIOUS_YEAR_SAME_MONTH` |
+| `01_CURR_MONTH` | `KWMENG` | `CalendarYearMonth = :RV_CURR_MONTH` |
+| `02_PRE_MONTH` | `KWMENG` | `CalendarYearMonth = :RV_PREVIOUS_MONTH` |
+| `03_CURRENT_YEAR_CUMUL` | `KWMENG` | `CalendarYearMonth >= :RV_CURR_YEAR_JAN AND CalendarYearMonth <= :RV_CURR_MONTH` |
+| `04_PRE_YEAR_CUM` | `KWMENG` | `CalendarYearMonth >= :RV_PREVIOUS_YEAR_JAN AND CalendarYearMonth <= :RV_PREVIOUS_YEAR_SAME_MONTH` |
+| `05_PRE_SAME_MONTH` | `KWMENG` | `CalendarYearMonth = :RV_PREVIOUS_YEAR_SAME_MONTH` |
 
 ---
 

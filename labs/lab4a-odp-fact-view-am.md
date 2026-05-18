@@ -411,6 +411,10 @@ Structure Members 패널 → **+ Add Restricted Measure** 로 아래 6개를 생
 | Base Measure | `KWMENG` (또는 분석하려는 지표 선택) |
 | Filter | (없음 — 제한 조건 없이 전체 포함) |
 
+> **Expression 입력 방법**: 각 Restricted Measure의 Expression 필드에 아래 조건식을 **직접 텍스트로 입력**합니다.  
+> 변수는 `:변수명` 형식으로 참조합니다. **Insert Values** 버튼으로 사용 가능한 변수/필드 목록을 조회해 삽입할 수 있습니다.  
+> 작성 후 **Validate** 버튼으로 문법 오류를 확인하세요.
+
 #### 01_CURR_MONTH — 당월
 
 | 속성 | 값 |
@@ -418,8 +422,7 @@ Structure Members 패널 → **+ Add Restricted Measure** 로 아래 6개를 생
 | Technical Name | `01_CURR_MONTH` |
 | Business Name | `당월` |
 | Base Measure | `KWMENG` |
-| Filter 필드 | `CalendarYearMonth` |
-| Filter 조건 | `= RV_CURR_MONTH` |
+| Expression | `CalendarYearMonth = :RV_CURR_MONTH` |
 
 #### 02_PRE_MONTH — 전월
 
@@ -428,8 +431,7 @@ Structure Members 패널 → **+ Add Restricted Measure** 로 아래 6개를 생
 | Technical Name | `02_PRE_MONTH` |
 | Business Name | `전월` |
 | Base Measure | `KWMENG` |
-| Filter 필드 | `CalendarYearMonth` |
-| Filter 조건 | `= RV_PREVIOUS_MONTH` |
+| Expression | `CalendarYearMonth = :RV_PREVIOUS_MONTH` |
 
 #### 03_CURRENT_YEAR_CUMUL — 당년 누계
 
@@ -438,8 +440,7 @@ Structure Members 패널 → **+ Add Restricted Measure** 로 아래 6개를 생
 | Technical Name | `03_CURRENT_YEAR_CUMUL` |
 | Business Name | `당년 누계` |
 | Base Measure | `KWMENG` |
-| Filter 필드 | `CalendarYearMonth` |
-| Filter 조건 | `>= RV_CURR_YEAR_JAN` **AND** `<= RV_CURR_MONTH` |
+| Expression | `CalendarYearMonth >= :RV_CURR_YEAR_JAN AND CalendarYearMonth <= :RV_CURR_MONTH` |
 
 #### 04_PRE_YEAR_CUM — 전년 누계
 
@@ -448,8 +449,7 @@ Structure Members 패널 → **+ Add Restricted Measure** 로 아래 6개를 생
 | Technical Name | `04_PRE_YEAR_CUM` |
 | Business Name | `전년 누계` |
 | Base Measure | `KWMENG` |
-| Filter 필드 | `CalendarYearMonth` |
-| Filter 조건 | `>= RV_PREVIOUS_YEAR_JAN` **AND** `<= RV_PREVIOUS_YEAR_SAME_MONTH` |
+| Expression | `CalendarYearMonth >= :RV_PREVIOUS_YEAR_JAN AND CalendarYearMonth <= :RV_PREVIOUS_YEAR_SAME_MONTH` |
 
 #### 05_PRE_SAME_MONTH — 전년동기
 
@@ -458,8 +458,7 @@ Structure Members 패널 → **+ Add Restricted Measure** 로 아래 6개를 생
 | Technical Name | `05_PRE_SAME_MONTH` |
 | Business Name | `전년동기` |
 | Base Measure | `KWMENG` |
-| Filter 필드 | `CalendarYearMonth` |
-| Filter 조건 | `= RV_PREVIOUS_YEAR_SAME_MONTH` |
+| Expression | `CalendarYearMonth = :RV_PREVIOUS_YEAR_SAME_MONTH` |
 
 > **핵심 원리**: 동일한 `KWMENG`(주문수량)에 서로 다른 기간 필터를 씌운 6개의 지표를 만들었습니다.  
 > SAC나 Preview에서 이 6개를 한 화면에 펼치면 **당월/전월/누계/전년동기를 한눈에 비교**할 수 있습니다.
