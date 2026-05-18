@@ -19,10 +19,10 @@
 
 | # | 분석 항목 | 주요 측정값 | 주요 차원 |
 |---|-----------|------------|----------|
-| 1 | 미결 판매 오더 현황 | 오더 수량, 오더 금액 | 판매 조직, 고객, 자재, 기간 |
-| 2 | 납품 일정 준수율 | 약속 납기 vs 실제 납기 | 고객, 자재, 기간 |
-| 3 | 채널별 매출 분석 | 매출 금액, 할인 금액 | 유통 채널, 판매 조직, 기간 |
-| 4 | 자재별 판매 트렌드 | 판매 수량, 금액 추이 | 자재 그룹, 기간 |
+| 1 | 미결 판매 오더 현황 | 주문수량, 확정수량, 미납품수량 | 판매 조직, 고객, 자재, 기간 |
+| 2 | 납품 일정 준수율 (RDD Compliance) | 리드타임(일), On-Time/Delay 비율 | 고객, 자재, 기간 |
+| 3 | 출하/청구 진행 현황 | 출고수량, 청구수량, 미청구수량 | 판매 조직, 유통 채널 |
+| 4 | 기간별 비교 분석 | 당월/전월/당년누계/전년동기 | 기간 (CalendarYearMonth) |
 
 ---
 
@@ -34,12 +34,14 @@ S/4HANA ODP(Operational Data Provisioning)를 소스로 활용
 
 ```
 소스: S/4HANA ODP DataSource
-  ├── 2LIS_11_VAHDR (판매 오더 헤더)
-  ├── 2LIS_11_VAITM (판매 오더 항목)
-  └── 2LIS_11_VASTH (판매 오더 상태)
+  ├── 2LIS_11_VAHDR  (수주 헤더)
+  ├── 2LIS_11_VAITM  (수주 아이템)
+  ├── 2LIS_11_VASCL  (납품일정행 - 확정수량)
+  ├── 2LIS_12_VCITM  (납품 아이템 - 출고수량/일자)
+  ├── 2LIS_13_VDITM  (청구 아이템 - 청구수량/금액)
+  └── 2LIS_13_VDHDR  (청구 헤더)
 
 적재 방식: Replication Flow → Local Tables
-접근 방식: 로컬 테이블 기반 Fact View 생성
 ```
 
 **결과 오브젝트:**
@@ -50,15 +52,17 @@ S/4HANA ODP(Operational Data Provisioning)를 소스로 활용
 
 ### 시나리오 B: CDS View 기반 (Lab 4-B)
 
-S/4HANA CDS(Core Data Services) View를 소스로 직접 활용
+S/4HANA CDS(Core Data Services) View를 소스로 활용. SAP이 ODP를 대체하는 향후 권장 방식.
 
 ```
-소스: S/4HANA CDS Views (가상 접근 / Remote Table)
-  ├── I_SalesOrder (판매 오더 헤더 CDS)
-  ├── I_SalesOrderItem (판매 오더 항목 CDS)
-  └── I_SalesOrderScheduleLine (납품 일정 CDS)
+소스: S/4HANA CDS Views
+  ├── C_SalesDocumentItemDEX_1          (수주 헤더+아이템 통합)
+  ├── C_SalesDocumentSchedLineDEX_1     (납품일정행 - 확정수량)
+  ├── I_DeliveryDocumentItem             (납품 아이템 - 출고수량)
+  ├── I_DeliveryDocument                 (납품 헤더 - 출고일자)
+  └── C_BillingDocItemBasicDEX_1        (청구 아이템 - 청구수량/금액)
 
-접근 방식: Remote Table (가상 테이블) → Fact View 생성
+적재 방식: Replication Flow → Local Tables
 ```
 
 **결과 오브젝트:**
@@ -69,107 +73,131 @@ S/4HANA CDS(Core Data Services) View를 소스로 직접 활용
 
 ## 개발 요건 상세
 
-### Fact View 공통 요건
+### Fact View 주요 필드
 
-| 필드명 | 설명 | 소스 필드 | 비고 |
-|--------|------|----------|------|
-| `VBELN` | 판매 오더 번호 | VBAK.VBELN / I_SalesOrder.SalesOrder | Key |
-| `POSNR` | 판매 오더 항목 번호 | VBAP.POSNR / I_SalesOrderItem.SalesOrderItem | Key |
-| `KUNNR` | 고객 코드 | VBAK.KUNNR | 차원 |
-| `MATNR` | 자재 코드 | VBAP.MATNR | 차원 |
-| `VKORG` | 판매 조직 | VBAK.VKORG | 차원 |
-| `VTWEG` | 유통 채널 | VBAK.VTWEG | 차원 |
-| `SPART` | 제품군 | VBAK.SPART | 차원 |
-| `AUDAT` | 오더 생성일 | VBAK.AUDAT | 차원(날짜) |
-| `NETWR` | 순 금액 (오더 헤더) | VBAK.NETWR | 측정값 |
-| `KWMENG` | 오더 수량 | VBAP.KWMENG | 측정값 |
-| `NETPR` | 순 단가 | VBAP.NETPR | 측정값 |
-| `GBSTA` | 전체 처리 상태 | VBUK.GBSTA | 필터용 |
+| 필드명 | 설명 | ODP 소스 | CDS View 소스 |
+|--------|------|----------|--------------|
+| `VBELN` / `SalesDocument` | 수주번호 (Key) | `2LIS_11_VAHDR.VBELN` | `C_SalesDocumentItemDEX_1.SalesDocument` |
+| `POSNR` / `SalesDocumentItem` | 수주항목번호 (Key) | `2LIS_11_VAITM.POSNR` | `C_SalesDocumentItemDEX_1.SalesDocumentItem` |
+| `ERDAT` | 생성일 | `2LIS_11_VAHDR.ERDAT` | `SalesDocumentDate` (변환) |
+| `CalendarYearMonth` | 생성년월 | `TO_VARCHAR(ERDAT,'YYYYMM')` | `TO_VARCHAR(SalesDocumentDate,'YYYYMM')` |
+| `VDATU` | 납품요청일 (RDD) | `2LIS_11_VAHDR.VDATU` | `RequestedDeliveryDate` (변환) |
+| `VKORG` / `SalesOrganization` | 판매조직 | `2LIS_11_VAHDR.VKORG` | `C_SalesDocumentItemDEX_1.SalesOrganization` |
+| `KUNNR` / `SoldToParty` | 주문자 | `2LIS_11_VAHDR.KUNNR` | `C_SalesDocumentItemDEX_1.SoldToParty` |
+| `MATNR` / `Material` | 자재번호 | `2LIS_11_VAITM.MATNR` | `C_SalesDocumentItemDEX_1.Material` |
+| `KWMENG` | 주문수량 | `2LIS_11_VAITM.KWMENG` | `OrderQuantity` (변환) |
+| `CONFIRMED_QTY` | 확정수량 | `SUM(2LIS_11_VASCL.BMENG)` | `SUM(ConfdOrderQtyByMatlAvailCheck)` |
+| `GI_QTY` | 출고수량 | `SUM(2LIS_12_VCITM.LFIMG)` | `SUM(ActualDeliveredQtyInBaseUnit)` |
+| `GI_DATE` | 출고일자 | `MAX(2LIS_12_VCITM.WADAT_IST)` | `MAX(ActualGoodsMovementDate)` |
+| `BILL_QTY` | 청구수량 | `SUM(2LIS_13_VDITM.FKIMG)` | `SUM(BillingQuantityInBaseUnit)` |
+| `BILL_AMT` | 청구금액 | `SUM(2LIS_13_VDITM.NETWR)` | `SUM(NetAmount)` |
+| `OPEN_DLV_QTY` | 미납품수량 | `KWMENG - GI_QTY` | `OrderQuantity - GI_QTY` |
+| `UNBILLED_QTY` | 미청구수량 | `GI_QTY - BILL_QTY` | `GI_QTY - BILL_QTY` |
+| `DELIVERY_STATUS` | 납품진행상태 | CASE WHEN (Not Started/In Progress/Completed) | 동일 |
+| `RDD_LEADTIME_DAYS` | 납품요청일 리드타임 | `DAYS_BETWEEN(VDATU, GI_DATE 또는 CURRENT_DATE)` | 동일 |
+| `RDD_COMPLIANCE` | RDD 준수여부 | On-Time / Delay | 동일 |
 
 ### 미결 오더 필터 조건
 
+두 방식의 핵심 필터 차이:
+
 ```sql
--- 미결 오더 = 전체 처리 상태가 완료되지 않은 오더
-WHERE GBSTA NOT IN ('C')  -- C = 완전히 처리됨
-  AND ABGRU IS NULL       -- 거절 사유 없음
+-- ODP 방식: ROCANCEL='' 로 취소 레코드 제외
+WHERE H.VBTYP = 'C'        -- 수주 전표만
+  AND H.ROCANCEL = ''       -- 취소 제외
+  AND I.ROCANCEL = ''       -- 취소 제외
+  AND (I.ABGRU = '' OR I.ABGRU IS NULL)  -- 거부 제외
+
+-- CDS View 방식: SDDocumentCategory='C' 로 수주 전표 필터
+WHERE I.SDDocumentCategory = 'C'   -- 수주 전표만
+  AND (I.SalesDocumentRjcnReason = '' OR I.SalesDocumentRjcnReason IS NULL)
 ```
 
 ---
 
 ### Analytic Model 요건
 
-#### 측정값 (Measures)
+#### BASE Measures
 
-| 측정값 ID | 설명 | 계산식 | 집계 |
-|----------|------|--------|------|
-| `NET_AMOUNT` | 미결 오더 순금액 | `SUM(NETWR)` | SUM |
-| `ORDER_QTY` | 미결 오더 수량 | `SUM(KWMENG)` | SUM |
-| `ORDER_COUNT` | 오더 건수 | `COUNT(DISTINCT VBELN)` | COUNT |
-| `AVG_ORDER_AMT` | 평균 오더 금액 | `NET_AMOUNT / ORDER_COUNT` | 계산 |
+| Measure | 설명 | 집계 |
+|---------|------|------|
+| `KWMENG` | 주문수량 | SUM |
+| `CONFIRMED_QTY` | 확정수량 | SUM |
+| `GI_QTY` | 출고수량 | SUM |
+| `BILL_QTY` | 청구수량 | SUM |
+| `BILL_AMT` | 청구금액 | SUM |
+| `OPEN_DLV_QTY` | 미납품수량 | SUM |
+| `UNBILLED_QTY` | 미청구수량 | SUM |
 
-#### 차원 (Dimensions)
+#### RESTRICTION Measures (기간 비교)
 
-| 차원 ID | 설명 | 계층 | 연결 마스터 |
-|---------|------|------|------------|
-| `KUNNR` | 고객 | 판매 조직 > 고객 | KNA1 (고객 마스터) |
-| `MATNR` | 자재 | 자재 그룹 > 자재 | MARA (자재 마스터) |
-| `VKORG` | 판매 조직 | - | T001W |
-| `VTWEG` | 유통 채널 | - | - |
-| `AUDAT` | 오더 생성일 | 연 > 분기 > 월 > 일 | 날짜 차원 |
+| Measure | 설명 |
+|---------|------|
+| `Measure_Value` | 전체 (필터 없음) |
+| `01_CURR_MONTH` | 당월 |
+| `02_PRE_MONTH` | 전월 |
+| `03_CURRENT_YEAR_CUMUL` | 당년 누계 |
+| `04_PRE_YEAR_CUM` | 전년 누계 |
+| `05_PRE_SAME_MONTH` | 전년동기 |
+
+#### Variables
+
+| Variable | 설명 |
+|----------|------|
+| `P_MONTH` | 기준월 (사용자 입력, YYYYMM) |
+| `RV_CURR_MONTH` ~ `RV_PREVIOUS_YEAR_JAN` | 자동 계산 변수 5개 |
 
 ---
 
-## 비교 분석: ODP vs CDS View
+## 방식 비교: ODP vs CDS View
+
+두 방식 모두 **Replication Flow → Local Table** 구조로 동일하며, 소스 DataSource의 종류만 다릅니다.
 
 ```mermaid
 graph LR
-    subgraph ODP["📦 ODP 방식 (Scenario A)"]
+    subgraph ODP["Lab 4-A: ODP 방식"]
         direction TB
-        O1["S/4HANA ODP DataSource<br/>(2LIS_11_VAHDR 등)"]
-        O2["Replication Flow<br/>(데이터 복제)"]
-        O3["Local Table<br/>(DSP 내 물리 저장)"]
-        O4["Fact View<br/>WS_HL_SQLV_OPEN_ORDER_ODP"]
-        O5["Analytic Model<br/>WS_RL_OPEN_ORDER_ODP"]
+        O1["S/4HANA ODP DataSource\n(2LIS_11_VAHDR 등 6개)"]
+        O2["Replication Flow"]
+        O3["Local Table\n(DSP 내 물리 저장)"]
+        O4["Fact View\nWS_HL_SQLV_OPEN_ORDER_ODP"]
+        O5["Analytic Model\nWS_RL_OPEN_ORDER_ODP"]
         O1 --> O2 --> O3 --> O4 --> O5
     end
 
-    subgraph CDS["🔗 CDS View 방식 (Scenario B)"]
+    subgraph CDS["Lab 4-B: CDS View 방식 (SAP 권장)"]
         direction TB
-        C1["S/4HANA CDS View<br/>(I_SalesOrder 등)"]
-        C2["Remote Table<br/>(가상 접근)"]
-        C3["Fact View<br/>WS_HL_SQLV_OPEN_ORDER_CDSV"]
-        C4["Analytic Model<br/>WS_RL_OPEN_ORDER_CDSV"]
-        C1 --> C2 --> C3 --> C4
-    end
-
-    subgraph COMPARE["📊 방식 비교"]
-        direction TB
-        T1["ODP: 데이터 복제 (로컬 저장)<br/>✅ 성능 우수 (로컬 쿼리)<br/>✅ 오프라인 분석 가능<br/>⚠️ 저장 공간 필요<br/>⚠️ 동기화 지연"]
-        T2["CDS View: 실시간 접근<br/>✅ 실시간 데이터<br/>✅ 저장 공간 불필요<br/>⚠️ S/4HANA 부하 가능<br/>⚠️ 네트워크 의존"]
+        C1["S/4HANA CDS View\n(C_SalesDocumentItemDEX_1 등 5개)"]
+        C2["Replication Flow"]
+        C3["Local Table\n(DSP 내 물리 저장)"]
+        C4["Fact View\nWS_HL_SQLV_OPEN_ORDER_CDSV"]
+        C5["Analytic Model\nWS_RL_OPEN_ORDER_CDSV"]
+        C1 --> C2 --> C3 --> C4 --> C5
     end
 ```
 
 | 비교 항목 | ODP 방식 | CDS View 방식 |
 |----------|---------|--------------|
-| **데이터 최신성** | 복제 주기에 따라 | 실시간 |
-| **쿼리 성능** | 높음 (로컬) | S/4HANA 성능 의존 |
-| **저장 공간** | 필요 | 불필요 |
-| **S/4HANA 부하** | 복제 시만 | 매 쿼리마다 |
-| **적합한 용도** | 대용량, 히스토리 분석 | 실시간 모니터링 |
-| **DSP 오브젝트** | Local Table → View | Remote Table → View |
+| 데이터 적재 방식 | Replication Flow → Local Table | Replication Flow → Local Table |
+| 소스 DataSource 종류 | ODP DataSource (2LIS_xx_xxx) | S/4HANA CDS View |
+| 소스 테이블 수 | 6개 (헤더/아이템 분리) | 5개 (헤더+아이템 일부 통합) |
+| 취소 레코드 필터 | `ROCANCEL = ''` | `BillingDocumentIsCancelled = ''` 등 |
+| 수주 전표 필터 | `VBTYP = 'C'` | `SDDocumentCategory = 'C'` |
+| SAP 방향성 | 기존 방식 (Deprecated 예정) | SAP 향후 권장 방식 |
+
+> ODP DataSource는 SAP의 구형 추출 방식으로, SAP은 CDS View 기반 추출을 향후 표준으로 권장하고 있습니다.
+> 두 방식 모두 Datasphere 내 데이터 플로우와 모델링 구조는 동일합니다.
 
 ---
 
-## 개발 순서 권장
+## 개발 순서
 
 ```mermaid
 flowchart TD
-    A["1. BCT_SD 패키지 Import<br/>(Lab 1)"] --> B["2. Replication Flow 실행<br/>(Lab 2)"]
-    B --> C["3. 표준 Analytic Model 확인<br/>(Lab 3)"]
-    C --> D{"4. 커스텀 모델 개발<br/>(Lab 4)"}
-    D --> E["4-A. ODP Fact View 생성<br/>WS_HL_SQLV_OPEN_ORDER_ODP"]
-    D --> F["4-B. CDS View Fact View 생성<br/>WS_HL_SQLV_OPEN_ORDER_CDSV"]
-    E --> G["ODP Analytic Model 생성<br/>WS_RL_OPEN_ORDER_ODP"]
-    F --> H["CDS View Analytic Model 생성<br/>WS_RL_OPEN_ORDER_CDSV"]
-    G & H --> I["📊 데이터 확인 및 비교 분석"]
+    A["1. BCT_SD 패키지 Import\n(Lab 1)"] --> B["2. Replication Flow 실행\n(Lab 2)"]
+    B --> C["3. 표준 Analytic Model 확인\n(Lab 3)"]
+    C --> D{"4. 커스텀 모델 개발\n(Lab 4)"}
+    D --> E["4-A. ODP 기반\nReplication Flow + Fact View + AM\nWS_RL_OPEN_ORDER_ODP"]
+    D --> F["4-B. CDS View 기반 (SAP 권장)\nReplication Flow + Fact View + AM\nWS_RL_OPEN_ORDER_CDSV"]
+    E & F --> G["데이터 확인 및 결과 비교"]
 ```
