@@ -1110,6 +1110,174 @@
                 "UNBILLED_QTY"
               ],
               "as": "UNBILLED_QTY"
+            },
+            {
+              "xpr": [
+                "case",
+                "when",
+                {
+                  "val": true
+                },
+                "then",
+                {
+                  "val": 1
+                },
+                "end"
+              ],
+              "as": "Measure_Value"
+            },
+            {
+              "xpr": [
+                "case",
+                "when",
+                {
+                  "ref": [
+                    "$projection",
+                    "CalendarYearMonth"
+                  ]
+                },
+                "=",
+                {
+                  "ref": [
+                    "RV_CURR_MONTH"
+                  ],
+                  "param": true
+                },
+                "then",
+                {
+                  "val": 1
+                },
+                "end"
+              ],
+              "as": "01_CURR_MONTH"
+            },
+            {
+              "xpr": [
+                "case",
+                "when",
+                {
+                  "ref": [
+                    "$projection",
+                    "CalendarYearMonth"
+                  ]
+                },
+                "=",
+                {
+                  "ref": [
+                    "RV_PREVIOUS_MONTH"
+                  ],
+                  "param": true
+                },
+                "then",
+                {
+                  "val": 1
+                },
+                "end"
+              ],
+              "as": "02_PRE_MONTH"
+            },
+            {
+              "xpr": [
+                "case",
+                "when",
+                {
+                  "ref": [
+                    "$projection",
+                    "CalendarYearMonth"
+                  ]
+                },
+                ">=",
+                {
+                  "ref": [
+                    "RV_CURR_YEAR_JAN"
+                  ],
+                  "param": true
+                },
+                "and",
+                {
+                  "ref": [
+                    "$projection",
+                    "CalendarYearMonth"
+                  ]
+                },
+                "<=",
+                {
+                  "ref": [
+                    "RV_CURR_MONTH"
+                  ],
+                  "param": true
+                },
+                "then",
+                {
+                  "val": 1
+                },
+                "end"
+              ],
+              "as": "03_CURRENT_YEAR_CUMUL"
+            },
+            {
+              "xpr": [
+                "case",
+                "when",
+                {
+                  "ref": [
+                    "$projection",
+                    "CalendarYearMonth"
+                  ]
+                },
+                ">=",
+                {
+                  "ref": [
+                    "RV_PREVIOUS_YEAR_JAN"
+                  ],
+                  "param": true
+                },
+                "and",
+                {
+                  "ref": [
+                    "$projection",
+                    "CalendarYearMonth"
+                  ]
+                },
+                "<=",
+                {
+                  "ref": [
+                    "RV_PREVIOUS_YEAR_SAME_MONTH"
+                  ],
+                  "param": true
+                },
+                "then",
+                {
+                  "val": 1
+                },
+                "end"
+              ],
+              "as": "04_PRE_YEAR_CUM"
+            },
+            {
+              "xpr": [
+                "case",
+                "when",
+                {
+                  "ref": [
+                    "$projection",
+                    "CalendarYearMonth"
+                  ]
+                },
+                "=",
+                {
+                  "ref": [
+                    "RV_PREVIOUS_YEAR_SAME_MONTH"
+                  ],
+                  "param": true
+                },
+                "then",
+                {
+                  "val": 1
+                },
+                "end"
+              ],
+              "as": "05_PRE_SAME_MONTH"
             }
           ],
           "mixin": {
