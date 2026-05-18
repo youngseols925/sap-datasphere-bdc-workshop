@@ -284,7 +284,7 @@ LEFT JOIN (
            ) AS BILL_AMT
     FROM "SAP_SD_IL_C_BILLINGDOCITEMBASICDEX_1"
     WHERE BillingDocumentIsCancelled = ''           -- ODP: ROCANCEL=''
-      AND BillingDocumentType NOT IN ('ZINB', 'ZVSB')
+      AND BillingDocumentType NOT IN ('IV', 'IG')       -- Intercompany Invoice/Credit Memo 제외
       AND SalesSDDocumentCategory = 'C'             -- ODP: AUTYP='C'
     GROUP BY SalesDocument, SalesDocumentItem
 ) B ON I.SalesDocument = B.SalesDocument

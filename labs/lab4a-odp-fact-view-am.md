@@ -222,7 +222,7 @@ FROM "SAP_SD_IL_2LIS_11_VAHDR" H
             INNER JOIN "SAP_SD_IL_2LIS_13_VDHDR" H2 ON I2.VBELN = H2.VBELN
         WHERE I2.ROCANCEL = ''
           AND H2.ROCANCEL = ''
-          AND H2.FKART NOT IN ('ZINB', 'ZVSB')
+          AND H2.FKART NOT IN ('IV', 'IG')        -- Intercompany Invoice/Credit Memo 제외
           AND (I2.RFBSK IS NULL OR I2.RFBSK = '')
           AND (I2.SFAKN IS NULL OR I2.SFAKN = '')
           AND (I2.FKSTO IS NULL OR I2.FKSTO = '')
