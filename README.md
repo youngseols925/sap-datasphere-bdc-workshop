@@ -1,4 +1,4 @@
-# SAP BDC Datasphere Partner Workshop 2025
+# SAP BDC Datasphere Partner Workshop 2026
 
 SAP Korea BDC 파트너 워크샵 — SAP Datasphere 핸즈온 실습 교육 자료
 
