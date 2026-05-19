@@ -150,3 +150,62 @@ graph TD
 ## 다음 단계
 
 Lab 1 완료 후 → **[Lab 2: Replication Flow로 데이터 적재](./lab2-replication-flow.md)** 진행
+
+---
+
+## [대안] Analytic Model JSON 직접 Import
+
+> **이 방법을 사용하는 경우**: 워크샵 참가자가 많아 Content Network를 통한 BCT_SD 패키지 순차 설치에 시간이 너무 오래 걸릴 때 사용합니다.  
+> Datasphere는 Analytic Model JSON Import 시 **하위 의존 오브젝트(Local Table, SQL View 등)를 함께 자동 설치**하므로, 최상위 오브젝트 하나만 Import하면 전체 모델이 구성됩니다.
+
+### 사용 파일
+
+아래 링크에서 JSON 파일을 다운로드합니다.
+
+**[⬇️ SAP_SD_RL_SalesDocumentItem_V2.json 다운로드](https://github.com/youngseols925/sap-datasphere-bdc-workshop/raw/main/assets/downloads/SAP_SD_RL_SalesDocumentItem_V2.json)**
+
+> GitHub 페이지가 열리면 브라우저에서 **Ctrl+S** (Mac: Cmd+S) 로 파일 저장, 또는 우클릭 → **다른 이름으로 저장** 하세요.
+
+---
+
+### 대안 Step 1. Data Builder 진입
+
+1. 왼쪽 메뉴 → **Data Builder** 클릭
+2. 본인 Space(`DSPWSXX`) 선택
+
+---
+
+### 대안 Step 2. JSON 파일 Import
+
+1. Data Builder 우측 상단 **Import** 버튼(⬇ 아이콘) 클릭
+2. **Import Objects from CSN/JSON File** 선택
+
+```mermaid
+flowchart TD
+    A["Data Builder"] --> B["우측 상단 Import ▼ 클릭"]
+    B --> C["Import Objects from CSN/JSON File 선택"]
+    C --> D["SAP_SD_RL_SalesDocumentItem_V2.json 파일 선택"]
+    D --> E["Import 실행"]
+    E --> F{결과 확인}
+    F -->|"성공"| G["오브젝트 자동 생성 완료"]
+    F -->|"오류"| H["강사에게 문의"]
+```
+
+3. 다운로드한 `SAP_SD_RL_SalesDocumentItem_V2.json` 파일 선택
+4. Import 대상 오브젝트 목록 확인 후 **Import** 클릭
+
+---
+
+### 대안 Step 3. Import 결과 확인
+
+Import 완료 후 Data Builder에서 아래 오브젝트가 생성되었는지 확인합니다:
+
+| 확인 항목 | Technical Name 패턴 |
+|-----------|-------------------|
+| Analytic Model | `SAP_SD_RL_SalesDocumentItem_V2` |
+| Fact View (SQL View) | `SAP_SD_HL_*` |
+| Local Tables | `SAP_SD_IL_*` |
+| Dimension Views | `SAP_SD_*` |
+
+> **Content Network Import 방식과의 차이**: Replication Flow는 포함되지 않습니다.  
+> Lab 2의 Replication Flow는 Content Network에서 별도로 Import하거나, 강사가 미리 구성한 공용 Replication Flow를 사용합니다.
