@@ -155,7 +155,7 @@ Lab 1 완료 후 → **[Lab 2: Replication Flow로 데이터 적재](./lab2-repl
 
 ## [대안] Analytic Model JSON 직접 Import
 
-> **이 방법을 사용하는 경우**: 워크샵 참가자가 많아 Content Network를 통한 BCT_SD 패키지 순차 설치에 시간이 너무 오래 걸릴 때 사용합니다.  
+> **이 방법을 사용하는 경우**: Content Network를 통한 BCT_SD 패키지 순차 설치에 시간이 너무 오래 걸릴 때 사용합니다.  
 > Datasphere는 Analytic Model JSON Import 시 **하위 의존 오브젝트(Local Table, SQL View 등)를 함께 자동 설치**하므로, 최상위 오브젝트 하나만 Import하면 전체 모델이 구성됩니다.
 
 ### 사용 파일
