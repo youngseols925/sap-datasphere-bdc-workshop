@@ -162,7 +162,11 @@ Lab 1 완료 후 → **[Lab 2: Replication Flow로 데이터 적재](./lab2-repl
 
 아래 링크에서 JSON 파일을 다운로드합니다.
 
-**[⬇️ SAP_SD_RL_SalesDocumentItem_V2.json 다운로드](https://github.com/youngseols925/sap-datasphere-bdc-workshop/raw/main/assets/downloads/SAP_SD_RL_SalesDocumentItem_V2.json)**
+**[⬇️ SAP_SD_RL_SalesDocumentItem_V2.json 다운로드](https://github.com/youngseols925/sap-datasphere-bdc-workshop/raw/main/assets/downloads/SAP_SD_RL_SalesDocumentItem_V2.json)**  
+→ Lab 1 대안 Import용 (표준 SD Analytic Model)
+
+**[⬇️ WS_RL_OPEN_ORDER_ODP.json 다운로드](https://github.com/youngseols925/sap-datasphere-bdc-workshop/raw/main/assets/downloads/WS_RL_OPEN_ORDER_ODP.json)**  
+→ Lab 4-A용 (미결 오더 Analytic Model, ODP 기반 — RESTRICTION + Variables 포함)
 
 > GitHub 페이지가 열리면 브라우저에서 **Ctrl+S** (Mac: Cmd+S) 로 파일 저장, 또는 우클릭 → **다른 이름으로 저장** 하세요.
 
