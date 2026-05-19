@@ -8,7 +8,7 @@ SAP Korea BDC 파트너 워크샵 — SAP Datasphere 핸즈온 실습 교육 자
 
 | 항목 | 내용 |
 |------|------|
-| 일시 | 2025년 5월 19일 (월) |
+| 일시 | 2026년 5월 19일 (화) |
 | 대상 | SAP Korea BDC 파트너 |
 | 형태 | 1-Day 핸즈온 워크샵 |
 | 주제 | SAP Datasphere 데이터 모델링 실습 (S/4HANA SD 시나리오) |
@@ -21,9 +21,6 @@ SAP Korea BDC 파트너 워크샵 — SAP Datasphere 핸즈온 실습 교육 자
 |------|------|
 | 워크샵 자료링크 | https://github.com/youngseols925 |
 | Datasphere 테넌트 | https://poc-dsp-1.ap12.hcs.cloud.sap/ |
-| 연결 S/4HANA | HE4 (S/4HANA On-Premise) |
-| 커넥션 ID | `HE4_S4H` |
-| 표준 컨텐츠 패키지 | `BCT_SD` (SD 표준 분석 컨텐츠 한글화) |
 
 ---
 
@@ -43,7 +40,7 @@ SAP Korea BDC 파트너 워크샵 — SAP Datasphere 핸즈온 실습 교육 자
 
 ```mermaid
 gantt
-    title Workshop Agenda — 2025-05-19
+    title Workshop Agenda — 2026-05-19
     dateFormat HH:mm
     axisFormat %H:%M
 
