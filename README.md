@@ -19,6 +19,7 @@ SAP Korea BDC 파트너 워크샵 — SAP Datasphere 핸즈온 실습 교육 자
 
 | 항목 | 정보 |
 |------|------|
+| 워크샵 자료링크 | https://github.com/youngseols925 |
 | Datasphere 테넌트 | https://poc-dsp-1.ap12.hcs.cloud.sap/ |
 | 연결 S/4HANA | HE4 (S/4HANA On-Premise) |
 | 커넥션 ID | `HE4_S4H` |
