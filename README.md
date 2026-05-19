@@ -32,8 +32,6 @@ SAP Korea BDC 파트너 워크샵 — SAP Datasphere 핸즈온 실습 교육 자
 |------|---------|
 | `sap.dsp.ws.kr+xx@gmail.com` | <details><summary>클릭하여 확인</summary>`Welcome1!`</details> |
 
-> 첫 로그인 시 비밀번호를 변경하시기 바랍니다.
-
 ---
 
 ## 워크샵 어젠다
